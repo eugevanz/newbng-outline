@@ -10,6 +10,25 @@ function Nav() {
   return (
     <div className="uk-width-1-4@m">
       <div className="uk-child-width-1-1 uk-grid-small" data-uk-grid>
+        <div>
+        <div className="uk-grid-collapse" data-uk-grid>
+            <div className="uk-width-auto">
+              <Image
+                width="70"
+                height="56"
+                src="/NEWBGNG logo.001.png"
+                alt="company-logo"
+              ></Image>
+            </div>
+            <div className="uk-width-expand">
+              <span className="uk-text-large uk-text-bold">
+                NEWBNG
+              </span>
+              &nbsp;
+              <div className="uk-text-meta">Project Management</div>
+            </div>
+          </div>
+        </div>
         {!user && (
           <div>
             <Auth></Auth>
