@@ -12,8 +12,6 @@ function MyProjects() {
     supabase
       .from("projects")
       .select("*")
-      .then((data) => data.json())
-      // .then((data) => console.log(data));
       .then((data) => setData(data.filter((item) => item.user_id === user.id)));
   }, [user.id]);
 
