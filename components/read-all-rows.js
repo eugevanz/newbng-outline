@@ -9,10 +9,9 @@ function ReadAllRows({ table, title }) {
 
   useEffect(() => {
     supabase
-    .from(table)
-    .select("*")
-      .then((data) => data.json())
-      .then((data) => setData(data));
+      .from(table)
+      .select("*")
+      .then((data) => setData(data.data));
   }, [table]);
 
   return (
@@ -29,7 +28,8 @@ function ReadAllRows({ table, title }) {
                 className="uk-link-toggle"
                 href="#list-item"
                 onClick={() => router.push(`/${table}/${item.id}`)}
-                data-uk-scroll>
+                data-uk-scroll
+              >
                 <div className="uk-text-bold uk-link-text">
                   {item.name.toUpperCase()}
                 </div>

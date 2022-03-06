@@ -12,7 +12,9 @@ function MyDocuments() {
     supabase
       .from("documents")
       .select("*")
-      .then((data) => setData(data.filter((item) => item.user_id === user.id)));
+      .then((data) =>
+        setData(data.data.filter((item) => item.user_id === user.id))
+      );
   }, [user.id]);
 
   return (

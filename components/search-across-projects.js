@@ -23,7 +23,7 @@ function SearchAcrossProjects({ title }) {
           .select("*")
           .then((data) =>
             setfiltered(
-              data.filter(
+              data.data.filter(
                 (item) =>
                   item.start.includes(searchText) ||
                   item.end.includes(searchText)
