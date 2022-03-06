@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import supabase from "../../context/auth-context";
+import supabase from "../context/auth-context";
 
 function MyProjects() {
   const router = useRouter();

@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import supabase from "../../context/auth-context";
+import supabase from "../context/auth-context";
 
 function MyLogs() {
   const router = useRouter();
@@ -28,7 +28,8 @@ function MyLogs() {
                 className="uk-link-toggle"
                 href="#list-item"
                 onClick={() => router.push(`/logs/${item.id}`)}
-                data-uk-scroll>
+                data-uk-scroll
+              >
                 <div className="uk-text-bold uk-link-text">
                   Started on {moment(item.start_date).format("MMMM Do YYYY")}
                 </div>

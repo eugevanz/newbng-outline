@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
 import moment from "moment";
-import { useContext, useEffect, useState } from "react";
-import AuthContext from "../../context/auth-context";
+import { useEffect, useState } from "react";
+import supabase from "../context/auth-context";
 
 function MyProjectGroups() {
   const router = useRouter();
   const [data, setData] = useState(null);
-  const { user } = useContext(AuthContext);
+  const user = supabase.auth.user();
 
   useEffect(() => {
     fetch("/api/project_groups").then((data) =>

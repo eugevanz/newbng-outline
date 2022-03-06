@@ -2,7 +2,7 @@ import moment from "moment";
 import { useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import supabase from "../../context/auth-context";
+import supabase from "../context/auth-context";
 
 function MilestoneDetails({ data, owner }) {
   const user = supabase.auth.user();
@@ -142,5 +142,5 @@ function MilestoneDetails({ data, owner }) {
       </div>
     )
   );
-};
+}
 export default MilestoneDetails;

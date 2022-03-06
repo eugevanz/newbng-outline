@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import supabase from "../../context/auth-context";
+import supabase from "../context/auth-context";
 
 function MyMilestones() {
   const router = useRouter();
@@ -28,7 +28,8 @@ function MyMilestones() {
                 className="uk-link-toggle"
                 href="#list-item"
                 onClick={() => router.push(`/milestones/${item.id}`)}
-                data-uk-scroll>
+                data-uk-scroll
+              >
                 <div className="uk-text-bold uk-link-text">{item.name}</div>
                 <div className="uk-text-meta">
                   Created on {moment(item.created_at).format("MMMM Do YYYY")}

@@ -2,7 +2,7 @@ import moment from "moment";
 import { useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import supabase from "../../context/auth-context";
+import supabase from "../context/auth-context";
 
 function DocumentDetails({ data, owner }) {
   const user = supabase.auth.user();
@@ -93,5 +93,5 @@ function DocumentDetails({ data, owner }) {
       </div>
     )
   );
-};
+}
 export default DocumentDetails;
