@@ -11,8 +11,8 @@ function MyProjects() {
   useEffect(() => {
     fetch("/api/projects")
       .then((data) => data.json())
-      .then((data) => console.log(data));
-    // .then((data) => setData(data.filter((item) => item.user_id === user.id)));
+      // .then((data) => console.log(data));
+    .then((data) => setData(data.filter((item) => item.user_id === user.id)));
   }, [user.id]);
 
   return (

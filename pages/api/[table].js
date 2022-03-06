@@ -10,7 +10,7 @@ async function table(req, res) {
 
   if (req.method === "GET") {
     const { data } = await client.from(table).select("*");
-    res.status(200).send(data);
+    res.status(200).json(data);
   } else if (req.method === "POST") {
     await client
       .from(table)
@@ -32,5 +32,5 @@ async function table(req, res) {
       .then((data) => console.log(data))
       .catch((error) => console.error(error));
   }
-};
+}
 export default table;
