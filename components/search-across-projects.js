@@ -18,10 +18,9 @@ function SearchAcrossProjects({ title }) {
       const searchText = search_text.toLowerCase();
 
       if (title === "logs")
-      supabase
-        .from('logs')
-        .select("*")
-          .then((res) => res.json())
+        supabase
+          .from("logs")
+          .select("*")
           .then((data) =>
             setfiltered(
               data.filter(
@@ -32,13 +31,16 @@ function SearchAcrossProjects({ title }) {
             )
           );
       else
-      supabase
-        .from(title)
-        .select("*").then((data) =>
-          setfiltered(
-            data.filter((item) => item.name.toLowerCase().includes(searchText))
-          )
-        );
+        supabase
+          .from(title)
+          .select("*")
+          .then((data) =>
+            setfiltered(
+              data.filter((item) =>
+                item.name.toLowerCase().includes(searchText)
+              )
+            )
+          );
     }
   }
 
