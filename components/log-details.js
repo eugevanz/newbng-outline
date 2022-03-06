@@ -9,13 +9,14 @@ function LogDetails({ data, owner }) {
   const { register, handleSubmit } = useForm();
   const [checked, setchecked] = useState(false);
 
-  async function onSubmit(formData) {
+  function onSubmit(formData) {
     user &&
-      fetch("/api/logs", {
-        method: "PUT",
-        body: JSON.stingify({ formData, id: data.id }),
-        headers: { "Content-Type": "application/json" }
-      });
+      supabase
+        .from("logs")
+        .update(formData)
+        .eq("id", data.id)
+        .then((data) => console.log(data))
+        .catch((error) => console.error(error));
   }
 
   return (

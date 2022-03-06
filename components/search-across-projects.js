@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import moment from "moment";
+import supabase from "../context/auth-context";
 
 function SearchAcrossProjects({ title }) {
   const { register, handleSubmit, reset } = useForm();
@@ -17,16 +18,23 @@ function SearchAcrossProjects({ title }) {
       const searchText = search_text.toLowerCase();
 
       if (title === "logs")
-        fetch(`/api/logs`).then((data) =>
-          setfiltered(
-            data.filter(
-              (item) =>
-                item.start.includes(searchText) || item.end.includes(searchText)
+      supabase
+        .from('logs')
+        .select("*")
+          .then((res) => res.json())
+          .then((data) =>
+            setfiltered(
+              data.filter(
+                (item) =>
+                  item.start.includes(searchText) ||
+                  item.end.includes(searchText)
+              )
             )
-          )
-        );
+          );
       else
-        fetch(`/api/${title}`).then((data) =>
+      supabase
+        .from(title)
+        .select("*").then((data) =>
           setfiltered(
             data.filter((item) => item.name.toLowerCase().includes(searchText))
           )
@@ -48,14 +56,16 @@ function SearchAcrossProjects({ title }) {
           data-uk-filter-control="[data-tags*='details']"
           onClick={() => router.push(`/${title}/${item.id}`)}
           data-uk-scroll
-          data-uk-grid>
+          data-uk-grid
+        >
           <div className="uk-width-auto">
             <Image
               className="uk-border-circle"
               src="/art-hauntington-jzY0KRJopEI-unsplash.jpg"
               width="36"
               height="36"
-              alt="profile-pic"></Image>
+              alt="profile-pic"
+            ></Image>
           </div>
 
           <div className="uk-width-expand">
@@ -77,16 +87,19 @@ function SearchAcrossProjects({ title }) {
         className="uk-float-right"
         type="button"
         data-uk-close
-        onClick={onReset}></button>
+        onClick={onReset}
+      ></button>
       <form
         className="uk-search uk-search-navbar"
-        onSubmit={handleSubmit(onSubmit)}>
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <span data-uk-search-icon></span>
         <input
           {...register("search_text")}
           className="uk-search-input"
           type="search"
-          placeholder={title}></input>
+          placeholder={title}
+        ></input>
       </form>
       {isOpen ? (
         <div dat-uk-drop>

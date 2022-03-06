@@ -1,13 +1,16 @@
 import { useRouter } from "next/router";
 import moment from "moment";
 import { useEffect, useState } from "react";
+import supabase from "../context/auth-context";
 
 function ReadAllRows({ table, title }) {
   const router = useRouter();
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch(`/api/${table}`)
+    supabase
+    .from(table)
+    .select("*")
       .then((data) => data.json())
       .then((data) => setData(data));
   }, [table]);

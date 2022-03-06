@@ -9,9 +9,11 @@ function MyProjectGroups() {
   const user = supabase.auth.user();
 
   useEffect(() => {
-    fetch("/api/project_groups").then((data) =>
-      setData(data.filter((item) => item.user_id === user.id))
-    );
+    supabase
+      .from("project_groups")
+      .select("*")
+      .then((res) => res.json())
+      .then((data) => setData(data.filter((item) => item.user_id === user.id)));
   }, [user.id]);
 
   return (
@@ -28,7 +30,8 @@ function MyProjectGroups() {
                 className="uk-link-toggle"
                 href="#list-item"
                 onClick={() => router.push(`/project_groups/${item.id}`)}
-                data-uk-scroll>
+                data-uk-scroll
+              >
                 <div className="uk-text-bold uk-link-text">{item.name}</div>
                 <div className="uk-text-meta">
                   Created on {moment(item.created_at).format("MMMM Do YYYY")}

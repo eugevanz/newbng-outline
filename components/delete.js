@@ -1,14 +1,18 @@
 import { useState } from "react";
+import supabase from "../context/auth-context";
 
 function Delete({ item, table }) {
+  const user = supabase.auth.user();
   const [checked, setChecked] = useState(false);
 
-  async function onDelete() {
-    fetch(`/api/${table}`, {
-      method: "DELETE",
-      body: JSON.stingify({ id: item.id }),
-      headers: { "Content-Type": "application/json" }
-    });
+  function onDelete() {
+    user &&
+      supabase
+        .from(table)
+        .delete()
+        .eq("id", item.id)
+        .then((data) => console.log(data))
+        .catch((error) => console.error(error));
   }
 
   return (

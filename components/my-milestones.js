@@ -9,9 +9,11 @@ function MyMilestones() {
   const user = supabase.auth.user();
 
   useEffect(() => {
-    fetch("/api/milestones").then((data) =>
-      setData(data.filter((item) => item.user_id === user.id))
-    );
+    supabase
+      .from("milestones")
+      .select("*")
+      .then((res) => res.json())
+      .then((data) => setData(data.filter((item) => item.user_id === user.id)));
   }, [user.id]);
 
   return (

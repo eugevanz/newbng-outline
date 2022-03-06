@@ -2,17 +2,21 @@ import moment from "moment";
 import { useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
+import supabase from "../context/auth-context";
 
 function TaskDetails({ data, owner, projectName }) {
+  const user = supabase.auth.user();
   const { register, handleSubmit } = useForm();
   const [checked, setchecked] = useState(false);
 
-  async function onSubmit(formData) {
-    fetch("/api/tasks", {
-      method: "PUT",
-      body: JSON.stingify({ formData, id: data.id }),
-      headers: { "Content-Type": "application/json" }
-    });
+  function onSubmit(formData) {
+    user &&
+      supabase
+        .from("tasks")
+        .update(formData)
+        .eq("id", data.id)
+        .then((data) => console.log(data))
+        .catch((error) => console.error(error));
   }
 
   return (

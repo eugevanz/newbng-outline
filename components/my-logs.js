@@ -9,9 +9,11 @@ function MyLogs() {
   const user = supabase.auth.user();
 
   useEffect(() => {
-    fetch("/api/logs").then((data) =>
-      setData(data.filter((item) => item.user_id === user.id))
-    );
+    supabase
+      .from("logs")
+      .select("*")
+      .then((res) => res.json())
+      .then((data) => setData(data.filter((item) => item.user_id === user.id)));
   }, [user.id]);
 
   return (

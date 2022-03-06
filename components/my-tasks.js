@@ -9,9 +9,11 @@ function MyTasks() {
   const user = supabase.auth.user();
 
   useEffect(() => {
-    fetch("/api/tasks").then((data) =>
-      setData(data.filter((item) => item.user_id === user.id))
-    );
+    supabase
+    .from("tasks")
+    .select("*")
+      .then((res) => res.json())
+      .then((data) => setData(data.filter((item) => item.user_id === user.id)));
   }, [user.id]);
 
   return (

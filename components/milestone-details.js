@@ -9,13 +9,14 @@ function MilestoneDetails({ data, owner }) {
   const { register, handleSubmit } = useForm();
   const [checked, setchecked] = useState(false);
 
-  async function onSubmit(formData) {
+  function onSubmit(formData) {
     user &&
-      fetch("/api/milestones", {
-        method: "PUT",
-        body: JSON.stingify({ formData, id: data.id }),
-        headers: { "Content-Type": "application/json" }
-      });
+      supabase
+        .from("milestones")
+        .update(formData)
+        .eq("id", data.id)
+        .then((data) => console.log(data))
+        .catch((error) => console.error(error));
   }
 
   return (
