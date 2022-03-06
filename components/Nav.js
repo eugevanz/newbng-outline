@@ -10,8 +10,8 @@ function Nav() {
   return (
     <div className="uk-width-1-4@m">
       <div className="uk-child-width-1-1 uk-grid-small" data-uk-grid>
-        <div>
-        <div className="uk-grid-collapse" data-uk-grid>
+        <div className="uk-margin-large-bottom">
+          <div className="uk-grid-collapse" data-uk-grid>
             <div className="uk-width-auto">
               <Image
                 width="70"
@@ -21,9 +21,7 @@ function Nav() {
               ></Image>
             </div>
             <div className="uk-width-expand">
-              <span className="uk-text-large uk-text-bold">
-                NEWBNG
-              </span>
+              <span className="uk-text-large uk-text-bold">NEWBNG</span>
               &nbsp;
               <div className="uk-text-meta">Project Management</div>
             </div>
@@ -46,7 +44,8 @@ function Nav() {
                       width="40"
                       height="40"
                       src="/art-hauntington-jzY0KRJopEI-unsplash.jpg"
-                      alt="hauntington"></Image>
+                      alt="hauntington"
+                    ></Image>
                   </div>
                   <div className="uk-width-expand uk-text-left">
                     <h3 className="uk-card-title uk-text-small uk-text-bold uk-margin-remove-bottom">
@@ -64,7 +63,8 @@ function Nav() {
                     <li>
                       <a
                         href="#signout"
-                        onClick={() => supabase.auth.signOut()}>
+                        onClick={() => supabase.auth.signOut()}
+                      >
                         Sign out
                       </a>
                     </li>
@@ -82,7 +82,8 @@ function Nav() {
                 <a href="#dashboard" onClick={() => router.push("/")}>
                   <span
                     data-uk-icon="icon: calendar"
-                    className="uk-margin-small-right"></span>
+                    className="uk-margin-small-right"
+                  ></span>
                   Dashboard
                 </a>
               </li>
@@ -92,10 +93,12 @@ function Nav() {
                   href="#projects"
                   onClick={() =>
                     user ? router.push("/projects") : router.push("/")
-                  }>
+                  }
+                >
                   <span
                     data-uk-icon="icon: database"
-                    className="uk-margin-small-right"></span>
+                    className="uk-margin-small-right"
+                  ></span>
                   Projects
                 </a>
               </li>
@@ -105,10 +108,12 @@ function Nav() {
                   href="#milestones"
                   onClick={() =>
                     user ? router.push("/milestones") : router.push("/")
-                  }>
+                  }
+                >
                   <span
                     data-uk-icon="icon: check"
-                    className="uk-margin-small-right"></span>
+                    className="uk-margin-small-right"
+                  ></span>
                   Milestones
                 </a>
               </li>
@@ -118,10 +123,12 @@ function Nav() {
                   href="#tasks"
                   onClick={() =>
                     user ? router.push("/tasks") : router.push("/")
-                  }>
+                  }
+                >
                   <span
                     data-uk-icon="icon: list"
-                    className="uk-margin-small-right"></span>
+                    className="uk-margin-small-right"
+                  ></span>
                   Tasks
                 </a>
               </li>
@@ -131,10 +138,12 @@ function Nav() {
                   href="#logs"
                   onClick={() =>
                     user ? router.push("/logs") : router.push("/")
-                  }>
+                  }
+                >
                   <span
                     data-uk-icon="icon: clock"
-                    className="uk-margin-small-right"></span>
+                    className="uk-margin-small-right"
+                  ></span>
                   Timesheets
                 </a>
               </li>
@@ -144,10 +153,12 @@ function Nav() {
                   href="#documents"
                   onClick={() =>
                     user ? router.push("/documents") : router.push("/")
-                  }>
+                  }
+                >
                   <span
                     data-uk-icon="icon: folder"
-                    className="uk-margin-small-right"></span>
+                    className="uk-margin-small-right"
+                  ></span>
                   Documents
                 </a>
               </li>
@@ -157,10 +168,12 @@ function Nav() {
                   href="#users"
                   onClick={() =>
                     user ? router.push("/profiles") : router.push("/")
-                  }>
+                  }
+                >
                   <span
                     data-uk-icon="icon: users"
-                    className="uk-margin-small-right"></span>
+                    className="uk-margin-small-right"
+                  ></span>
                   Users
                 </a>
               </li>
