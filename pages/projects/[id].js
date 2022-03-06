@@ -14,9 +14,12 @@ function Project() {
 
   useEffect(
     () =>
-      fetch("/api/projects").then((data) =>
-        setData(data.find((item) => item.id === router.query.id))
-      ),
+      supabase
+        .from("projects")
+        .select("*")
+        .then((data) =>
+          setData(data.find((item) => item.id === router.query.id))
+        ),
     [router.query.id]
   );
 

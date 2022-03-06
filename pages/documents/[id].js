@@ -14,9 +14,12 @@ function Document() {
 
   useEffect(
     () =>
-      fetch("/api/documents").then((data) =>
-        setData(data.find((item) => item.id === router.query.id))
-      ),
+      supabase
+        .from("documents")
+        .select("*")
+        .then((data) =>
+          setData(data.find((item) => item.id === router.query.id))
+        ),
     [router.query.id]
   );
 

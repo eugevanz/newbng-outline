@@ -14,9 +14,12 @@ function Milestone() {
 
   useEffect(
     () =>
-      fetch("/api/milestones").then((data) =>
-        setData(data.find((item) => item.id === router.query.id))
-      ),
+      supabase
+        .from("milestones")
+        .select("*")
+        .then((data) =>
+          setData(data.find((item) => item.id === router.query.id))
+        ),
     [router.query.id]
   );
 

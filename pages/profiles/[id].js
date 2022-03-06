@@ -13,9 +13,12 @@ function Profile() {
 
   useEffect(
     () =>
-      fetch("/api/profiles").then((data) =>
-        setData(data.find((item) => item.id === router.query.id))
-      ),
+      supabase
+        .from("profiles")
+        .select("*")
+        .then((data) =>
+          setData(data.find((item) => item.id === router.query.id))
+        ),
     [router.query.id]
   );
 

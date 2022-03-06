@@ -14,9 +14,12 @@ function Log() {
 
   useEffect(
     () =>
-      fetch("/api/logs").then((data) =>
-        setData(data.find((item) => item.id === router.query.id))
-      ),
+      supabase
+        .from("logs")
+        .select("*")
+        .then((data) =>
+          setData(data.find((item) => item.id === router.query.id))
+        ),
     [router.query.id]
   );
 

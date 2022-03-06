@@ -13,9 +13,12 @@ function ProjectGroups() {
 
   useEffect(
     () =>
-      fetch("/api/project_groups").then((data) =>
-        setData(data.find((item) => item.id === router.query.id))
-      ),
+      supabase
+        .from("project_groups")
+        .select("*")
+        .then((data) =>
+          setData(data.find((item) => item.id === router.query.id))
+        ),
     [router.query.id]
   );
 
@@ -24,7 +27,8 @@ function ProjectGroups() {
       {user && (
         <div
           className="uk-child-width-1-2@m js-filter"
-          data-uk-grid="masonry: true; parallax: 60">
+          data-uk-grid="masonry: true; parallax: 60"
+        >
           <div>
             <ProjectGroupDetails data={data}></ProjectGroupDetails>
           </div>

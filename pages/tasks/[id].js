@@ -16,9 +16,12 @@ function Task() {
 
   useEffect(
     () =>
-      fetch("/api/tasks").then((data) =>
-        setData(data.find((item) => item.id === router.query.id))
-      ),
+      supabase
+        .from("tasks")
+        .select("*")
+        .then((data) =>
+          setData(data.find((item) => item.id === router.query.id))
+        ),
     [router.query.id]
   );
 
