@@ -27,7 +27,8 @@ function Auth() {
                 width="70"
                 height="56"
                 src="/NEWBGNG logo.001.png"
-                alt="company-logo"></Image>
+                alt="company-logo"
+              ></Image>
             </div>
             <div className="uk-width-expand">
               <span className="uk-text-large uk-text-bold">
@@ -49,17 +50,19 @@ function Auth() {
           <div className="uk-margin-top">
             <input
               {...register("email")}
-              className="uk-input"
+              className="uk-input uk-form-small uk-border-rounded"
               type="email"
               id="form-stacked-text"
-              placeholder="Your email"></input>
+              placeholder="Your email"
+            ></input>
           </div>
         </div>
         <div className="uk-card-footer uk-margin-large-bottom">
           <a
             href="#login"
-            className="uk-button uk-button-primary uk-width-1-1"
-            onClick={handleSubmit(onSubmit)}>
+            className="uk-button uk-button-primary uk-button-small uk-border-rounded uk-width-1-1"
+            onClick={handleSubmit(onSubmit)}
+          >
             Enter
           </a>
         </div>
