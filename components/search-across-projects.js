@@ -36,7 +36,7 @@ function SearchAcrossProjects({ title }) {
           .select("*")
           .then((data) =>
             setfiltered(
-              data.filter((item) =>
+              data.data.filter((item) =>
                 item.name.toLowerCase().includes(searchText)
               )
             )

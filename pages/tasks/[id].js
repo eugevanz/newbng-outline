@@ -20,7 +20,7 @@ function Task() {
         .from("tasks")
         .select("*")
         .then((data) =>
-          setData(data.find((item) => item.id === router.query.id))
+          setData(data.data.find((item) => item.id === router.query.id))
         ),
     [router.query.id]
   );
@@ -36,7 +36,9 @@ function Task() {
     () =>
       data &&
       fetch("/api/projects").then((data) =>
-        setProjectName(data.find((item) => item.id === data.project_id).name)
+        setProjectName(
+          data.data.find((item) => item.id === data.project_id).name
+        )
       ),
     [data]
   );

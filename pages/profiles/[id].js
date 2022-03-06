@@ -17,7 +17,7 @@ function Profile() {
         .from("profiles")
         .select("*")
         .then((data) =>
-          setData(data.find((item) => item.id === router.query.id))
+          setData(data.data.find((item) => item.id === router.query.id))
         ),
     [router.query.id]
   );
