@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import MilestoneDetails from "./milestone-details";
+import MilestoneDetails from "../../components/milestone-details";
 import supabase from "../../context/auth-context";
 import Delete from "../../components/delete";
 

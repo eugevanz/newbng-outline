@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
-import MyMilestones from "./my-milestones";
+import MyMilestones from "../../components/my-milestones";
 
 function Milestones() {
   const router = useRouter();

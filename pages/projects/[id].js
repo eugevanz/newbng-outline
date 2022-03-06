@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import ProjectDetails from "./project-details";
+import ProjectDetails from "../../components/project-details";
 import supabase from "../../context/auth-context";
 import Delete from "../../components/delete";
 

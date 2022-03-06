@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import TaskDetails from "./task-details";
-import AddAttachment from "./add-attachment";
+import TaskDetails from "../../components/task-details";
+import AddAttachment from "../../components/add-attachment";
 import supabase from "../../context/auth-context";
 import Delete from "../../components/delete";
 
@@ -43,12 +43,14 @@ function Task() {
       {user ? (
         <div
           className="uk-child-width-1-2@m"
-          data-uk-grid="masonry: true; parallax: 60">
+          data-uk-grid="masonry: true; parallax: 60"
+        >
           <div>
             <TaskDetails
               data={data}
               owner={owner}
-              projectName={projectName}></TaskDetails>
+              projectName={projectName}
+            ></TaskDetails>
           </div>
 
           <div>

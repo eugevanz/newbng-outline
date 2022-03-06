@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import LogDetails from "./log-details";
+import LogDetails from "../../components/log-details";
 import supabase from "../../context/auth-context";
 import Delete from "../../components/delete";
 
