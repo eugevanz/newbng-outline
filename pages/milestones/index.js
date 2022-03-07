@@ -7,10 +7,7 @@ import MyMilestones from "../../components/my-milestones";
 
 export async function getStaticProps() {
   // Get external data from the file system, API, DB, etc.
-  const milestones = await supabase
-    .from("milestones")
-    .select("*")
-    .then((data) => data.data);
+  const { data: milestones } = await supabase.from("milestones").select("*");
   // The value of the `props` key will be
   //  passed to the component
   return {

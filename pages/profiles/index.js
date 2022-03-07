@@ -6,10 +6,7 @@ import ReadAllRows from "../../components/read-all-rows";
 
 export async function getStaticProps() {
   // Get external data from the file system, API, DB, etc.
-  const profiles = await supabase
-    .from("profiles")
-    .select("*")
-    .then((data) => data.data);
+  const { data: profiles } = await supabase.from("profiles").select("*");
   // The value of the `props` key will be
   //  passed to the component
   return {

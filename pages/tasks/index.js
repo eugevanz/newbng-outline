@@ -7,10 +7,7 @@ import MyTasks from "../../components/my-tasks";
 
 export async function getStaticProps() {
   // Get external data from the file system, API, DB, etc.
-  const tasks = await supabase
-    .from("tasks")
-    .select("*")
-    .then((data) => data.data);
+  const { data: tasks } = await supabase.from("tasks").select("*");
   // The value of the `props` key will be
   //  passed to the component
   return {

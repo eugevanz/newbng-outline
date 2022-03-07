@@ -7,10 +7,7 @@ import MyDocuments from "../../components/my-documents";
 
 export async function getStaticProps() {
   // Get external data from the file system, API, DB, etc.
-  const documents = await supabase
-    .from("documents")
-    .select("*")
-    .then((data) => data.data);
+  const { data: documents } = await supabase.from("documents").select("*");
   // The value of the `props` key will be
   //  passed to the component
   return {

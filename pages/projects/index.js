@@ -7,10 +7,7 @@ import MyProjects from "../../components/my-projects";
 
 export async function getStaticProps() {
   // Get external data from the file system, API, DB, etc.
-  const projects = await supabase
-    .from("projects")
-    .select("*")
-    .then((data) => data.data);
+  const { data: projects } = await supabase.from("projects").select("*");
   // The value of the `props` key will be
   //  passed to the component
   return {

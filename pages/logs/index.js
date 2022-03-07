@@ -7,10 +7,7 @@ import MyLogs from "../../components/my-logs";
 
 export async function getStaticProps() {
   // Get external data from the file system, API, DB, etc.
-  const logs = await supabase
-    .from("logs")
-    .select("*")
-    .then((data) => data.data);
+  const { data: logs } = await supabase.from("logs").select("*");
   // The value of the `props` key will be
   //  passed to the component
   return {
