@@ -43,14 +43,20 @@ function Projects() {
           <SearchAcrossProjects title="projects"></SearchAcrossProjects>
         </div>
 
-        {projects && (
-          <div>
+        <div>
+          {projects ? (
             <ReadAllRows data={projects} title="All Projects"></ReadAllRows>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
 
         <div>
-          <MyProjects data={myProjects}></MyProjects>
+          {myProjects ? (
+            <MyProjects data={myProjects}></MyProjects>
+          ) : (
+            <div data-uk-spinner></div>
+          )}
         </div>
       </div>
     </div>

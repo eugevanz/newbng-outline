@@ -36,11 +36,13 @@ function Profiles() {
           <SearchAcrossProjects title="profiles"></SearchAcrossProjects>
         </div>
 
-        {profiles && (
-          <div>
+        <div>
+          {profiles ? (
             <ReadAllRows data={profiles} title="All Profiles"></ReadAllRows>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
       </div>
     </div>
   );

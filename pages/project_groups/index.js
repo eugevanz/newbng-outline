@@ -45,17 +45,23 @@ function ProjectGroups() {
           <SearchAcrossProjects title="project_groups"></SearchAcrossProjects>
         </div>
 
-        {project_groups && (
-          <div>
+        <div>
+          {project_groups ? (
             <ReadAllRows
               data={project_groups}
               title="All Project Groups"
             ></ReadAllRows>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
 
         <div>
-          <MyProjectGroups data={myProject_groups}></MyProjectGroups>
+          {myProject_groups ? (
+            <MyProjectGroups data={myProject_groups}></MyProjectGroups>
+          ) : (
+            <div data-uk-spinner></div>
+          )}
         </div>
       </div>
     </div>

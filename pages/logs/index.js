@@ -43,14 +43,20 @@ function Logs() {
           <SearchAcrossProjects title="logs"></SearchAcrossProjects>
         </div>
 
-        {logs && (
-          <div>
+        <div>
+          {logs ? (
             <ReadAllRows data={logs} title="All Logs"></ReadAllRows>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
 
         <div>
-          <MyLogs data={myLogs}></MyLogs>
+          {myLogs ? (
+            <MyLogs data={myLogs}></MyLogs>
+          ) : (
+            <div data-uk-spinner></div>
+          )}
         </div>
       </div>
     </div>

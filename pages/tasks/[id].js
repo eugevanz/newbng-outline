@@ -53,25 +53,29 @@ function Task() {
         className="uk-child-width-1-2@m"
         data-uk-grid="masonry: true; parallax: 60"
       >
-        {task & owner & project && (
-          <div>
+        <div>
+          {task & owner & project ? (
             <TaskDetails
               data={task}
               owner={owner}
               projectName={project.name}
             ></TaskDetails>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
 
         <div>
           <AddAttachment></AddAttachment>
         </div>
 
-        {task && (
-          <div>
+        <div>
+          {task ? (
             <Delete item={task} table="tasks"></Delete>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
       </div>
     </div>
   );

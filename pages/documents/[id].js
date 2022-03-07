@@ -52,7 +52,7 @@ function Document() {
         className="uk-child-width-1-2@m js-filter"
         data-uk-grid="masonry: true; parallax: 60"
       >
-        {document & owner & task && (
+        {document & owner & task ? (
           <div>
             <DocumentDetails
               data={document}
@@ -60,13 +60,13 @@ function Document() {
               task={task}
             ></DocumentDetails>
           </div>
-        )}
+        ):<div data-uk-spinner></div>}
 
-        {document && (
           <div>
+        {document ?
             <Delete item={document} table="documents"></Delete>
+            :<div data-uk-spinner></div>}
           </div>
-        )}
       </div>
     </div>
   );

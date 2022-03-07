@@ -42,23 +42,29 @@ function ProjectGroups() {
         className="uk-child-width-1-2@m js-filter"
         data-uk-grid="masonry: true; parallax: 60"
       >
-        {project_group && (
-          <div>
+        <div>
+          {project_group ? (
             <ProjectGroupDetails data={project_group}></ProjectGroupDetails>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
 
-        {projects && (
-          <div>
+        <div>
+          {projects ? (
             <ReadAllRows data={projects} title="User's projects"></ReadAllRows>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
 
-        {project_group && (
-          <div>
+        <div>
+          {project_group ? (
             <Delete item={project_group} table="project_groups"></Delete>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
       </div>
     </div>
   );

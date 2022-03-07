@@ -44,14 +44,20 @@ function Documents() {
           <SearchAcrossProjects title="documents"></SearchAcrossProjects>
         </div>
 
-        {documents && (
-          <div>
+        <div>
+          {documents ? (
             <ReadAllRows data={documents} title="All documents"></ReadAllRows>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
 
         <div>
-          <MyDocuments data={myDocuments}></MyDocuments>
+          {myDocuments ? (
+            <MyDocuments data={myDocuments}></MyDocuments>
+          ) : (
+            <div data-uk-spinner></div>
+          )}
         </div>
       </div>
     </div>

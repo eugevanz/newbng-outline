@@ -48,17 +48,21 @@ function Log() {
         className="uk-child-width-1-2@m js-filter"
         data-uk-grid="masonry: true; parallax: 60"
       >
-        {log & owner & task && (
-          <div>
+        <div>
+          {log & owner & task ? (
             <LogDetails data={log} owner={owner} task={task}></LogDetails>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
 
-        {log && (
-          <div>
+        <div>
+          {log ? (
             <Delete item={log} table="logs"></Delete>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -68,53 +68,67 @@ function Profile() {
         className="uk-child-width-1-2@m js-filter"
         data-uk-grid="masonry: true; parallax: 60"
       >
-        {profile && (
-          <div>
+        <div>
+          {profile ? (
             <ProfileDetails data={profile}></ProfileDetails>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
 
-        {documents && (
-          <div>
+        <div>
+          {documents ? (
             <ReadAllRows
               data={documents}
               title="User's documents"
             ></ReadAllRows>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
 
-        {logs && (
-          <div>
+        <div>
+          {logs ? (
             <ReadAllRows data={logs} title="User's logs"></ReadAllRows>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
 
-        {milestones && (
-          <div>
+        <div>
+          {milestones ? (
             <ReadAllRows
               data={milestones}
               title="User's milestones"
             ></ReadAllRows>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
 
-        {projects && (
-          <div>
+        <div>
+          {projects ? (
             <ReadAllRows data={projects} title="User's projects"></ReadAllRows>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
 
-        {tasks && (
-          <div>
+        <div>
+          {tasks ? (
             <ReadAllRows data={tasks} title="User's tasks"></ReadAllRows>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
 
-        {profile && (
-          <div>
+        <div>
+          {profile ? (
             <Delete item={profile} table="profiles"></Delete>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
       </div>
     </div>
   );

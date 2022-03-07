@@ -50,23 +50,29 @@ function Project() {
         className="uk-child-width-1-2@m js-filter"
         data-uk-grid="masonry: true; parallax: 60"
       >
-        {project & owner && (
-          <div>
+        <div>
+          {project & owner ? (
             <ProjectDetails data={project} owner={owner}></ProjectDetails>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
 
-        {tasks && (
-          <div>
+        <div>
+          {tasks ? (
             <ReadAllRows data={tasks} title="Project tasks"></ReadAllRows>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
 
-        {project && (
-          <div>
+        <div>
+          {project ? (
             <Delete item={project} table="projects"></Delete>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -44,14 +44,20 @@ function Tasks() {
           <SearchAcrossProjects title="tasks"></SearchAcrossProjects>
         </div>
 
-        {tasks && (
-          <div>
+        <div>
+          {tasks ? (
             <ReadAllRows data={tasks} title="All Tasks"></ReadAllRows>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
 
         <div>
-          <MyTasks data={myTasks}></MyTasks>
+          {myTasks ? (
+            <MyTasks data={myTasks}></MyTasks>
+          ) : (
+            <div data-uk-spinner></div>
+          )}
         </div>
       </div>
     </div>

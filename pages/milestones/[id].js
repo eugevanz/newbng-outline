@@ -52,21 +52,25 @@ function Milestone() {
         className="uk-child-width-1-2@m js-filter"
         data-uk-grid="masonry: true; parallax: 60"
       >
-        {milestone & owner & project && (
-          <div>
+        <div>
+          {milestone & owner & project ? (
             <MilestoneDetails
               data={milestone}
               owner={owner}
               project={project}
             ></MilestoneDetails>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
 
-        {milestone && (
-          <div>
+        <div>
+          {milestone ? (
             <Delete item={milestone} table="milestones"></Delete>
-          </div>
-        )}
+          ) : (
+            <div data-uk-spinner></div>
+          )}
+        </div>
       </div>
     </div>
   );
