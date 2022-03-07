@@ -23,24 +23,25 @@ function MyProjects({ projects }) {
       </div>
 
       <ul className="uk-list uk-list-large uk-list-divider uk-margin">
-        {projects.map((item) => (
-          <li key={item.id}>
-            <a
-              className="uk-link-toggle"
-              href="#list-item"
-              onClick={() => router.push(`/projects/${item.id}`)}
-              data-uk-scroll
-            >
-              <div className="uk-text-bold uk-link-text">{item.name}</div>
-              <div className="uk-text-meta">
-                Created on {moment(item.created_at).format("MMMM DD YYYY")}
-              </div>
-              <div className="uk-text-default uk-text-truncate">
-                {item.description}
-              </div>
-            </a>
-          </li>
-        ))}
+        {projects &&
+          projects.map((item) => (
+            <li key={item.id}>
+              <a
+                className="uk-link-toggle"
+                href="#list-item"
+                onClick={() => router.push(`/projects/${item.id}`)}
+                data-uk-scroll
+              >
+                <div className="uk-text-bold uk-link-text">{item.name}</div>
+                <div className="uk-text-meta">
+                  Created on {moment(item.created_at).format("MMMM DD YYYY")}
+                </div>
+                <div className="uk-text-default uk-text-truncate">
+                  {item.description}
+                </div>
+              </a>
+            </li>
+          ))}
       </ul>
     </div>
   );

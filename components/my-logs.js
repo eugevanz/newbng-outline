@@ -23,23 +23,24 @@ function MyLogs({ logs }) {
       </div>
 
       <ul className="uk-list uk-list-large uk-list-divider uk-margin">
-        {logs.map((item) => (
-          <li key={item.id}>
-            <a
-              className="uk-link-toggle"
-              href="#list-item"
-              onClick={() => router.push(`/logs/${item.id}`)}
-              data-uk-scroll
-            >
-              <div className="uk-text-bold uk-link-text">
-                Started on {moment(item.start_date).format("MMMM DD YYYY")}
-              </div>
-              <div className="uk-text-meta">
-                Ended {moment(item.start_date).format("MMMM DD YYYY")}
-              </div>
-            </a>
-          </li>
-        ))}
+        {logs &&
+          logs.map((item) => (
+            <li key={item.id}>
+              <a
+                className="uk-link-toggle"
+                href="#list-item"
+                onClick={() => router.push(`/logs/${item.id}`)}
+                data-uk-scroll
+              >
+                <div className="uk-text-bold uk-link-text">
+                  Started on {moment(item.start_date).format("MMMM DD YYYY")}
+                </div>
+                <div className="uk-text-meta">
+                  Ended {moment(item.start_date).format("MMMM DD YYYY")}
+                </div>
+              </a>
+            </li>
+          ))}
       </ul>
     </div>
   );

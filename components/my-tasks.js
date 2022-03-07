@@ -23,23 +23,24 @@ function MyTasks({ tasks }) {
       </div>
 
       <ul className="uk-list uk-list-large uk-list-divider uk-margin">
-        {tasks.map((item) => (
-          <li key={item.id}>
-            <a
-              className="uk-link-toggle"
-              href="#list-item"
-              onClick={() => router.push(`/tasks/${item.id}`)}
-              data-uk-scroll
-            >
-              <div className="uk-text-bold uk-link-text">
-                {item.name.toUpperCase()}
-              </div>
-              <div className="uk-text-meta">
-                Created on {moment(item.created_at).format("MMMM DD YYYY")}
-              </div>
-            </a>
-          </li>
-        ))}
+        {tasks &&
+          tasks.map((item) => (
+            <li key={item.id}>
+              <a
+                className="uk-link-toggle"
+                href="#list-item"
+                onClick={() => router.push(`/tasks/${item.id}`)}
+                data-uk-scroll
+              >
+                <div className="uk-text-bold uk-link-text">
+                  {item.name.toUpperCase()}
+                </div>
+                <div className="uk-text-meta">
+                  Created on {moment(item.created_at).format("MMMM DD YYYY")}
+                </div>
+              </a>
+            </li>
+          ))}
       </ul>
     </div>
   );

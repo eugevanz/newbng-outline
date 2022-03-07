@@ -23,21 +23,22 @@ function MyDocuments({ documents }) {
       </div>
 
       <ul className="uk-list uk-list-large uk-list-divider uk-margin">
-        {documents.map((item) => (
-          <li key={item.id}>
-            <a
-              className="uk-link-toggle"
-              href="#list-item"
-              onClick={() => router.push(`/documents/${item.id}`)}
-              data-uk-scroll
-            >
-              <div className="uk-text-bold uk-link-text">{item.name}</div>
-              <div className="uk-text-meta">
-                Created on {moment(item.created_at).format("MMMM DD YYYY")}
-              </div>
-            </a>
-          </li>
-        ))}
+        {documents &&
+          documents.map((item) => (
+            <li key={item.id}>
+              <a
+                className="uk-link-toggle"
+                href="#list-item"
+                onClick={() => router.push(`/documents/${item.id}`)}
+                data-uk-scroll
+              >
+                <div className="uk-text-bold uk-link-text">{item.name}</div>
+                <div className="uk-text-meta">
+                  Created on {moment(item.created_at).format("MMMM DD YYYY")}
+                </div>
+              </a>
+            </li>
+          ))}
       </ul>
     </div>
   );
