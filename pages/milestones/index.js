@@ -32,9 +32,9 @@ function Milestones({ milestones }) {
           <SearchAcrossProjects title="milestones"></SearchAcrossProjects>
         </div>
 
-        <div>
+        {milestones&&<div>
           <ReadAllRows data={milestones} title="All Milestones"></ReadAllRows>
-        </div>
+        </div>}
 
         <div>
           <MyMilestones></MyMilestones>

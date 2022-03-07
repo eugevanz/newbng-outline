@@ -43,13 +43,13 @@ function Log({ log, owner, task }) {
         className="uk-child-width-1-2@m js-filter"
         data-uk-grid="masonry: true; parallax: 60"
       >
-        <div>
+        {(log&owner&task)&&<div>
           <LogDetails data={log} owner={owner} task={task}></LogDetails>
-        </div>
+        </div>}
 
-        <div>
+        {log&&<div>
           <Delete item={log} table="logs"></Delete>
-        </div>
+        </div>}
       </div>
     </div>
   );

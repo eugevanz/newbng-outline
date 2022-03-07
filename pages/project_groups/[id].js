@@ -41,17 +41,23 @@ function ProjectGroups({ project_group, projects }) {
         className="uk-child-width-1-2@m js-filter"
         data-uk-grid="masonry: true; parallax: 60"
       >
-        <div>
-          <ProjectGroupDetails data={project_group}></ProjectGroupDetails>
-        </div>
+        {project_group && (
+          <div>
+            <ProjectGroupDetails data={project_group}></ProjectGroupDetails>
+          </div>
+        )}
 
-        <div>
-          <ReadAllRows data={projects} title="User's projects"></ReadAllRows>
-        </div>
+        {projects && (
+          <div>
+            <ReadAllRows data={projects} title="User's projects"></ReadAllRows>
+          </div>
+        )}
 
-        <div>
-          <Delete item={project_group} table="project_groups"></Delete>
-        </div>
+        {project_group && (
+          <div>
+            <Delete item={project_group} table="project_groups"></Delete>
+          </div>
+        )}
       </div>
     </div>
   );

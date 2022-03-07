@@ -34,12 +34,12 @@ function ProjectGroups({ project_groups }) {
           <SearchAcrossProjects title="project_groups"></SearchAcrossProjects>
         </div>
 
-        <div>
+        {project_groups && <div>
           <ReadAllRows
             data={project_groups}
             title="All Project Groups"
           ></ReadAllRows>
-        </div>
+        </div>}
 
         <div>
           <MyProjectGroups></MyProjectGroups>

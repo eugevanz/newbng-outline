@@ -48,17 +48,23 @@ function Project({ project, owner, tasks }) {
         className="uk-child-width-1-2@m js-filter"
         data-uk-grid="masonry: true; parallax: 60"
       >
-        <div>
-          <ProjectDetails data={project} owner={owner}></ProjectDetails>
-        </div>
+        {project & owner && (
+          <div>
+            <ProjectDetails data={project} owner={owner}></ProjectDetails>
+          </div>
+        )}
 
-        <div>
-          <ReadAllRows data={tasks} title="Project tasks"></ReadAllRows>
-        </div>
+        {tasks && (
+          <div>
+            <ReadAllRows data={tasks} title="Project tasks"></ReadAllRows>
+          </div>
+        )}
 
-        <div>
-          <Delete item={project} table="projects"></Delete>
-        </div>
+        {project && (
+          <div>
+            <Delete item={project} table="projects"></Delete>
+          </div>
+        )}
       </div>
     </div>
   );

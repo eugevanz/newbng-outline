@@ -31,9 +31,9 @@ function Projects({ projects }) {
           <SearchAcrossProjects title="projects"></SearchAcrossProjects>
         </div>
 
-        <div>
+        {projects && <div>
           <ReadAllRows data={projects} title="All Projects"></ReadAllRows>
-        </div>
+        </div>}
 
         <div>
           <MyProjects></MyProjects>

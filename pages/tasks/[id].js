@@ -47,21 +47,21 @@ function Task({ task, owner, project }) {
         className="uk-child-width-1-2@m"
         data-uk-grid="masonry: true; parallax: 60"
       >
-        <div>
+        {(task & owner & project) && <div>
           <TaskDetails
             data={task}
             owner={owner}
             projectName={project.name}
           ></TaskDetails>
-        </div>
+        </div>}
 
         <div>
           <AddAttachment></AddAttachment>
         </div>
 
-        <div>
+        {task && <div>
           <Delete item={task} table="tasks"></Delete>
-        </div>
+        </div>}
       </div>
     </div>
   );

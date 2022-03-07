@@ -45,17 +45,21 @@ function Milestone({ milestone, owner, project }) {
         className="uk-child-width-1-2@m js-filter"
         data-uk-grid="masonry: true; parallax: 60"
       >
-        <div>
-          <MilestoneDetails
-            data={milestone}
-            owner={owner}
-            project={project}
-          ></MilestoneDetails>
-        </div>
+        {milestone & owner & project && (
+          <div>
+            <MilestoneDetails
+              data={milestone}
+              owner={owner}
+              project={project}
+            ></MilestoneDetails>
+          </div>
+        )}
 
-        <div>
-          <Delete item={milestone} table="milestones"></Delete>
-        </div>
+        {milestone && (
+          <div>
+            <Delete item={milestone} table="milestones"></Delete>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -59,36 +59,53 @@ function Profile({ profile, documents, logs, milestones, projects, tasks }) {
         className="uk-child-width-1-2@m js-filter"
         data-uk-grid="masonry: true; parallax: 60"
       >
-        <div>
-          <ProfileDetails data={profile}></ProfileDetails>
-        </div>
+        {profile && (
+          <div>
+            <ProfileDetails data={profile}></ProfileDetails>
+          </div>
+        )}
 
-        <div>
-          <ReadAllRows data={documents} title="User's documents"></ReadAllRows>
-        </div>
+        {documents && (
+          <div>
+            <ReadAllRows
+              data={documents}
+              title="User's documents"
+            ></ReadAllRows>
+          </div>
+        )}
 
-        <div>
-          <ReadAllRows data={logs} title="User's logs"></ReadAllRows>
-        </div>
+        {logs && (
+          <div>
+            <ReadAllRows data={logs} title="User's logs"></ReadAllRows>
+          </div>
+        )}
 
-        <div>
-          <ReadAllRows
-            data={milestones}
-            title="User's milestones"
-          ></ReadAllRows>
-        </div>
+        {milestones && (
+          <div>
+            <ReadAllRows
+              data={milestones}
+              title="User's milestones"
+            ></ReadAllRows>
+          </div>
+        )}
 
-        <div>
-          <ReadAllRows data={projects} title="User's projects"></ReadAllRows>
-        </div>
+        {projects && (
+          <div>
+            <ReadAllRows data={projects} title="User's projects"></ReadAllRows>
+          </div>
+        )}
 
-        <div>
-          <ReadAllRows data={tasks} title="User's tasks"></ReadAllRows>
-        </div>
+        {tasks && (
+          <div>
+            <ReadAllRows data={tasks} title="User's tasks"></ReadAllRows>
+          </div>
+        )}
 
-        <div>
-          <Delete item={profile} table="profiles"></Delete>
-        </div>
+        {profile && (
+          <div>
+            <Delete item={profile} table="profiles"></Delete>
+          </div>
+        )}
       </div>
     </div>
   );

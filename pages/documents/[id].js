@@ -45,17 +45,21 @@ function Document({ document, owner, task }) {
         className="uk-child-width-1-2@m js-filter"
         data-uk-grid="masonry: true; parallax: 60"
       >
-        <div>
-          <DocumentDetails
-            data={document}
-            owner={owner}
-            task={task}
-          ></DocumentDetails>
-        </div>
+        {document & owner & task && (
+          <div>
+            <DocumentDetails
+              data={document}
+              owner={owner}
+              task={task}
+            ></DocumentDetails>
+          </div>
+        )}
 
-        <div>
-          <Delete item={document} table="documents"></Delete>
-        </div>
+        {document && (
+          <div>
+            <Delete item={document} table="documents"></Delete>
+          </div>
+        )}
       </div>
     </div>
   );

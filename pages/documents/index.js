@@ -32,9 +32,9 @@ function Documents({ documents }) {
           <SearchAcrossProjects title="documents"></SearchAcrossProjects>
         </div>
 
-        <div>
+        {documents&&<div>
           <ReadAllRows data={documents} title="All documents"></ReadAllRows>
-        </div>
+        </div>}
 
         <div>
           <MyDocuments></MyDocuments>

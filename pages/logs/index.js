@@ -32,9 +32,9 @@ function Logs({ logs }) {
           <SearchAcrossProjects title="logs"></SearchAcrossProjects>
         </div>
 
-        <div>
+        {logs&&<div>
           <ReadAllRows data={logs} title="All Logs"></ReadAllRows>
-        </div>
+        </div>}
 
         <div>
           <MyLogs></MyLogs>
