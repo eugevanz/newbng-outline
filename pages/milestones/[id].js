@@ -1,38 +1,51 @@
 import MilestoneDetails from "../../components/milestone-details";
 import supabase from "../../context/auth-context";
 import Delete from "../../components/delete";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 
-export async function getServerSideProps(context) {
-  // Get external data from the file system, API, DB, etc.
-  const { data: milestone } = await supabase
-    .from("milestones")
-    .select("*")
-    .eq("id", context.query.id)
-    .single();
+function Milestone() {
+  const router = useRouter();
+  const [milestone, setMilestone] = useState(null);
+  const [owner, setOwner] = useState(null);
+  const [project, setProject] = useState(null);
 
-  const { data: owner } =
-    milestone &&
-    (await supabase
-      .from("profiles")
+  async function getPageData() {
+    // Get external data from the file system, API, DB, etc.
+    const { data: milestone } = await supabase
+      .from("milestones")
       .select("*")
-      .eq("id", milestone.user_id)
-      .single());
+      .eq("id", router.query.id)
+      .single();
+    setMilestone(milestone);
 
-  const { data: project } =
-    milestone &&
-    (await supabase
-      .from("projects")
-      .select("*")
-      .eq("id", milestone.project_id)
-      .single());
-  // The value of the `props` key will be
-  //  passed to the component
-  return {
-    props: { milestone, owner, project }
-  };
-}
+    const { data: owner } =
+      milestone &&
+      (await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", milestone.user_id)
+        .single());
+    setOwner(owner);
 
-function Milestone({ milestone, owner, project }) {
+    const { data: project } =
+      milestone &&
+      (await supabase
+        .from("projects")
+        .select("*")
+        .eq("id", milestone.project_id)
+        .single());
+    setProject(project);
+  }
+
+  useEffect(() => {
+    try {
+      getPageData();
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+
   return (
     <div className="uk-width-expand@m">
       <div

@@ -1,31 +1,38 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import MyDocuments from "../../components/my-documents";
 
-const user = supabase.auth.user();
-
-export async function getServerSideProps() {
-  // Get external data from the file system, API, DB, etc.
-  const { data: documents } = await supabase.from("documents").select("*");
-
-  const { data: myDocuments } = await supabase
-    .from("documents")
-    .select("*")
-    .eq("user_id", user.id);
-  // The value of the `props` key will be
-  //  passed to the component
-  return {
-    props: { documents, myDocuments }
-  };
-}
-
-function Documents({ documents, myDocuments }) {
+function Documents() {
   const router = useRouter();
+  const user = supabase.auth.user();
+  const [documents, setDocuments] = useState(null);
+  const [myDocuments, setMyDocuments] = useState(null);
+
+  async function getPageData() {
+    // Get external data from the file system, API, DB, etc.
+    const { data: documents } = await supabase.from("documents").select("*");
+
+    const { data: myDocuments } = await supabase
+      .from("documents")
+      .select("*")
+      .eq("user_id", user.id);
+
+    setDocuments(documents);
+    setMyDocuments(myDocuments);
+  }
 
   useEffect(() => !user && router.push("/"));
+
+  useEffect(() => {
+    try {
+      getPageData();
+    } catch (err) {
+      alert(err.message);
+    }
+  });
 
   return (
     <div className="uk-width-expand@m">
@@ -37,9 +44,11 @@ function Documents({ documents, myDocuments }) {
           <SearchAcrossProjects title="documents"></SearchAcrossProjects>
         </div>
 
-        {documents&&<div>
-          <ReadAllRows data={documents} title="All documents"></ReadAllRows>
-        </div>}
+        {documents && (
+          <div>
+            <ReadAllRows data={documents} title="All documents"></ReadAllRows>
+          </div>
+        )}
 
         <div>
           <MyDocuments data={myDocuments}></MyDocuments>

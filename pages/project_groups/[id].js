@@ -2,29 +2,40 @@ import ProjectGroupDetails from "../../components/project-group-details";
 import supabase from "../../context/auth-context";
 import Delete from "../../components/delete";
 import ReadAllRows from "../../components/read-all-rows";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
-export async function getServerSideProps(context) {
-  // Get external data from the file system, API, DB, etc.
-  const { data: project_group } = await supabase
-    .from("project_groups")
-    .select("*")
-    .eq("id", context.query.id)
-    .single();
+function ProjectGroups() {
+  const router = useRouter();
+  const [project_group, setProject_group] = useState(null);
+  const [projects, setProjects] = useState(null);
 
-  const { data: projects } =
-    project_group &&
-    (await supabase
-      .from("projects")
+  async function getPageData() {
+    // Get external data from the file system, API, DB, etc.
+    const { data: project_group } = await supabase
+      .from("project_groups")
       .select("*")
-      .eq("project_group_id", project_group.id));
-  // The value of the `props` key will be
-  //  passed to the component
-  return {
-    props: { project_group, projects }
-  };
-}
+      .eq("id", router.query.id)
+      .single();
+    setProject_group(project_group);
 
-function ProjectGroups({ project_group, projects }) {
+    const { data: projects } =
+      project_group &&
+      (await supabase
+        .from("projects")
+        .select("*")
+        .eq("project_group_id", project_group.id));
+    setProjects(projects);
+  }
+
+  useEffect(() => {
+    try {
+      getPageData();
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+
   return (
     <div className="uk-width-expand@m">
       <div

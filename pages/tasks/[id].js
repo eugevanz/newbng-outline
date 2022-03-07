@@ -2,38 +2,51 @@ import TaskDetails from "../../components/task-details";
 import AddAttachment from "../../components/add-attachment";
 import supabase from "../../context/auth-context";
 import Delete from "../../components/delete";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
-export async function getServerSideProps(context) {
-  // Get external data from the file system, API, DB, etc.
-  const { data: task } = await supabase
-    .from("tasks")
-    .select("*")
-    .eq("id", context.query.id)
-    .single();
+function Task() {
+  const router = useRouter();
+  const [task, setTask] = useState(null);
+  const [owner, setOwner] = useState(null);
+  const [project, setProject] = useState(null);
 
-  const { data: owner } =
-    task &&
-    (await supabase
-      .from("profiles")
+  async function getPageData(context) {
+    // Get external data from the file system, API, DB, etc.
+    const { data: task } = await supabase
+      .from("tasks")
       .select("*")
-      .eq("id", task.user_id)
-      .single());
+      .eq("id", router.query.id)
+      .single();
+    setTask(task);
 
-  const { data: project } =
-    task &&
-    (await supabase
-      .from("projects")
-      .select("*")
-      .eq("id", task.project_id)
-      .single());
-  // The value of the `props` key will be
-  //  passed to the component
-  return {
-    props: { task, owner, project }
-  };
-}
+    const { data: owner } =
+      task &&
+      (await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", task.user_id)
+        .single());
+    setOwner(owner);
 
-function Task({ task, owner, project }) {
+    const { data: project } =
+      task &&
+      (await supabase
+        .from("projects")
+        .select("*")
+        .eq("id", task.project_id)
+        .single());
+    setProject(project);
+  }
+
+  useEffect(() => {
+    try {
+      getPageData();
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+
   return (
     <div className="uk-width-expand@m uk-margin">
       <div

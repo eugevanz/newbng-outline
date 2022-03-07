@@ -1,31 +1,37 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import MyLogs from "../../components/my-logs";
 
-const user = supabase.auth.user();
-
-export async function getServerSideProps() {
-  // Get external data from the file system, API, DB, etc.
-  const { data: logs } = await supabase.from("logs").select("*");
-
-  const { data: myLogs } = await supabase
-    .from("logs")
-    .select("*")
-    .eq("user_id", user.id);
-  // The value of the `props` key will be
-  //  passed to the component
-  return {
-    props: { logs, myLogs }
-  };
-}
-
-function Logs({ logs, myLogs }) {
+function Logs() {
   const router = useRouter();
+  const user = supabase.auth.user();
+  const [logs, setLogs] = useState(null);
+  const [myLogs, setMyLogs] = useState(null);
+
+  async function getPageData() {
+    // Get external data from the file system, API, DB, etc.
+    const { data: logs } = await supabase.from("logs").select("*");
+    setLogs(logs);
+
+    const { data: myLogs } = await supabase
+      .from("logs")
+      .select("*")
+      .eq("user_id", user.id);
+    setMyLogs(myLogs);
+  }
 
   useEffect(() => !user && router.push("/"));
+
+  useEffect(() => {
+    try {
+      getPageData();
+    } catch (err) {
+      alert(err.message);
+    }
+  });
 
   return (
     <div className="uk-width-expand@m">

@@ -1,38 +1,51 @@
 import DocumentDetails from "../../components/document-details";
 import supabase from "../../context/auth-context";
 import Delete from "../../components/delete";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
-export async function getServerSideProps(context) {
-  // Get external data from the file system, API, DB, etc.
-  const { data: document } = await supabase
-    .from("documents")
-    .select("*")
-    .eq("id", context.query.id)
-    .single();
+function Document() {
+  const router = useRouter();
+  const [document, setDocument] = useState(null);
+  const [owner, setOwner] = useState(null);
+  const [task, setTask] = useState(null);
 
-  const { data: owner } =
-    document &&
-    (await supabase
-      .from("profiles")
+  async function getPageData(context) {
+    // Get external data from the file system, API, DB, etc.
+    const { data: document } = await supabase
+      .from("documents")
       .select("*")
-      .eq("id", document.user_id)
-      .single());
+      .eq("id", router.query.id)
+      .single();
+    setDocument(document);
 
-  const { data: task } =
-    document &&
-    (await supabase
-      .from("tasks")
-      .select("*")
-      .eq("id", document.task_id)
-      .single());
-  // The value of the `props` key will be
-  //  passed to the component
-  return {
-    props: { document, owner, task }
-  };
-}
+    const { data: owner } =
+      document &&
+      (await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", document.user_id)
+        .single());
+    setOwner(owner);
 
-function Document({ document, owner, task }) {
+    const { data: task } =
+      document &&
+      (await supabase
+        .from("tasks")
+        .select("*")
+        .eq("id", document.task_id)
+        .single());
+    setTask(task);
+  }
+
+  useEffect(() => {
+    try {
+      getPageData();
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+
   return (
     <div className="uk-width-expand@m">
       <div

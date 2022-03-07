@@ -2,35 +2,48 @@ import ProjectDetails from "../../components/project-details";
 import supabase from "../../context/auth-context";
 import Delete from "../../components/delete";
 import ReadAllRows from "../../components/read-all-rows";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
-export async function getServerSideProps(context) {
-  // Get external data from the file system, API, DB, etc.
-  const { data: project } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("id", context.query.id)
-    .single();
+function Project() {
+  const router = useRouter();
+  const [project, setProject] = useState(null);
+  const [owner, setOwner] = useState(null);
+  const [tasks, setTasks] = useState(null);
 
-  const { data: owner } =
-    project &&
-    (await supabase
-      .from("profiles")
+  async function getPageData() {
+    // Get external data from the file system, API, DB, etc.
+    const { data: project } = await supabase
+      .from("projects")
       .select("*")
-      .eq("id", project.user_id)
-      .single());
+      .eq("id", router.query.id)
+      .single();
+    setProject(project);
 
-  const { data: tasks } = await supabase
-    .from("tasks")
-    .select("*")
-    .eq("project_id", context.query.id);
-  // The value of the `props` key will be
-  //  passed to the component
-  return {
-    props: { project, owner, tasks }
-  };
-}
+    const { data: owner } =
+      project &&
+      (await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", project.user_id)
+        .single());
+    setOwner(owner);
 
-function Project({ project, owner, tasks }) {
+    const { data: tasks } = await supabase
+      .from("tasks")
+      .select("*")
+      .eq("project_id", router.query.id);
+    setTasks(tasks);
+  }
+
+  useEffect(() => {
+    try {
+      getPageData();
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+
   return (
     <div className="uk-width-expand@m">
       <div

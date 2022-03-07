@@ -2,47 +2,66 @@ import ProfileDetails from "../../components/profile-details";
 import supabase from "../../context/auth-context";
 import Delete from "../../components/delete";
 import ReadAllRows from "../../components/read-all-rows";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
-export async function getServerSideProps(context) {
-  // Get external data from the file system, API, DB, etc.
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", context.query.id)
-    .single();
+function Profile() {
+  const router = useRouter();
+  const [profile, setProfile] = useState(null);
+  const [documents, setDocuments] = useState(null);
+  const [logs, setLogs] = useState(null);
+  const [milestones, setMilestones] = useState(null);
+  const [projects, setProjects] = useState(null);
+  const [tasks, setTasks] = useState(null);
 
-  const { data: documents } = await supabase
-    .from("documents")
-    .select("*")
-    .eq("user_id", context.query.id);
+  async function getPageData() {
+    // Get external data from the file system, API, DB, etc.
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", router.query.id)
+      .single();
+    setProfile(profile);
 
-  const { data: logs } = await supabase
-    .from("logs")
-    .select("*")
-    .eq("user_id", context.query.id);
+    const { data: documents } = await supabase
+      .from("documents")
+      .select("*")
+      .eq("user_id", router.query.id);
+    setDocuments(documents);
 
-  const { data: milestones } = await supabase
-    .from("milestones")
-    .select("*")
-    .eq("user_id", context.query.id);
+    const { data: logs } = await supabase
+      .from("logs")
+      .select("*")
+      .eq("user_id", router.query.id);
+    setLogs(logs);
 
-  const { data: projects } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("user_id", context.query.id);
+    const { data: milestones } = await supabase
+      .from("milestones")
+      .select("*")
+      .eq("user_id", router.query.id);
+    setMilestones(milestones);
 
-  const { data: tasks } = await supabase
-    .from("tasks")
-    .select("*")
-    .eq("user_id", context.query.id);
-  // The value of the `props` key will be
-  //  passed to the component
-  return {
-    props: { profile, documents, logs, milestones, projects, tasks }
-  };
-}
+    const { data: projects } = await supabase
+      .from("projects")
+      .select("*")
+      .eq("user_id", router.query.id);
+    setProjects(projects);
 
-function Profile({ profile, documents, logs, milestones, projects, tasks }) {
+    const { data: tasks } = await supabase
+      .from("tasks")
+      .select("*")
+      .eq("user_id", router.query.id);
+    setTasks(tasks);
+  }
+
+  useEffect(() => {
+    try {
+      getPageData();
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+
   return (
     <div className="uk-width-expand@m">
       <div
