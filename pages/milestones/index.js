@@ -5,20 +5,25 @@ import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import MyMilestones from "../../components/my-milestones";
 
-export async function getStaticProps() {
+const user = supabase.auth.user();
+
+export async function getServerSideProps() {
   // Get external data from the file system, API, DB, etc.
   const { data: milestones } = await supabase.from("milestones").select("*");
+
+  const { data: myMilestones } = await supabase
+    .from("milestones")
+    .select("*")
+    .eq("user_id", user.id);
   // The value of the `props` key will be
   //  passed to the component
   return {
-    props: { milestones }
+    props: { milestones, myMilestones }
   };
 }
 
-function Milestones({ milestones }) {
+function Milestones({ milestones, myMilestones }) {
   const router = useRouter();
-
-  const user = supabase.auth.user();
 
   useEffect(() => !user && router.push("/"));
 
@@ -32,12 +37,14 @@ function Milestones({ milestones }) {
           <SearchAcrossProjects title="milestones"></SearchAcrossProjects>
         </div>
 
-        {milestones&&<div>
-          <ReadAllRows data={milestones} title="All Milestones"></ReadAllRows>
-        </div>}
+        {milestones && (
+          <div>
+            <ReadAllRows data={milestones} title="All Milestones"></ReadAllRows>
+          </div>
+        )}
 
         <div>
-          <MyMilestones></MyMilestones>
+          <MyMilestones data={myMilestones}></MyMilestones>
         </div>
       </div>
     </div>

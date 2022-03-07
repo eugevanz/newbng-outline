@@ -24,5 +24,8 @@
   "devDependencies": {
     "eslint": "8.9.0",
     "eslint-config-next": "12.1.0"
-  }
+  },
+  "keywords": [],
+  "name": "newbng-outline",
+  "description": ""
 }

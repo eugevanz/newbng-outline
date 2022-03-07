@@ -1,19 +1,7 @@
 import { useRouter } from "next/router";
 import moment from "moment";
-import supabase from "../context/auth-context";
 
-const user = supabase.auth.user();
-
-export async function getStaticProps() {
-  const { data: milestones } = await supabase
-    .from("milestones")
-    .select("*")
-    .eq("user_id", user.id);
-
-  return { props: { milestones } };
-}
-
-function MyMilestones({ milestones }) {
+function MyMilestones({ data }) {
   const router = useRouter();
 
   return (
@@ -23,8 +11,8 @@ function MyMilestones({ milestones }) {
       </div>
 
       <ul className="uk-list uk-list-large uk-list-divider uk-margin">
-        {milestones &&
-          milestones.map((item) => (
+        {data &&
+          data.map((item) => (
             <li key={item.id}>
               <a
                 className="uk-link-toggle"

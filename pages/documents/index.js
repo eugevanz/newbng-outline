@@ -5,20 +5,25 @@ import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import MyDocuments from "../../components/my-documents";
 
-export async function getStaticProps() {
+const user = supabase.auth.user();
+
+export async function getServerSideProps() {
   // Get external data from the file system, API, DB, etc.
   const { data: documents } = await supabase.from("documents").select("*");
+
+  const { data: myDocuments } = await supabase
+    .from("documents")
+    .select("*")
+    .eq("user_id", user.id);
   // The value of the `props` key will be
   //  passed to the component
   return {
-    props: { documents }
+    props: { documents, myDocuments }
   };
 }
 
-function Documents({ documents }) {
+function Documents({ documents, myDocuments }) {
   const router = useRouter();
-
-  const user = supabase.auth.user();
 
   useEffect(() => !user && router.push("/"));
 
@@ -37,7 +42,7 @@ function Documents({ documents }) {
         </div>}
 
         <div>
-          <MyDocuments></MyDocuments>
+          <MyDocuments data={myDocuments}></MyDocuments>
         </div>
       </div>
     </div>

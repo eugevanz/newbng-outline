@@ -5,11 +5,6 @@ import supabase from "../context/auth-context";
 const user = supabase.auth.user();
 
 export async function getStaticProps() {
-  const { data: tasks } = await supabase
-    .from("tasks")
-    .select("*")
-    .eq("user_id", user.id);
-
   return { props: { tasks } };
 }
 

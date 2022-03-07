@@ -1,19 +1,7 @@
 import { useRouter } from "next/router";
 import moment from "moment";
-import supabase from "../context/auth-context";
 
-const user = supabase.auth.user();
-
-export async function getStaticProps() {
-  const { data: logs } = await supabase
-    .from("logs")
-    .select("*")
-    .eq("user_id", user.id);
-
-  return { props: { logs } };
-}
-
-function MyLogs({ logs }) {
+function MyLogs({ data }) {
   const router = useRouter();
 
   return (
@@ -23,8 +11,8 @@ function MyLogs({ logs }) {
       </div>
 
       <ul className="uk-list uk-list-large uk-list-divider uk-margin">
-        {logs &&
-          logs.map((item) => (
+        {data &&
+          data.map((item) => (
             <li key={item.id}>
               <a
                 className="uk-link-toggle"

@@ -5,20 +5,25 @@ import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import MyLogs from "../../components/my-logs";
 
-export async function getStaticProps() {
+const user = supabase.auth.user();
+
+export async function getServerSideProps() {
   // Get external data from the file system, API, DB, etc.
   const { data: logs } = await supabase.from("logs").select("*");
+
+  const { data: myLogs } = await supabase
+    .from("logs")
+    .select("*")
+    .eq("user_id", user.id);
   // The value of the `props` key will be
   //  passed to the component
   return {
-    props: { logs }
+    props: { logs, myLogs }
   };
 }
 
-function Logs({ logs }) {
+function Logs({ logs, myLogs }) {
   const router = useRouter();
-
-  const user = supabase.auth.user();
 
   useEffect(() => !user && router.push("/"));
 
@@ -32,12 +37,14 @@ function Logs({ logs }) {
           <SearchAcrossProjects title="logs"></SearchAcrossProjects>
         </div>
 
-        {logs&&<div>
-          <ReadAllRows data={logs} title="All Logs"></ReadAllRows>
-        </div>}
+        {logs && (
+          <div>
+            <ReadAllRows data={logs} title="All Logs"></ReadAllRows>
+          </div>
+        )}
 
         <div>
-          <MyLogs></MyLogs>
+          <MyLogs data={myLogs}></MyLogs>
         </div>
       </div>
     </div>

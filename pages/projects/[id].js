@@ -12,7 +12,7 @@ export async function getStaticPaths() {
   const paths =
     data &&
     data.map((project) => ({
-      params: { id: project.id }
+      params: { id: project.id.toString() }
     }));
 
   return { paths, fallback: false };
