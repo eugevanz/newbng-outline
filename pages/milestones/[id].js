@@ -1,51 +1,62 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import MilestoneDetails from "../../components/milestone-details";
 import supabase from "../../context/auth-context";
 import Delete from "../../components/delete";
 
-function Milestone() {
-  const router = useRouter();
-  const [data, setData] = useState(null);
-  const [owner, setOwner] = useState(null);
-  const user = supabase.auth.user();
+export async function getStaticPaths() {
+  const { data: milestones } = await supabase.from("milestones").select("*");
 
-  useEffect(() => !user && router.push("/"));
+  const paths = milestones.map((milestone) => ({
+    params: { id: milestone.id.toString() }
+  }));
 
-  useEffect(
-    () =>
-      supabase
-        .from("milestones")
-        .select("*")
-        .then((data) =>
-          setData(data.data.find((item) => item.id === router.query.id))
-        ),
-    [router.query.id]
-  );
+  return { paths, fallback: false };
+}
 
-  useEffect(
-    () =>
-      data &&
-      fetch(`/api/owner/${data.user_id}`).then((data) => setOwner(data)),
-    [data]
-  );
+export async function getStaticProps(context) {
+  // Get external data from the file system, API, DB, etc.
+  const { data: milestone } = await supabase
+    .from("milestones")
+    .select("*")
+    .eq("id", context.params.id)
+    .single();
 
+  const { data: owner } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", milestone.user_id)
+    .single();
+
+  const { data: project } = await supabase
+    .from("projects")
+    .select("*")
+    .eq("id", milestone.project_id)
+    .single();
+  // The value of the `props` key will be
+  //  passed to the component
+  return {
+    props: { milestone, owner, project }
+  };
+}
+
+function Milestone({ milestone, owner, project }) {
   return (
     <div className="uk-width-expand@m">
-      {user && (
-        <div
-          className="uk-child-width-1-2@m js-filter"
-          data-uk-grid="masonry: true; parallax: 60"
-        >
-          <div>
-            <MilestoneDetails data={data} owner={owner}></MilestoneDetails>
-          </div>
-
-          <div>
-            <Delete item={data} table="tasks"></Delete>
-          </div>
+      <div
+        className="uk-child-width-1-2@m js-filter"
+        data-uk-grid="masonry: true; parallax: 60"
+      >
+        <div>
+          <MilestoneDetails
+            data={milestone}
+            owner={owner}
+            project={project}
+          ></MilestoneDetails>
         </div>
-      )}
+
+        <div>
+          <Delete item={milestone} table="milestones"></Delete>
+        </div>
+      </div>
     </div>
   );
 }

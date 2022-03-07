@@ -1,51 +1,56 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import LogDetails from "../../components/log-details";
 import supabase from "../../context/auth-context";
 import Delete from "../../components/delete";
 
-function Log() {
-  const router = useRouter();
-  const [data, setData] = useState(null);
-  const [owner, setOwner] = useState(null);
-  const user = supabase.auth.user();
+export async function getStaticPaths() {
+  const { data: logs } = await supabase.from("logs").select("*");
 
-  useEffect(() => !user && router.push("/"));
+  const paths = logs.map((log) => ({ params: { id: log.id.toString() } }));
 
-  useEffect(
-    () =>
-      supabase
-        .from("logs")
-        .select("*")
-        .then((data) =>
-          setData(data.data.find((item) => item.id === router.query.id))
-        ),
-    [router.query.id]
-  );
+  return { paths, fallback: false };
+}
 
-  useEffect(
-    () =>
-      data &&
-      fetch(`/api/owner/${data.user_id}`).then((data) => setOwner(data)),
-    [data]
-  );
+export async function getStaticProps(context) {
+  // Get external data from the file system, API, DB, etc.
+  const { data: log } = await supabase
+    .from("logs")
+    .select("*")
+    .eq("id", context.params.id)
+    .single();
 
+  const { data: owner } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", log.user_id)
+    .single();
+
+  const { data: task } = await supabase
+    .from("tasks")
+    .select("*")
+    .eq("id", log.task_id)
+    .single();
+  // The value of the `props` key will be
+  //  passed to the component
+  return {
+    props: { log, owner, task }
+  };
+}
+
+function Log({ log, owner, task }) {
   return (
     <div className="uk-width-expand@m">
-      {user && (
-        <div
-          className="uk-child-width-1-2@m js-filter"
-          data-uk-grid="masonry: true; parallax: 60"
-        >
-          <div>
-            <LogDetails data={data} owner={owner}></LogDetails>
-          </div>
-
-          <div>
-            <Delete item={data} table="logs"></Delete>
-          </div>
+      <div
+        className="uk-child-width-1-2@m js-filter"
+        data-uk-grid="masonry: true; parallax: 60"
+      >
+        <div>
+          <LogDetails data={log} owner={owner} task={task}></LogDetails>
         </div>
-      )}
+
+        <div>
+          <Delete item={log} table="logs"></Delete>
+        </div>
+      </div>
     </div>
   );
 }

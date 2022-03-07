@@ -1,43 +1,58 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import ProjectGroupDetails from "../../components/project-group-details";
 import supabase from "../../context/auth-context";
 import Delete from "../../components/delete";
+import ReadAllRows from "../../components/read-all-rows";
 
-function ProjectGroups() {
-  const router = useRouter();
-  const [data, setData] = useState(null);
-  const user = supabase.auth.user();
+export async function getStaticPaths() {
+  const { data: project_groups } = await supabase
+    .from("project_groups")
+    .select("*");
 
-  useEffect(() => !user && router.push("/"));
+  const paths = project_groups.map((project_group) => ({
+    params: { id: project_group.id.toString() }
+  }));
 
-  useEffect(
-    () =>
-      supabase
-        .from("project_groups")
-        .select("*")
-        .then((data) =>
-          setData(data.data.find((item) => item.id === router.query.id))
-        ),
-    [router.query.id]
-  );
+  return { paths, fallback: false };
+}
 
+export async function getStaticProps(context) {
+  // Get external data from the file system, API, DB, etc.
+  const { data: project_group } = await supabase
+    .from("project_groups")
+    .select("*")
+    .eq("id", context.params.id)
+    .single();
+
+  const { data: projects } = await supabase
+    .from("projects")
+    .select("*")
+    .eq("project_group_id", project_group.id);
+  // The value of the `props` key will be
+  //  passed to the component
+  return {
+    props: { project_group, projects }
+  };
+}
+
+function ProjectGroups({ project_group, projects }) {
   return (
     <div className="uk-width-expand@m">
-      {user && (
-        <div
-          className="uk-child-width-1-2@m js-filter"
-          data-uk-grid="masonry: true; parallax: 60"
-        >
-          <div>
-            <ProjectGroupDetails data={data}></ProjectGroupDetails>
-          </div>
-
-          <div>
-            <Delete item={data} table="project_groups"></Delete>
-          </div>
+      <div
+        className="uk-child-width-1-2@m js-filter"
+        data-uk-grid="masonry: true; parallax: 60"
+      >
+        <div>
+          <ProjectGroupDetails data={project_group}></ProjectGroupDetails>
         </div>
-      )}
+
+        <div>
+          <ReadAllRows data={projects} title="User's projects"></ReadAllRows>
+        </div>
+
+        <div>
+          <Delete item={project_group} table="project_groups"></Delete>
+        </div>
+      </div>
     </div>
   );
 }

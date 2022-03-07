@@ -5,7 +5,20 @@ import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import MyDocuments from "../../components/my-documents";
 
-function Documents() {
+export async function getStaticProps() {
+  // Get external data from the file system, API, DB, etc.
+  const documents = await supabase
+    .from("documents")
+    .select("*")
+    .then((data) => data.data);
+  // The value of the `props` key will be
+  //  passed to the component
+  return {
+    props: { documents }
+  };
+}
+
+function Documents({ documents }) {
   const router = useRouter();
 
   const user = supabase.auth.user();
@@ -14,24 +27,22 @@ function Documents() {
 
   return (
     <div className="uk-width-expand@m">
-      {user && (
-        <div
-          className="uk-child-width-1-2@m js-filter"
-          data-uk-grid="masonry: true; parallax: 60"
-        >
-          <div>
-            <SearchAcrossProjects title="documents"></SearchAcrossProjects>
-          </div>
-
-          <div>
-            <ReadAllRows table="documents" title="All Documents"></ReadAllRows>
-          </div>
-
-          <div>
-            <MyDocuments></MyDocuments>
-          </div>
+      <div
+        className="uk-child-width-1-2@m js-filter"
+        data-uk-grid="masonry: true; parallax: 60"
+      >
+        <div>
+          <SearchAcrossProjects title="documents"></SearchAcrossProjects>
         </div>
-      )}
+
+        <div>
+          <ReadAllRows data={documents} title="All documents"></ReadAllRows>
+        </div>
+
+        <div>
+          <MyDocuments></MyDocuments>
+        </div>
+      </div>
     </div>
   );
 }

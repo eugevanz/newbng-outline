@@ -15,7 +15,7 @@ function Nav() {
             <div className="uk-width-auto">
               <Image
                 width="70"
-                height="56"
+                height="52"
                 src="/NEWBGNG logo.001.png"
                 alt="company-logo"
               ></Image>
@@ -27,6 +27,7 @@ function Nav() {
             </div>
           </div>
         </div>
+
         {!user && (
           <div>
             <Auth></Auth>
@@ -36,7 +37,7 @@ function Nav() {
         {user && (
           <div>
             <div className="uk-card uk-card-small uk-card-body uk-border-rounded">
-              <button className="uk-button uk-button-link uk-margin-large-bottom uk-inline">
+              <button className="uk-button uk-button-link uk-margin uk-inline">
                 <div className="uk-grid-small uk-flex-middle" data-uk-grid>
                   <div className="uk-width-auto">
                     <Image

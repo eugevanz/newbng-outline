@@ -1,51 +1,62 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import DocumentDetails from "../../components/document-details";
 import supabase from "../../context/auth-context";
 import Delete from "../../components/delete";
 
-function Document() {
-  const router = useRouter();
-  const [data, setData] = useState(null);
-  const [owner, setOwner] = useState(null);
-  const user = supabase.auth.user();
+export async function getStaticPaths() {
+  const { data: documents } = await supabase.from("documents").select("*");
 
-  useEffect(() => !user && router.push("/"));
+  const paths = documents.map((document) => ({
+    params: { id: document.id.toString() }
+  }));
 
-  useEffect(
-    () =>
-      supabase
-        .from("documents")
-        .select("*")
-        .then((data) =>
-          setData(data.data.find((item) => item.id === router.query.id))
-        ),
-    [router.query.id]
-  );
+  return { paths, fallback: false };
+}
 
-  useEffect(
-    () =>
-      data &&
-      fetch(`/api/owner/${data.user_id}`).then((data) => setOwner(data)),
-    [data]
-  );
+export async function getStaticProps(context) {
+  // Get external data from the file system, API, DB, etc.
+  const { data: document } = await supabase
+    .from("documents")
+    .select("*")
+    .eq("id", context.params.id)
+    .single();
 
+  const { data: owner } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", document.user_id)
+    .single();
+
+  const { data: task } = await supabase
+    .from("tasks")
+    .select("*")
+    .eq("id", document.task_id)
+    .single();
+  // The value of the `props` key will be
+  //  passed to the component
+  return {
+    props: { document, owner, task }
+  };
+}
+
+function Document({ document, owner, task }) {
   return (
     <div className="uk-width-expand@m">
-      {user && (
-        <div
-          className="uk-child-width-1-2@m js-filter"
-          data-uk-grid="masonry: true; parallax: 60"
-        >
-          <div>
-            <DocumentDetails data={data} owner={owner}></DocumentDetails>
-          </div>
-
-          <div>
-            <Delete item={data} table="documents"></Delete>
-          </div>
+      <div
+        className="uk-child-width-1-2@m js-filter"
+        data-uk-grid="masonry: true; parallax: 60"
+      >
+        <div>
+          <DocumentDetails
+            data={document}
+            owner={owner}
+            task={task}
+          ></DocumentDetails>
         </div>
-      )}
+
+        <div>
+          <Delete item={document} table="documents"></Delete>
+        </div>
+      </div>
     </div>
   );
 }
