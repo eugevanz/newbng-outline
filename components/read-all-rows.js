@@ -1,9 +1,6 @@
-import { useRouter } from "next/router";
 import moment from "moment";
 
-function ReadAllRows({ data, title }) {
-  const router = useRouter();
-
+function ReadAllRows({ data, title, setSelection }) {
   return (
     <div className="uk-card uk-card-secondary uk-card-small uk-card-body uk-border-rounded">
       <div className="uk-width-expand uk-margin-large uk-text-bold uk-text-small uk-text-muted">
@@ -16,9 +13,7 @@ function ReadAllRows({ data, title }) {
             <a
               className="uk-link-toggle"
               href="#list-item"
-              onClick={() =>
-                router.push(`/${data.constructor.name}/${item.id}`)
-              }
+              onClick={() => setSelection(item)}
               data-uk-scroll
             >
               <div className="uk-text-bold uk-link-text">

@@ -20,7 +20,7 @@ function Dashboard() {
       <div className="uk-width-expand@m">
         <div
           className="uk-child-width-1-2@m"
-          data-uk-grid="masonry: true; parallax: 96"
+          data-uk-grid="masonry: true"
         >
           <div>
             <ThisWeekProjectActivities></ThisWeekProjectActivities>
