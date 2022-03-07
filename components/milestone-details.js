@@ -94,7 +94,7 @@ function MilestoneDetails({ data, owner, project }) {
               className="uk-form-label uk-text-meta"
               htmlFor="form-stacked-text"
             >
-              Created on {moment(data.created_at).format("MMMM Do YYYY")}
+              Created on {moment(data.created_at).format("MMMM DD YYYY")}
             </label>
           </div>
 
@@ -111,7 +111,7 @@ function MilestoneDetails({ data, owner, project }) {
                 className="uk-input uk-form-small"
                 id="form-stacked-text"
                 type="text"
-                placeholder={moment(data.start_date).format("MMMM Do YYYY")}
+                placeholder={moment(data.start_date).format("MMMM DD YYYY")}
               ></input>
             </div>
           </div>
@@ -129,7 +129,7 @@ function MilestoneDetails({ data, owner, project }) {
                 className="uk-input uk-form-small"
                 id="form-stacked-text"
                 type="text"
-                placeholder={moment(data.end_date).format("MMMM Do YYYY")}
+                placeholder={moment(data.end_date).format("MMMM DD YYYY")}
               ></input>
             </div>
           </div>

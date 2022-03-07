@@ -64,7 +64,7 @@ function LogDetails({ data, owner, task }) {
                 className="uk-input uk-form-small"
                 id="form-stacked-text"
                 type="text"
-                placeholder={moment(data.start_date).format("MMMM Do YYYY")}
+                placeholder={moment(data.start_date).format("MMMM DD YYYY")}
               ></input>
             </div>
           </div>
@@ -97,7 +97,7 @@ function LogDetails({ data, owner, task }) {
                 className="uk-input uk-form-small"
                 id="form-stacked-text"
                 type="text"
-                placeholder={moment(data.end_date).format("MMMM Do YYYY")}
+                placeholder={moment(data.end_date).format("MMMM DD YYYY")}
               ></input>
             </div>
           </div>

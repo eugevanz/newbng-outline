@@ -35,7 +35,7 @@ function MyTasks({ tasks }) {
                 {item.name.toUpperCase()}
               </div>
               <div className="uk-text-meta">
-                Created on {moment(item.created_at).format("MMMM Do YYYY")}
+                Created on {moment(item.created_at).format("MMMM DD YYYY")}
               </div>
             </a>
           </li>

@@ -33,7 +33,7 @@ function MyDocuments({ documents }) {
             >
               <div className="uk-text-bold uk-link-text">{item.name}</div>
               <div className="uk-text-meta">
-                Created on {moment(item.created_at).format("MMMM Do YYYY")}
+                Created on {moment(item.created_at).format("MMMM DD YYYY")}
               </div>
             </a>
           </li>

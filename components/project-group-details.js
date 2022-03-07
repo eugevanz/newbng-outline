@@ -57,7 +57,7 @@ function ProjectGroupDetails({ data }) {
               className="uk-form-label uk-text-meta"
               htmlFor="form-stacked-text"
             >
-              Created on {moment(data.created_at).format("MMMM Do YYYY")}
+              Created on {moment(data.created_at).format("MMMM DD YYYY")}
             </label>
           </div>
 

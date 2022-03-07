@@ -32,10 +32,10 @@ function MyLogs({ logs }) {
               data-uk-scroll
             >
               <div className="uk-text-bold uk-link-text">
-                Started on {moment(item.start_date).format("MMMM Do YYYY")}
+                Started on {moment(item.start_date).format("MMMM DD YYYY")}
               </div>
               <div className="uk-text-meta">
-                Ended {moment(item.start_date).format("MMMM Do YYYY")}
+                Ended {moment(item.start_date).format("MMMM DD YYYY")}
               </div>
             </a>
           </li>

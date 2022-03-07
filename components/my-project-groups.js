@@ -33,7 +33,7 @@ function MyProjectGroups({ project_groups }) {
             >
               <div className="uk-text-bold uk-link-text">{item.name}</div>
               <div className="uk-text-meta">
-                Created on {moment(item.created_at).format("MMMM Do YYYY")}
+                Created on {moment(item.created_at).format("MMMM DD YYYY")}
               </div>
               <div className="uk-text-default uk-text-truncate">
                 {item.description}
