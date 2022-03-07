@@ -18,13 +18,13 @@ export async function getStaticProps(context) {
     .eq("id", context.params.id)
     .single();
 
-  const { data: owner } = await supabase
+  const { data: owner } = log && await supabase
     .from("profiles")
     .select("*")
     .eq("id", log.user_id)
     .single();
 
-  const { data: task } = await supabase
+  const { data: task } = log && await supabase
     .from("tasks")
     .select("*")
     .eq("id", log.task_id)

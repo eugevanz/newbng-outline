@@ -22,13 +22,13 @@ export async function getStaticProps(context) {
     .eq("id", context.params.id)
     .single();
 
-  const { data: owner } = await supabase
+    const { data: owner } = task && await supabase
     .from("profiles")
     .select("*")
     .eq("id", task.user_id)
     .single();
 
-  const { data: project } = await supabase
+  const { data: project } = task && await supabase
     .from("projects")
     .select("*")
     .eq("id", task.project_id)

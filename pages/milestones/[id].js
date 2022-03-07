@@ -20,17 +20,21 @@ export async function getStaticProps(context) {
     .eq("id", context.params.id)
     .single();
 
-  const { data: owner } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", milestone.user_id)
-    .single();
+  const { data: owner } =
+    milestone &&
+    (await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", milestone.user_id)
+      .single());
 
-  const { data: project } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("id", milestone.project_id)
-    .single();
+  const { data: project } =
+    milestone &&
+    (await supabase
+      .from("projects")
+      .select("*")
+      .eq("id", milestone.project_id)
+      .single());
   // The value of the `props` key will be
   //  passed to the component
   return {

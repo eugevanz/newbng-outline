@@ -9,9 +9,11 @@ export async function getStaticPaths() {
     .select("*")
     .then((data) => data.data);
 
-  const paths = data.map((project) => ({
-    params: { id: project.id.toString() }
-  }));
+  const paths =
+    data &&
+    data.map((project) => ({
+      params: { id: project.id }
+    }));
 
   return { paths, fallback: false };
 }
@@ -24,11 +26,13 @@ export async function getStaticProps(context) {
     .eq("id", context.params.id)
     .single();
 
-  const { data: owner } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", project.user_id)
-    .single();
+  const { data: owner } =
+    project &&
+    (await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", project.user_id)
+      .single());
 
   const { data: tasks } = await supabase
     .from("tasks")
