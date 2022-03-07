@@ -2,17 +2,7 @@ import MilestoneDetails from "../../components/milestone-details";
 import supabase from "../../context/auth-context";
 import Delete from "../../components/delete";
 
-export async function getStaticPaths() {
-  const { data: milestones } = await supabase.from("milestones").select("*");
-
-  const paths = milestones.map((milestone) => ({
-    params: { id: milestone.id.toString() }
-  }));
-
-  return { paths, fallback: false };
-}
-
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   // Get external data from the file system, API, DB, etc.
   const { data: milestone } = await supabase
     .from("milestones")

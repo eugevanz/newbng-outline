@@ -2,17 +2,7 @@ import DocumentDetails from "../../components/document-details";
 import supabase from "../../context/auth-context";
 import Delete from "../../components/delete";
 
-export async function getStaticPaths() {
-  const { data: documents } = await supabase.from("documents").select("*");
-
-  const paths = documents.map((document) => ({
-    params: { id: document.id.toString() }
-  }));
-
-  return { paths, fallback: false };
-}
-
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   // Get external data from the file system, API, DB, etc.
   const { data: document } = await supabase
     .from("documents")

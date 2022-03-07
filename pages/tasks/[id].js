@@ -3,18 +3,7 @@ import AddAttachment from "../../components/add-attachment";
 import supabase from "../../context/auth-context";
 import Delete from "../../components/delete";
 
-export async function getStaticPaths() {
-  const data = await supabase
-    .from("tasks")
-    .select("*")
-    .then((data) => data.data);
-
-  const paths = data.map((task) => ({ params: { id: task.id.toString() } }));
-
-  return { paths, fallback: false };
-}
-
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   // Get external data from the file system, API, DB, etc.
   const { data: task } = await supabase
     .from("tasks")
@@ -22,17 +11,21 @@ export async function getStaticProps(context) {
     .eq("id", context.params.id)
     .single();
 
-    const { data: owner } = task && await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", task.user_id)
-    .single();
+  const { data: owner } =
+    task &&
+    (await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", task.user_id)
+      .single());
 
-  const { data: project } = task && await supabase
-    .from("projects")
-    .select("*")
-    .eq("id", task.project_id)
-    .single();
+  const { data: project } =
+    task &&
+    (await supabase
+      .from("projects")
+      .select("*")
+      .eq("id", task.project_id)
+      .single());
   // The value of the `props` key will be
   //  passed to the component
   return {
@@ -47,21 +40,25 @@ function Task({ task, owner, project }) {
         className="uk-child-width-1-2@m"
         data-uk-grid="masonry: true; parallax: 60"
       >
-        {(task & owner & project) && <div>
-          <TaskDetails
-            data={task}
-            owner={owner}
-            projectName={project.name}
-          ></TaskDetails>
-        </div>}
+        {task & owner & project && (
+          <div>
+            <TaskDetails
+              data={task}
+              owner={owner}
+              projectName={project.name}
+            ></TaskDetails>
+          </div>
+        )}
 
         <div>
           <AddAttachment></AddAttachment>
         </div>
 
-        {task && <div>
-          <Delete item={task} table="tasks"></Delete>
-        </div>}
+        {task && (
+          <div>
+            <Delete item={task} table="tasks"></Delete>
+          </div>
+        )}
       </div>
     </div>
   );

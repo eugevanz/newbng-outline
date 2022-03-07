@@ -7,7 +7,7 @@ import MyProjectGroups from "../../components/my-project-groups";
 
 const user = supabase.auth.user();
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   // Get external data from the file system, API, DB, etc.
   const { data: project_groups } = await supabase
     .from("project_groups")

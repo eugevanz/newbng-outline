@@ -3,22 +3,7 @@ import supabase from "../../context/auth-context";
 import Delete from "../../components/delete";
 import ReadAllRows from "../../components/read-all-rows";
 
-export async function getStaticPaths() {
-  const data = await supabase
-    .from("projects")
-    .select("*")
-    .then((data) => data.data);
-
-  const paths =
-    data &&
-    data.map((project) => ({
-      params: { id: project.id.toString() }
-    }));
-
-  return { paths, fallback: false };
-}
-
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   // Get external data from the file system, API, DB, etc.
   const { data: project } = await supabase
     .from("projects")

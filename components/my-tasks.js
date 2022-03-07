@@ -1,12 +1,5 @@
 import { useRouter } from "next/router";
 import moment from "moment";
-import supabase from "../context/auth-context";
-
-const user = supabase.auth.user();
-
-export async function getStaticProps() {
-  return { props: { tasks } };
-}
 
 function MyTasks({ tasks }) {
   const router = useRouter();

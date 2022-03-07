@@ -4,7 +4,7 @@ import supabase from "../../context/auth-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   // Get external data from the file system, API, DB, etc.
   const { data: profiles } = await supabase.from("profiles").select("*");
   // The value of the `props` key will be
@@ -31,9 +31,11 @@ function Profiles({ profiles }) {
           <SearchAcrossProjects title="profiles"></SearchAcrossProjects>
         </div>
 
-        {profiles&&<div>
-          <ReadAllRows data={profiles} title="All Profiles"></ReadAllRows>
-        </div>}
+        {profiles && (
+          <div>
+            <ReadAllRows data={profiles} title="All Profiles"></ReadAllRows>
+          </div>
+        )}
       </div>
     </div>
   );
