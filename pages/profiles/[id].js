@@ -8,33 +8,33 @@ export async function getServerSideProps(context) {
   const { data: profile } = await supabase
     .from("profiles")
     .select("*")
-    .eq("id", context.params.id)
+    .eq("id", context.query.id)
     .single();
 
   const { data: documents } = await supabase
     .from("documents")
     .select("*")
-    .eq("user_id", context.params.id);
+    .eq("user_id", context.query.id);
 
   const { data: logs } = await supabase
     .from("logs")
     .select("*")
-    .eq("user_id", context.params.id);
+    .eq("user_id", context.query.id);
 
   const { data: milestones } = await supabase
     .from("milestones")
     .select("*")
-    .eq("user_id", context.params.id);
+    .eq("user_id", context.query.id);
 
   const { data: projects } = await supabase
     .from("projects")
     .select("*")
-    .eq("user_id", context.params.id);
+    .eq("user_id", context.query.id);
 
   const { data: tasks } = await supabase
     .from("tasks")
     .select("*")
-    .eq("user_id", context.params.id);
+    .eq("user_id", context.query.id);
   // The value of the `props` key will be
   //  passed to the component
   return {

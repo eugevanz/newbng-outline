@@ -8,7 +8,7 @@ export async function getServerSideProps(context) {
   const { data: task } = await supabase
     .from("tasks")
     .select("*")
-    .eq("id", context.params.id)
+    .eq("id", context.query.id)
     .single();
 
   const { data: owner } =
