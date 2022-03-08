@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
+import useStore from "../../context/store-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import ProjectGroupDetails from "../../components/project-group-details";
@@ -8,44 +9,17 @@ import MyProjectGroups from "../../components/my-project-groups";
 import Delete from "../../components/delete";
 
 function ProjectGroups() {
+  const {
+    project_groups,
+    setProject_group,
+    myProject_groups,
+    project_group,
+    projects
+  } = useStore();
   const router = useRouter();
   const user = supabase.auth.user();
-  const [project_groups, setProject_groups] = useState(null);
-  const [myProject_groups, setMyProject_groups] = useState(null);
-  const [project_group, setProject_group] = useState(null);
-  const [projects, setProjects] = useState(null);
-
-  async function getPageData() {
-    // Get external data from the file system, API, DB, etc.
-    const { data: project_groups } = await supabase
-      .from("project_groups")
-      .select("*");
-    setProject_groups(project_groups);
-
-    const { data: myProject_groups } = await supabase
-      .from("project_groups")
-      .select("*")
-      .eq("user_id", user.id);
-    setMyProject_groups(myProject_groups);
-
-    const { data: projects } =
-      project_group &&
-      (await supabase
-        .from("projects")
-        .select("*")
-        .eq("project_group_id", project_group.id));
-    setProjects(projects);
-  }
 
   useEffect(() => !user && router.push("/"));
-
-  useEffect(() => {
-    try {
-      getPageData();
-    } catch (err) {
-      alert(err.message);
-    }
-  });
 
   return (
     <div className="uk-width-expand@m">

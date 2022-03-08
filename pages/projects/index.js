@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
+import useStore from "../../context/store-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import MyProjects from "../../components/my-projects";
@@ -8,50 +9,18 @@ import Delete from "../../components/delete";
 import ProjectDetails from "../../components/project-details";
 
 function Projects() {
+  const {
+    projects,
+    setProject,
+    myProjects,
+    project,
+    owner,
+    tasks
+  } = useStore();
   const router = useRouter();
   const user = supabase.auth.user();
-  const [projects, setProjects] = useState(null);
-  const [myProjects, setMyProjects] = useState(null);
-  const [project, setProject] = useState(null);
-  const [owner, setOwner] = useState(null);
-  const [tasks, setTasks] = useState(null);
-
-  async function getPageData() {
-    // Get external data from the file system, API, DB, etc.
-    const { data: projects } = await supabase.from("projects").select("*");
-    setProjects(projects);
-
-    const { data: myProjects } = await supabase
-      .from("projects")
-      .select("*")
-      .eq("user_id", user.id);
-    setMyProjects(myProjects);
-
-    const { data: owner } =
-      project &&
-      (await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", project.user_id)
-        .single());
-    setOwner(owner);
-
-    const { data: tasks } = await supabase
-      .from("tasks")
-      .select("*")
-      .eq("project_id", router.query.id);
-    setTasks(tasks);
-  }
 
   useEffect(() => !user && router.push("/"));
-
-  useEffect(() => {
-    try {
-      getPageData();
-    } catch (err) {
-      alert(err.message);
-    }
-  });
 
   return (
     <div className="uk-width-expand@m">
