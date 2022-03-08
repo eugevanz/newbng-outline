@@ -75,7 +75,7 @@ export function TaskProvider({ children }) {
   );
 }
 
-export function ProjectProvider({ children }) {
+function ProjectProvider({ children }) {
   const user = supabase.auth.user();
 
   const [project, setProject] = useState(null);
@@ -500,3 +500,5 @@ export function useTaskStore() {
     throw new Error("useTaskStore must be used inside a `Provider`");
   return context;
 }
+
+export default ProjectProvider;

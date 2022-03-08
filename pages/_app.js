@@ -1,8 +1,7 @@
 import Script from "next/script";
 import Nav from "../components/Nav";
-import {
+import ProjectProvider, {
   TaskProvider,
-  ProjectProvider,
   ProjectGroupProvider,
   ProfileProvider,
   MilestoneProvider,
