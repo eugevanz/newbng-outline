@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
-import useStore from "../../context/store-context";
+import useProjectGroupStore from "../../context/store-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import ProjectGroupDetails from "../../components/project-group-details";
@@ -15,7 +15,7 @@ function ProjectGroups() {
     myProject_groups,
     project_group,
     projects
-  } = useStore();
+  } = useProjectGroupStore();
   const router = useRouter();
   const user = supabase.auth.user();
 

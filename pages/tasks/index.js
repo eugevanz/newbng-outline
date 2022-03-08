@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
-import useStore from "../../context/store-context";
+import useTaskStore from "../../context/store-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import MyTasks from "../../components/my-tasks";
@@ -10,7 +10,7 @@ import TaskDetails from "../../components/task-details";
 import AddAttachment from "../../components/add-attachment";
 
 function Tasks() {
-  const { tasks, setTask, myTasks, task, owner, project } = useStore();
+  const { tasks, setTask, myTasks, task, owner, project } = useTaskStore();
   const router = useRouter();
   const user = supabase.auth.user();
 

@@ -1,86 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import supabase from "./auth-context";
 
-export default function useStore() {
+const DocumentContext = createContext(null);
+const LogContext = createContext(null);
+const MilestoneContext = createContext(null);
+const ProfileContext = createContext(null);
+const ProjectGroupContext = createContext(null);
+const ProjectContext = createContext(null);
+const TaskContext = createContext(null);
+
+export function TaskProvider({ children }) {
   const user = supabase.auth.user();
 
-  const [document, setDocument] = useState(null);
-  const [documents, setDocuments] = useState(null);
-  const [log, setLog] = useState(null);
-  const [logs, setLogs] = useState(null);
-  const [milestone, setMilestone] = useState(null);
-  const [milestones, setMilestones] = useState(null);
-  const [myDocuments, setMyDocuments] = useState(null);
-  const [myLogs, setMyLogs] = useState(null);
-  const [myMilestones, setMyMilestones] = useState(null);
-  const [myProject_groups, setMyProject_groups] = useState(null);
-  const [myProjects, setMyProjects] = useState(null);
+  const [task, setTask] = useState(null);
+  const [tasks, setTasks] = useState(null);
   const [myTasks, setMyTasks] = useState(null);
   const [owner, setOwner] = useState(null);
   const [project, setProject] = useState(null);
-  const [projects, setProjects] = useState(null);
-  const [profile, setProfile] = useState(null);
-  const [profiles, setProfiles] = useState(null);
-  const [project_group, setProject_group] = useState(null);
-  const [project_groups, setProject_groups] = useState(null);
-  const [task, setTask] = useState(null);
-  const [tasks, setTasks] = useState(null);
 
-  // Load initial data and set up listeners
   useEffect(
     () => async () => {
-      const { data: documents } = await supabase.from("documents").select("*");
-      setDocuments(documents);
-
-      const { data: myDocuments } = await supabase
-        .from("documents")
-        .select("*")
-        .eq("user_id", user.id);
-      setMyDocuments(myDocuments);
-
-      const { data: logs } = await supabase.from("logs").select("*");
-      setLogs(logs);
-
-      const { data: myLogs } = await supabase
-        .from("logs")
-        .select("*")
-        .eq("user_id", user.id);
-      setMyLogs(myLogs);
-
-      const { data: milestones } = await supabase
-        .from("milestones")
-        .select("*");
-      setMilestones(milestones);
-
-      const { data: myMilestones } = await supabase
-        .from("milestones")
-        .select("*")
-        .eq("user_id", user.id);
-      setMyMilestones(myMilestones);
-
-      const { data: profiles } = await supabase.from("profiles").select("*");
-      setProfiles(profiles);
-
-      const { data: project_groups } = await supabase
-        .from("project_groups")
-        .select("*");
-      setProject_groups(project_groups);
-
-      const { data: myProject_groups } = await supabase
-        .from("project_groups")
-        .select("*")
-        .eq("user_id", user.id);
-      setMyProject_groups(myProject_groups);
-
-      const { data: projects } = await supabase.from("projects").select("*");
-      setProjects(projects);
-
-      const { data: myProjects } = await supabase
-        .from("projects")
-        .select("*")
-        .eq("user_id", user.id);
-      setMyProjects(myProjects);
-
       const { data: tasks } = await supabase.from("tasks").select("*");
       setTasks(tasks);
 
@@ -116,6 +55,49 @@ export default function useStore() {
     [task]
   );
 
+  return (
+    <TaskContext.Provider
+      value={{
+        task,
+        setTask,
+        tasks,
+        setTasks,
+        myTasks,
+        setMyTasks,
+        owner,
+        setOwner,
+        project,
+        setProject
+      }}
+    >
+      {children}
+    </TaskContext.Provider>
+  );
+}
+
+export function ProjectProvider({ children }) {
+  const user = supabase.auth.user();
+
+  const [project, setProject] = useState(null);
+  const [projects, setProjects] = useState(null);
+  const [myProjects, setMyProjects] = useState(null);
+  const [owner, setOwner] = useState(null);
+  const [tasks, setTasks] = useState(null);
+
+  useEffect(
+    () => async () => {
+      const { data: projects } = await supabase.from("projects").select("*");
+      setProjects(projects);
+
+      const { data: myProjects } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("user_id", user.id);
+      setMyProjects(myProjects);
+    },
+    [user]
+  );
+
   useEffect(
     () => async () => {
       const { data: owner } =
@@ -135,6 +117,41 @@ export default function useStore() {
     [project]
   );
 
+  return (
+    <ProjectContext.Provider
+      value={{
+        project,
+        setProject,
+        projects,
+        setProjects,
+        myProjects,
+        setMyProjects,
+        owner,
+        setOwner,
+        tasks,
+        setTasks
+      }}
+    >
+      {children}
+    </ProjectContext.Provider>
+  );
+}
+
+export function ProjectGroupProvider({ children }) {
+  const [project_group, setProject_group] = useState(null);
+  const [project_groups, setProject_groups] = useState(null);
+  const [projects, setProjects] = useState(null);
+
+  useEffect(
+    () => async () => {
+      const { data: project_groups } = await supabase
+        .from("project_groups")
+        .select("*");
+      setProject_groups(project_groups);
+    },
+    []
+  );
+
   useEffect(
     () => async () => {
       const { data: projects } =
@@ -146,6 +163,39 @@ export default function useStore() {
       setProjects(projects);
     },
     [project_group]
+  );
+
+  return (
+    <ProjectGroupContext.Provider
+      value={{
+        project_group,
+        setProject_group,
+        project_groups,
+        setProject_groups,
+        projects,
+        setProjects
+      }}
+    >
+      {children}
+    </ProjectGroupContext.Provider>
+  );
+}
+
+export function ProfileProvider({ children }) {
+  const [profile, setProfile] = useState(null);
+  const [profiles, setProfiles] = useState(null);
+  const [documents, setDocuments] = useState(null);
+  const [logs, setLogs] = useState(null);
+  const [milestones, setMilestones] = useState(null);
+  const [projects, setProjects] = useState(null);
+  const [tasks, setTasks] = useState(null);
+
+  useEffect(
+    () => async () => {
+      const { data: profiles } = await supabase.from("profiles").select("*");
+      setProfiles(profiles);
+    },
+    []
   );
 
   useEffect(
@@ -184,6 +234,55 @@ export default function useStore() {
     [profile]
   );
 
+  return (
+    <ProfileContext.Provider
+      value={{
+        profile,
+        setProfile,
+        profiles,
+        setProfiles,
+        documents,
+        setDocuments,
+        logs,
+        setLogs,
+        milestones,
+        setMilestones,
+        projects,
+        setProjects,
+        tasks,
+        setTasks
+      }}
+    >
+      {children}
+    </ProfileContext.Provider>
+  );
+}
+
+export function MilestoneProvider({ children }) {
+  const user = supabase.auth.user();
+
+  const [milestone, setMilestone] = useState(null);
+  const [milestones, setMilestones] = useState(null);
+  const [myMilestones, setMyMilestones] = useState(null);
+  const [owner, setOwner] = useState(null);
+  const [project, setProject] = useState(null);
+
+  useEffect(
+    () => async () => {
+      const { data: milestones } = await supabase
+        .from("milestones")
+        .select("*");
+      setMilestones(milestones);
+
+      const { data: myMilestones } = await supabase
+        .from("milestones")
+        .select("*")
+        .eq("user_id", user.id);
+      setMyMilestones(myMilestones);
+    },
+    [user]
+  );
+
   useEffect(
     () => async () => {
       const { data: owner } =
@@ -205,6 +304,49 @@ export default function useStore() {
       setProject(project);
     },
     [milestone]
+  );
+
+  return (
+    <MilestoneContext.Provider
+      value={{
+        milestone,
+        setMilestone,
+        milestones,
+        setMilestones,
+        myMilestones,
+        setMyMilestones,
+        owner,
+        setOwner,
+        project,
+        setProject
+      }}
+    >
+      {children}
+    </MilestoneContext.Provider>
+  );
+}
+
+export function LogProvider({ children }) {
+  const user = supabase.auth.user();
+
+  const [log, setLog] = useState(null);
+  const [logs, setLogs] = useState(null);
+  const [myLogs, setMyLogs] = useState(null);
+  const [owner, setOwner] = useState(null);
+  const [task, setTask] = useState(null);
+
+  useEffect(
+    () => async () => {
+      const { data: logs } = await supabase.from("logs").select("*");
+      setLogs(logs);
+
+      const { data: myLogs } = await supabase
+        .from("logs")
+        .select("*")
+        .eq("user_id", user.id);
+      setMyLogs(myLogs);
+    },
+    [user]
   );
 
   useEffect(
@@ -230,6 +372,50 @@ export default function useStore() {
     [log]
   );
 
+  return (
+    <LogContext.Provider
+      value={{
+        log,
+        setLog,
+        logs,
+        setLogs,
+        myLogs,
+        setMyLogs,
+        owner,
+        setOwner,
+        task,
+        setTask
+      }}
+    >
+      {children}
+    </LogContext.Provider>
+  );
+}
+
+export function DocumentProvider({ children }) {
+  const user = supabase.auth.user();
+
+  const [document, setDocument] = useState(null);
+  const [documents, setDocuments] = useState(null);
+  const [myDocuments, setMyDocuments] = useState(null);
+  const [owner, setOwner] = useState(null);
+  const [task, setTask] = useState(null);
+
+  // Load initial data and set up listeners
+  useEffect(
+    () => async () => {
+      const { data: documents } = await supabase.from("documents").select("*");
+      setDocuments(documents);
+
+      const { data: myDocuments } = await supabase
+        .from("documents")
+        .select("*")
+        .eq("user_id", user.id);
+      setMyDocuments(myDocuments);
+    },
+    [user]
+  );
+
   useEffect(
     () => async () => {
       const { data: owner } =
@@ -253,49 +439,64 @@ export default function useStore() {
     [document]
   );
 
-  return {
-    // We can export computed values here
-    document,
-    setDocument,
-    documents,
-    setDocuments,
-    log,
-    setLog,
-    logs,
-    setLogs,
-    milestone,
-    setMilestone,
-    milestones,
-    setMilestones,
-    myDocuments,
-    setMyDocuments,
-    myLogs,
-    setMyLogs,
-    myMilestones,
-    setMyMilestones,
-    myProject_groups,
-    setMyProject_groups,
-    myProjects,
-    setMyProjects,
-    myTasks,
-    setMyTasks,
-    owner,
-    setOwner,
-    project,
-    setProject,
-    projects,
-    setProjects,
-    profile,
-    setProfile,
-    profiles,
-    setProfiles,
-    project_group,
-    setProject_group,
-    project_groups,
-    setProject_groups,
-    task,
-    setTask,
-    tasks,
-    setTasks
-  };
+  return (
+    <DocumentContext.Provider
+      value={{
+        document,
+        setDocument,
+        documents,
+        setDocuments,
+        myDocuments,
+        setMyDocuments,
+        owner,
+        setOwner,
+        task,
+        setTask
+      }}
+    >
+      {children}
+    </DocumentContext.Provider>
+  );
+}
+
+export function useDocumentStore() {
+  const context = useContext(DocumentContext);
+  if (!context)
+    throw new Error("useDocumentStore must be used inside a `Provider`");
+  return context;
+}
+export function useLogStore() {
+  const context = useContext(LogContext);
+  if (!context) throw new Error("useLogStore must be used inside a `Provider`");
+  return context;
+}
+export function useMilestoneStore() {
+  const context = useContext(MilestoneContext);
+  if (!context)
+    throw new Error("useMilestoneStore must be used inside a `Provider`");
+  return context;
+}
+export function useProfileStore() {
+  const context = useContext(ProfileContext);
+  if (!context)
+    throw new Error("useProfileStore must be used inside a `Provider`");
+  return context;
+}
+export function useProjectGroupStore() {
+  const context = useContext(ProjectGroupContext);
+  if (!context)
+    throw new Error("useProjectGroupStore must be used inside a `Provider`");
+  return context;
+}
+export function useProjectStore() {
+  const context = useContext(ProjectContext);
+  if (!context)
+    throw new Error("useProjectStore must be used inside a `Provider`");
+  return context;
+}
+export function useTaskStore() {
+  const context = useContext(TaskContext);
+  if (!context)
+    throw new Error("useTaskStore must be used inside a `Provider`");
+  return context;
 }

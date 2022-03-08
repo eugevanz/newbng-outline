@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
-import useStore from "../../context/store-context";
+import useLogStore from "../../context/store-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import MyLogs from "../../components/my-logs";
@@ -9,7 +9,7 @@ import Delete from "../../components/delete";
 import LogDetails from "../../components/log-details";
 
 function Logs() {
-  const { logs, setLog, myLogs, log, owner, task } = useStore();
+  const { logs, setLog, myLogs, log, owner, task } = useLogStore();
   const router = useRouter();
   const user = supabase.auth.user();
 

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
-import useStore from "../../context/store-context";
+import useProfileStore from "../../context/store-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import Delete from "../../components/delete";
@@ -17,7 +17,7 @@ function Profiles() {
     milestones,
     projects,
     tasks
-  } = useStore();
+  } = useProfileStore();
   const router = useRouter();
   const user = supabase.auth.user();
 
