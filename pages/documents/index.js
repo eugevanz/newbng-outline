@@ -9,7 +9,14 @@ import DocumentDetails from "../../components/document-details";
 import Delete from "../../components/delete";
 
 function Documents() {
-  const { documents, setDocument, myDocuments, owner, task } = useStore();
+  const {
+    documents,
+    setDocument,
+    myDocuments,
+    document,
+    owner,
+    task
+  } = useStore();
   const router = useRouter();
   const user = supabase.auth.user();
 
