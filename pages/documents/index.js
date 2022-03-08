@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
-import { useDocumentStore } from "../../context/store-context";
+import { useDocumentStore } from "../../context/store-doc-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import MyDocuments from "../../components/my-documents";
