@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
-import useTaskStore from "../../context/store-context";
+import useTaskStore from "../../context/store-task-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import MyTasks from "../../components/my-tasks";

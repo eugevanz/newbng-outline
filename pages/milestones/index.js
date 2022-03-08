@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
-import useMilestoneStore from "../../context/store-context";
+import useMilestoneStore from "../../context/store-milestone-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import MyMilestones from "../../components/my-milestones";

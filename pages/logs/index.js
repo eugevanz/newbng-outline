@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
-import useLogStore from "../../context/store-context";
+import useLogStore from "../../context/store-log-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import MyLogs from "../../components/my-logs";
