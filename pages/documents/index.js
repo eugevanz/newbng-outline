@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
-import { useDocumentStore } from "../../context/store-doc-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import MyDocuments from "../../components/my-documents";
@@ -10,16 +9,51 @@ import Delete from "../../components/delete";
 import DocumentProvider from "../../context/store-doc-context";
 
 function Documents() {
-  const {
-    documents,
-    setDocument,
-    myDocuments,
-    document,
-    owner,
-    task
-  } = useDocumentStore();
   const router = useRouter();
   const user = supabase.auth.user();
+  const [document, setDocument] = useState(null);
+  const [documents, setDocuments] = useState(null);
+  const [myDocuments, setMyDocuments] = useState(null);
+  const [owner, setOwner] = useState(null);
+  const [task, setTask] = useState(null);
+
+  // Load initial data and set up listeners
+  useEffect(
+    () => async () => {
+      const { data: documents } = await supabase.from("documents").select("*");
+      setDocuments(documents);
+
+      const { data: myDocuments } = await supabase
+        .from("documents")
+        .select("*")
+        .eq("user_id", user.id);
+      setMyDocuments(myDocuments);
+    },
+    [user]
+  );
+
+  useEffect(
+    () => async () => {
+      const { data: owner } =
+        document &&
+        (await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", document.user_id)
+          .single());
+      setOwner(owner);
+
+      const { data: task } =
+        document &&
+        (await supabase
+          .from("tasks")
+          .select("*")
+          .eq("id", document.task_id)
+          .single());
+      setTask(task);
+    },
+    [document]
+  );
 
   useEffect(() => !user && router.push("/"));
 

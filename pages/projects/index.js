@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
-import useProjectStore from "../../context/store-project-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import MyProjects from "../../components/my-projects";
@@ -10,16 +9,46 @@ import ProjectDetails from "../../components/project-details";
 import ProjectProvider from "../../context/store-project-context";
 
 function Projects() {
-  const {
-    projects,
-    setProject,
-    myProjects,
-    project,
-    owner,
-    tasks
-  } = useProjectStore();
   const router = useRouter();
   const user = supabase.auth.user();
+  const [project, setProject] = useState(null);
+  const [projects, setProjects] = useState(null);
+  const [myProjects, setMyProjects] = useState(null);
+  const [owner, setOwner] = useState(null);
+  const [tasks, setTasks] = useState(null);
+
+  useEffect(
+    () => async () => {
+      const { data: projects } = await supabase.from("projects").select("*");
+      setProjects(projects);
+
+      const { data: myProjects } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("user_id", user.id);
+      setMyProjects(myProjects);
+    },
+    [user]
+  );
+
+  useEffect(
+    () => async () => {
+      const { data: owner } =
+        project &&
+        (await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", project.user_id)
+          .single());
+      setOwner(owner);
+
+      const { data: tasks } =
+        project &&
+        (await supabase.from("tasks").select("*").eq("project_id", project.id));
+      setTasks(tasks);
+    },
+    [project]
+  );
 
   useEffect(() => !user && router.push("/"));
 

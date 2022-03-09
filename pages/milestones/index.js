@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
-import useMilestoneStore from "../../context/store-milestone-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import MyMilestones from "../../components/my-milestones";
@@ -10,16 +9,52 @@ import Delete from "../../components/delete";
 import MilestoneProvider from "../../context/store-milestone-context";
 
 function Milestones() {
-  const {
-    milestones,
-    setMilestone,
-    myMilestones,
-    milestone,
-    owner,
-    project
-  } = useMilestoneStore();
   const router = useRouter();
   const user = supabase.auth.user();
+  const [milestone, setMilestone] = useState(null);
+  const [milestones, setMilestones] = useState(null);
+  const [myMilestones, setMyMilestones] = useState(null);
+  const [owner, setOwner] = useState(null);
+  const [project, setProject] = useState(null);
+
+  useEffect(
+    () => async () => {
+      const { data: milestones } = await supabase
+        .from("milestones")
+        .select("*");
+      setMilestones(milestones);
+
+      const { data: myMilestones } = await supabase
+        .from("milestones")
+        .select("*")
+        .eq("user_id", user.id);
+      setMyMilestones(myMilestones);
+    },
+    [user]
+  );
+
+  useEffect(
+    () => async () => {
+      const { data: owner } =
+        milestone &&
+        (await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", milestone.user_id)
+          .single());
+      setOwner(owner);
+
+      const { data: project } =
+        milestone &&
+        (await supabase
+          .from("projects")
+          .select("*")
+          .eq("id", milestone.project_id)
+          .single());
+      setProject(project);
+    },
+    [milestone]
+  );
 
   useEffect(() => !user && router.push("/"));
 

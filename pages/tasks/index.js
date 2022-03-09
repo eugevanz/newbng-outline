@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
-import useTaskStore from "../../context/store-task-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import MyTasks from "../../components/my-tasks";
@@ -11,9 +10,50 @@ import AddAttachment from "../../components/add-attachment";
 import TaskProvider from "../../context/store-task-context";
 
 function Tasks() {
-  const { tasks, setTask, myTasks, task, owner, project } = useTaskStore();
   const router = useRouter();
   const user = supabase.auth.user();
+  const [task, setTask] = useState(null);
+  const [tasks, setTasks] = useState(null);
+  const [myTasks, setMyTasks] = useState(null);
+  const [owner, setOwner] = useState(null);
+  const [project, setProject] = useState(null);
+
+  useEffect(
+    () => async () => {
+      const { data: tasks } = await supabase.from("tasks").select("*");
+      setTasks(tasks);
+
+      const { data: myTasks } = await supabase
+        .from("tasks")
+        .select("*")
+        .eq("user_id", user.id);
+      setMyTasks(myTasks);
+    },
+    [user]
+  );
+
+  useEffect(
+    () => async () => {
+      const { data: owner } =
+        task &&
+        (await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", task.user_id)
+          .single());
+      setOwner(owner);
+
+      const { data: project } =
+        task &&
+        (await supabase
+          .from("projects")
+          .select("*")
+          .eq("id", task.project_id)
+          .single());
+      setProject(project);
+    },
+    [task]
+  );
 
   useEffect(() => !user && router.push("/"));
 

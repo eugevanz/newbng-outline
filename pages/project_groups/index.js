@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
-import useProjectGroupStore from "../../context/store-group-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import ProjectGroupDetails from "../../components/project-group-details";
@@ -10,15 +9,34 @@ import Delete from "../../components/delete";
 import ProjectGroupProvider from "../../context/store-group-context";
 
 function ProjectGroups() {
-  const {
-    project_groups,
-    setProject_group,
-    myProject_groups,
-    project_group,
-    projects
-  } = useProjectGroupStore();
   const router = useRouter();
   const user = supabase.auth.user();
+  const [project_group, setProject_group] = useState(null);
+  const [project_groups, setProject_groups] = useState(null);
+  const [projects, setProjects] = useState(null);
+
+  useEffect(
+    () => async () => {
+      const { data: project_groups } = await supabase
+        .from("project_groups")
+        .select("*");
+      setProject_groups(project_groups);
+    },
+    []
+  );
+
+  useEffect(
+    () => async () => {
+      const { data: projects } =
+        project_group &&
+        (await supabase
+          .from("projects")
+          .select("*")
+          .eq("project_group_id", project_group.id));
+      setProjects(projects);
+    },
+    [project_group]
+  );
 
   useEffect(() => !user && router.push("/"));
 
