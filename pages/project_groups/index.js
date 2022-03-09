@@ -51,41 +51,33 @@ function ProjectGroups() {
           </div>
 
           <div>
-            {project_groups ? (
+            {project_groups && (
               <ReadAllRows
                 data={project_groups}
                 title="All Project Groups"
                 setSelection={setProject_group}
               ></ReadAllRows>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {project_group ? (
+            {project_group && (
               <ProjectGroupDetails data={project_group}></ProjectGroupDetails>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {projects ? (
+            {projects && (
               <ReadAllRows
                 data={projects}
                 title="User's projects"
               ></ReadAllRows>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {project_group ? (
+            {project_group && (
               <Delete item={project_group} table="project_groups"></Delete>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
         </div>

@@ -69,43 +69,31 @@ function Documents() {
           </div>
 
           <div>
-            {documents ? (
+            {documents && (
               <ReadAllRows
                 data={documents}
                 title="All documents"
                 setSelection={setDocument}
               ></ReadAllRows>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {myDocuments ? (
-              <MyDocuments data={myDocuments}></MyDocuments>
-            ) : (
-              <div data-uk-spinner></div>
-            )}
+            {myDocuments && <MyDocuments data={myDocuments}></MyDocuments>}
           </div>
 
           <div>
-            {document & owner & task ? (
+            {document & owner & task && (
               <DocumentDetails
                 data={document}
                 owner={owner}
                 task={task}
               ></DocumentDetails>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {document ? (
-              <Delete item={document} table="documents"></Delete>
-            ) : (
-              <div data-uk-spinner></div>
-            )}
+            {document && <Delete item={document} table="documents"></Delete>}
           </div>
         </div>
       </div>

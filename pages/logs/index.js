@@ -68,40 +68,24 @@ function Logs() {
           </div>
 
           <div>
-            {logs ? (
+            {logs && (
               <ReadAllRows
                 data={logs}
                 title="All Logs"
                 setSelection={setLog}
               ></ReadAllRows>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
-          <div>
-            {myLogs ? (
-              <MyLogs data={myLogs}></MyLogs>
-            ) : (
-              <div data-uk-spinner></div>
-            )}
-          </div>
+          <div>{myLogs && <MyLogs data={myLogs}></MyLogs>}</div>
 
           <div>
-            {log & owner & task ? (
+            {log & owner & task && (
               <LogDetails data={log} owner={owner} task={task}></LogDetails>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
-          <div>
-            {log ? (
-              <Delete item={log} table="logs"></Delete>
-            ) : (
-              <div data-uk-spinner></div>
-            )}
-          </div>
+          <div>{log && <Delete item={log} table="logs"></Delete>}</div>
         </div>
       </div>
     </LogProvider>

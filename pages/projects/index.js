@@ -64,50 +64,40 @@ function Projects() {
           </div>
 
           <div>
-            {projects ? (
+            {projects && (
               <ReadAllRows
                 data={projects}
                 title="All Projects"
                 setSelection={setProject}
               ></ReadAllRows>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {myProjects ? (
+            {myProjects && (
               <MyProjects data={myProjects}></MyProjects>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {project & owner ? (
+            {project & owner && (
               <ProjectDetails data={project} owner={owner}></ProjectDetails>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {tasks ? (
+            {tasks && (
               <ReadAllRows
                 data={tasks}
                 title="Project tasks"
                 setSelection={setProject}
               ></ReadAllRows>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {project ? (
+            {project && (
               <Delete item={project} table="projects"></Delete>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
         </div>

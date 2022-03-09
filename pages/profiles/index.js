@@ -76,79 +76,63 @@ function Profiles() {
           </div>
 
           <div>
-            {profiles ? (
+            {profiles && (
               <ReadAllRows
                 data={profiles}
                 title="All Profiles"
                 setSelection={setProfile}
               ></ReadAllRows>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {profile ? (
+            {profile && (
               <ProfileDetails data={profile}></ProfileDetails>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {documents ? (
+            {documents && (
               <ReadAllRows
                 data={documents}
                 title="User's documents"
               ></ReadAllRows>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {logs ? (
+            {logs && (
               <ReadAllRows data={logs} title="User's logs"></ReadAllRows>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {milestones ? (
+            {milestones && (
               <ReadAllRows
                 data={milestones}
                 title="User's milestones"
               ></ReadAllRows>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {projects ? (
+            {projects && (
               <ReadAllRows
                 data={projects}
                 title="User's projects"
               ></ReadAllRows>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {tasks ? (
+            {tasks && (
               <ReadAllRows data={tasks} title="User's tasks"></ReadAllRows>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {profile ? (
+            {profile && (
               <Delete item={profile} table="profiles"></Delete>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
         </div>

@@ -70,42 +70,34 @@ function Milestones() {
           </div>
 
           <div>
-            {milestones ? (
+            {milestones && (
               <ReadAllRows
                 data={milestones}
                 title="All Milestones"
                 setSelection={setMilestone}
               ></ReadAllRows>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {myMilestones ? (
+            {myMilestones && (
               <MyMilestones data={myMilestones}></MyMilestones>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {milestone & owner & project ? (
+            {milestone & owner & project && (
               <MilestoneDetails
                 data={milestone}
                 owner={owner}
                 project={project}
               ></MilestoneDetails>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
 
           <div>
-            {milestone ? (
+            {milestone && (
               <Delete item={milestone} table="milestones"></Delete>
-            ) : (
-              <div data-uk-spinner></div>
             )}
           </div>
         </div>
