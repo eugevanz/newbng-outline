@@ -1,10 +1,9 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
 import ProjectGroupDetails from "../../components/project-group-details";
-import MyProjectGroups from "../../components/my-project-groups";
 import Delete from "../../components/delete";
 import ProjectGroupProvider from "../../context/store-group-context";
 
@@ -58,14 +57,6 @@ function ProjectGroups() {
                 title="All Project Groups"
                 setSelection={setProject_group}
               ></ReadAllRows>
-            ) : (
-              <div data-uk-spinner></div>
-            )}
-          </div>
-
-          <div>
-            {myProject_groups ? (
-              <MyProjectGroups data={myProject_groups}></MyProjectGroups>
             ) : (
               <div data-uk-spinner></div>
             )}
