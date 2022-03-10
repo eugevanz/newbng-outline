@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+zimport { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
@@ -17,24 +17,16 @@ function Milestones() {
   const [owner, setOwner] = useState(null);
   const [project, setProject] = useState(null);
 
-  useEffect(
-    () => async () => {
-      const { data: milestones } = await supabase
-        .from("milestones")
-        .select("*");
-      setMilestones(milestones);
-
-      const { data: myMilestones } = await supabase
-        .from("milestones")
-        .select("*")
-        .eq("user_id", user.id);
-      setMyMilestones(myMilestones);
+  useEffect(() => {
+      fetch('/api/milestones').then(data=>setMilestones(data));
+fetch(`/api/my-stuff/milestones/${user.id}`).then((data) => setMyMilestones(data));
     },
     [user]
   );
 
   useEffect(
     () => async () => {
+      milestone &&fetch('/api/milestone',{headers: {'Content-Type':''}})
       const { data: owner } =
         milestone &&
         (await supabase

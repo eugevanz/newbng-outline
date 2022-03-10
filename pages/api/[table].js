@@ -1,36 +1,33 @@
 import { createClient } from "@supabase/supabase-js";
 
-async function table(req, res) {
-  const client = createClient(
-    process.env.NEXT_APP_SUPABASE_URL,
-    process.env.NEXT_APP_SUPABASE_SERVICE_ROLE
-  );
+const supabase = createClient(
+  process.env.NEXT_APP_SUPABASE_URL,
+  process.env.NEXT_APP_SUPABASE_SERVICE_ROLE
+);
 
-  const { table } = req.query;
-
-  if (req.method === "GET") {
-    const { data } = await client.from(table).select("*");
-    res.status(200).json(data);
-  } else if (req.method === "POST") {
-    await client
-      .from(table)
-      .insert([req.body])
+export default async function handler(request, response) {
+  if (request.method === "GET") {
+    const { data } = await supabase.from(request.query).select("*");
+    response.end({ data });
+  } else if (request.method === "POST") {
+    await supabase
+      .from(request.query)
+      .insert([request.body])
       .then((data) => console.log(data))
       .catch((error) => console.error(error));
-  } else if (req.method === "PUT") {
-    await client
-      .from(table)
-      .update(req.body.formData)
-      .eq("id", req.body.id)
+  } else if (request.method === "PUT") {
+    await supabase
+      .from(request.query)
+      .update(request.body.formData)
+      .eq("id", request.body.id)
       .then((data) => console.log(data))
       .catch((error) => console.error(error));
-  } else if (req.method === "DELETE") {
-    await client
-      .from(table)
+  } else if (request.method === "DELETE") {
+    await supabase
+      .from(request.query)
       .delete()
-      .eq("id", req.body.id)
+      .eq("id", request.body.id)
       .then((data) => console.log(data))
       .catch((error) => console.error(error));
   }
 }
-export default table;

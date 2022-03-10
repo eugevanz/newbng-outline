@@ -18,42 +18,22 @@ function Documents() {
   const [task, setTask] = useState(null);
 
   // Load initial data and set up listeners
-  useEffect(
-    () => async () => {
-      const { data: documents } = await supabase.from("documents").select("*");
-      setDocuments(documents);
+  useEffect(() => {
+    fetch("/api/documents").then((data) => setDocuments(data));
+    fetch(`/api/my-stuff/documents/${user.id}`).then((data) => setMyDocuments(data.body);
+  }, [user]);
 
-      const { data: myDocuments } = await supabase
-        .from("documents")
-        .select("*")
-        .eq("user_id", user.id);
-      setMyDocuments(myDocuments);
-    },
-    [user]
-  );
-
-  useEffect(
-    () => async () => {
-      const { data: owner } =
-        document &&
-        (await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", document.user_id)
-          .single());
-      setOwner(owner);
-
-      const { data: task } =
-        document &&
-        (await supabase
-          .from("tasks")
-          .select("*")
-          .eq("id", document.task_id)
-          .single());
-      setTask(task);
-    },
-    [document]
-  );
+  useEffect(() => {
+    document &&
+      fetch(`/api/selected/document/${document.user_id}/${document.task_id}`,{headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_id: log.user_id,
+        task_id: log.task_id
+      })}).then((data) => {
+        setOwner(data.owner);
+        setTask(data.task);
+      });
+  }, [document]);
 
   useEffect(() => !user && router.push("/"));
 

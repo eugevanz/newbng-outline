@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
@@ -18,42 +18,27 @@ function Tasks() {
   const [owner, setOwner] = useState(null);
   const [project, setProject] = useState(null);
 
-  useEffect(
-    () => async () => {
-      const { data: tasks } = await supabase.from("tasks").select("*");
-      setTasks(tasks);
+  useEffect(() => {
+    fetch("/api/tasks").then((data) => setTasks(data));
+    fetch("/api/my-stuff/tasks", {
+      headers: { "Context-Type": "text/plain" },
+      body: user.id
+    }).then((data) => setMyTasks(data));
+  }, [user]);
 
-      const { data: myTasks } = await supabase
-        .from("tasks")
-        .select("*")
-        .eq("user_id", user.id);
-      setMyTasks(myTasks);
-    },
-    [user]
-  );
-
-  useEffect(
-    () => async () => {
-      const { data: owner } =
-        task &&
-        (await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", task.user_id)
-          .single());
-      setOwner(owner);
-
-      const { data: project } =
-        task &&
-        (await supabase
-          .from("projects")
-          .select("*")
-          .eq("id", task.project_id)
-          .single());
-      setProject(project);
-    },
-    [task]
-  );
+  useEffect(() => {
+    task &&
+      fetch("/api/selected/task", {
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: task.user_id,
+          project_id: task.project_id
+        })
+      }).then((data) => {
+        setOwner(data.owner);
+        setProject(data.project);
+      });
+  }, [task]);
 
   useEffect(() => !user && router.push("/"));
 
@@ -75,11 +60,7 @@ function Tasks() {
             )}
           </div>
 
-          <div>
-            {myTasks && (
-              <MyTasks data={myTasks}></MyTasks>
-            )}
-          </div>
+          <div>{myTasks && <MyTasks data={myTasks}></MyTasks>}</div>
 
           <div>
             {task & owner & project && (

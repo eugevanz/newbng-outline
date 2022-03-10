@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
@@ -17,38 +17,27 @@ function Projects() {
   const [owner, setOwner] = useState(null);
   const [tasks, setTasks] = useState(null);
 
-  useEffect(
-    () => async () => {
-      const { data: projects } = await supabase.from("projects").select("*");
-      setProjects(projects);
+  useEffect(() => {
+    fetch("/api/projects").then((data) => setProjects(data));
+    fetch("/api/my-stuff", {
+      headers: { "Context-Type": "text/plain" },
+      body: user.id
+    }).then((data) => setMyProjects(data));
+  }, [user]);
 
-      const { data: myProjects } = await supabase
-        .from("projects")
-        .select("*")
-        .eq("user_id", user.id);
-      setMyProjects(myProjects);
-    },
-    [user]
-  );
-
-  useEffect(
-    () => async () => {
-      const { data: owner } =
-        project &&
-        (await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", project.user_id)
-          .single());
-      setOwner(owner);
-
-      const { data: tasks } =
-        project &&
-        (await supabase.from("tasks").select("*").eq("project_id", project.id));
-      setTasks(tasks);
-    },
-    [project]
-  );
+  useEffect(() => {
+    project &&
+      fetch("/api/selected/project", {
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: project.user_id,
+          project_id: project.id
+        })
+      }).then((data) => {
+        setOwner(data.owner);
+        setTasks(data.tasks);
+      });
+  }, [project]);
 
   useEffect(() => !user && router.push("/"));
 
@@ -73,11 +62,7 @@ function Projects() {
             )}
           </div>
 
-          <div>
-            {myProjects && (
-              <MyProjects data={myProjects}></MyProjects>
-            )}
-          </div>
+          <div>{myProjects && <MyProjects data={myProjects}></MyProjects>}</div>
 
           <div>
             {project & owner && (
@@ -96,9 +81,7 @@ function Projects() {
           </div>
 
           <div>
-            {project && (
-              <Delete item={project} table="projects"></Delete>
-            )}
+            {project && <Delete item={project} table="projects"></Delete>}
           </div>
         </div>
       </div>

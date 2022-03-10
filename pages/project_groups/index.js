@@ -14,28 +14,17 @@ function ProjectGroups() {
   const [project_groups, setProject_groups] = useState(null);
   const [projects, setProjects] = useState(null);
 
-  useEffect(
-    () => async () => {
-      const { data: project_groups } = await supabase
-        .from("project_groups")
-        .select("*");
-      setProject_groups(project_groups);
-    },
-    []
-  );
+  useEffect(() => {
+    fetch("/api/project_groups").then((data) => setProject_groups(data));
+  }, []);
 
-  useEffect(
-    () => async () => {
-      const { data: projects } =
-        project_group &&
-        (await supabase
-          .from("projects")
-          .select("*")
-          .eq("project_group_id", project_group.id));
-      setProjects(projects);
-    },
-    [project_group]
-  );
+  useEffect(() => {
+    project_group &&
+      fetch("/api/project_group", {
+        headers: { "Content-Type": "text/plain" },
+        body: project_group.id
+      }).then((data) => setProjects(data));
+  }, [project_group]);
 
   useEffect(() => !user && router.push("/"));
 

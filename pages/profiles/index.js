@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
@@ -18,46 +18,22 @@ function Profiles() {
   const [projects, setProjects] = useState(null);
   const [tasks, setTasks] = useState(null);
 
-  useEffect(
-    () => async () => {
-      const { data: profiles } = await supabase.from("profiles").select("*");
-      setProfiles(profiles);
-    },
-    []
-  );
+  useEffect(() => {
+    fetch("/api/profiles").then((data) => setProfiles(data));
+  }, []);
 
   useEffect(
     () => async () => {
-      const { data: documents } =
-        profile &&
-        (await supabase
-          .from("documents")
-          .select("*")
-          .eq("user_id", profile.id));
-      setDocuments(documents);
-
-      const { data: logs } =
-        profile &&
-        (await supabase.from("logs").select("*").eq("user_id", profile.id));
-      setLogs(logs);
-
-      const { data: milestones } =
-        profile &&
-        (await supabase
-          .from("milestones")
-          .select("*")
-          .eq("user_id", profile.id));
-      setMilestones(milestones);
-
-      const { data: projects } =
-        profile &&
-        (await supabase.from("projects").select("*").eq("user_id", profile.id));
-      setProjects(projects);
-
-      const { data: tasks } =
-        profile &&
-        (await supabase.from("tasks").select("*").eq("user_id", profile.id));
-      setTasks(tasks);
+      fetch("/api/selected/profile", {
+        headers: { "Content-Type": "text/plain" },
+        body: profile.id
+      }).then((data) => {
+        setDocuments(data.documents);
+        setLogs(data.logs);
+        setMilestones(data.milestones);
+        setProjects(data.projects);
+        setTasks(data.tasks);
+      });
     },
     [profile]
   );
@@ -86,9 +62,7 @@ function Profiles() {
           </div>
 
           <div>
-            {profile && (
-              <ProfileDetails data={profile}></ProfileDetails>
-            )}
+            {profile && <ProfileDetails data={profile}></ProfileDetails>}
           </div>
 
           <div>
@@ -131,9 +105,7 @@ function Profiles() {
           </div>
 
           <div>
-            {profile && (
-              <Delete item={profile} table="profiles"></Delete>
-            )}
+            {profile && <Delete item={profile} table="profiles"></Delete>}
           </div>
         </div>
       </div>

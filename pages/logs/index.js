@@ -17,42 +17,24 @@ function Logs() {
   const [owner, setOwner] = useState(null);
   const [task, setTask] = useState(null);
 
-  useEffect(
-    () => async () => {
-      const { data: logs } = await supabase.from("logs").select("*");
-      setLogs(logs);
+  useEffect(() => {
+    fetch("/api/logs").then((data) => setLogs(data));
+    fetch(`/api/my-stuff/logs/${user.id}`).then((data) => setMyLogs(data));
+  }, [user]);
 
-      const { data: myLogs } = await supabase
-        .from("logs")
-        .select("*")
-        .eq("user_id", user.id);
-      setMyLogs(myLogs);
-    },
-    [user]
-  );
-
-  useEffect(
-    () => async () => {
-      const { data: owner } =
-        log &&
-        (await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", log.user_id)
-          .single());
-      setOwner(owner);
-
-      const { data: task } =
-        log &&
-        (await supabase
-          .from("tasks")
-          .select("*")
-          .eq("id", log.task_id)
-          .single());
-      setTask(task);
-    },
-    [log]
-  );
+  useEffect(() => {
+    log &&
+      fetch("/api/selected/log", {
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: log.user_id,
+          task_id: log.task_id
+        })
+      }).then((data) => {
+        setOwner(data.owner);
+        setTask(data.task);
+      });
+  }, [log]);
 
   useEffect(() => !user && router.push("/"));
 
