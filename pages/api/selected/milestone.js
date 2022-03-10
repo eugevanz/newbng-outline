@@ -12,11 +12,11 @@ export default async function handler(request, response) {
     .eq("id", request.body.user_id)
     .single();
 
-  const { data: projects } = supabase
+  const { data: project } = supabase
     .from("projects")
     .select("*")
     .eq("id", request.body.project_id)
     .single();
 
-  response.end({ owner, projects });
+  response.end({ owner, project });
 }

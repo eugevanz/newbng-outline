@@ -22,8 +22,8 @@ function Profiles() {
     fetch("/api/profiles").then((data) => setProfiles(data));
   }, []);
 
-  useEffect(
-    () => async () => {
+  useEffect(() => {
+    profile &&
       fetch("/api/selected/profile", {
         headers: { "Content-Type": "text/plain" },
         body: profile.id
@@ -34,9 +34,7 @@ function Profiles() {
         setProjects(data.projects);
         setTasks(data.tasks);
       });
-    },
-    [profile]
-  );
+  }, [profile]);
 
   useEffect(() => !user && router.push("/"));
 

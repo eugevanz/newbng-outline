@@ -1,4 +1,4 @@
-zimport { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
@@ -18,35 +18,25 @@ function Milestones() {
   const [project, setProject] = useState(null);
 
   useEffect(() => {
-      fetch('/api/milestones').then(data=>setMilestones(data));
-fetch(`/api/my-stuff/milestones/${user.id}`).then((data) => setMyMilestones(data));
-    },
-    [user]
-  );
+    fetch("/api/milestones").then((data) => setMilestones(data));
+    fetch(`/api/my-stuff/milestones/${user.id}`).then((data) =>
+      setMyMilestones(data)
+    );
+  }, [user]);
 
-  useEffect(
-    () => async () => {
-      milestone &&fetch('/api/milestone',{headers: {'Content-Type':''}})
-      const { data: owner } =
-        milestone &&
-        (await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", milestone.user_id)
-          .single());
-      setOwner(owner);
-
-      const { data: project } =
-        milestone &&
-        (await supabase
-          .from("projects")
-          .select("*")
-          .eq("id", milestone.project_id)
-          .single());
-      setProject(project);
-    },
-    [milestone]
-  );
+  useEffect(() => {
+    milestone &&
+      fetch("/api/milestone", {
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: milestone.user_id,
+          project_id: milestone.project_id
+        })
+      }).then((data) => {
+        setOwner(data.owner);
+        setProject(data.project);
+      });
+  }, [milestone]);
 
   useEffect(() => !user && router.push("/"));
 
@@ -72,9 +62,7 @@ fetch(`/api/my-stuff/milestones/${user.id}`).then((data) => setMyMilestones(data
           </div>
 
           <div>
-            {myMilestones && (
-              <MyMilestones data={myMilestones}></MyMilestones>
-            )}
+            {myMilestones && <MyMilestones data={myMilestones}></MyMilestones>}
           </div>
 
           <div>
@@ -88,9 +76,7 @@ fetch(`/api/my-stuff/milestones/${user.id}`).then((data) => setMyMilestones(data
           </div>
 
           <div>
-            {milestone && (
-              <Delete item={milestone} table="milestones"></Delete>
-            )}
+            {milestone && <Delete item={milestone} table="milestones"></Delete>}
           </div>
         </div>
       </div>
