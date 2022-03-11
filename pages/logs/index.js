@@ -24,13 +24,7 @@ function Logs() {
 
   useEffect(() => {
     log &&
-      fetch("/api/selected/log", {
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          user_id: log.user_id,
-          task_id: log.task_id
-        })
-      }).then((data) => {
+      fetch(`/api/selected/log/${log.user_id}/${log.task_id}`).then((data) => {
         setOwner(data.owner);
         setTask(data.task);
       });

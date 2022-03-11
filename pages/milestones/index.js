@@ -26,13 +26,9 @@ function Milestones() {
 
   useEffect(() => {
     milestone &&
-      fetch("/api/milestone", {
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          user_id: milestone.user_id,
-          project_id: milestone.project_id
-        })
-      }).then((data) => {
+      fetch(
+        `/api/selected/milestone/${milestone.user_id}/${milestone.project_id}`
+      ).then((data) => {
         setOwner(data.owner);
         setProject(data.project);
       });

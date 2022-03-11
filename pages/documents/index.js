@@ -21,19 +21,15 @@ function Documents() {
   useEffect(() => {
     fetch("/api/documents").then((data) => setDocuments(data));
     fetch(`/api/my-stuff/documents/${user.id}`).then((data) =>
-      setMyDocuments(data.body)
+      setMyDocuments(data)
     );
   }, [user]);
 
   useEffect(() => {
     document &&
-      fetch(`/api/selected/document/${document.user_id}/${document.task_id}`, {
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          user_id: log.user_id,
-          task_id: log.task_id
-        })
-      }).then((data) => {
+      fetch(
+        `/api/selected/document/${document.user_id}/${document.task_id}`
+      ).then((data) => {
         setOwner(data.owner);
         setTask(data.task);
       });

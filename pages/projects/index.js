@@ -19,24 +19,19 @@ function Projects() {
 
   useEffect(() => {
     fetch("/api/projects").then((data) => setProjects(data));
-    fetch("/api/my-stuff", {
-      headers: { "Context-Type": "text/plain" },
-      body: user.id
-    }).then((data) => setMyProjects(data));
+    fetch(`/api/my-stuff/projects/${user.id}`).then((data) =>
+      setMyProjects(data)
+    );
   }, [user]);
 
   useEffect(() => {
     project &&
-      fetch("/api/selected/project", {
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          user_id: project.user_id,
-          project_id: project.id
-        })
-      }).then((data) => {
-        setOwner(data.owner);
-        setTasks(data.tasks);
-      });
+      fetch(`/api/selected/project/${project.user_id}/${project.id}`).then(
+        (data) => {
+          setOwner(data.owner);
+          setTasks(data.tasks);
+        }
+      );
   }, [project]);
 
   useEffect(() => !user && router.push("/"));

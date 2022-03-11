@@ -9,14 +9,14 @@ export default async function handler(request, response) {
   const { data: owner } = await supabase
     .from("profiles")
     .select("*")
-    .eq("id", request.body.user_id)
+    .eq("id", request.query[0])
     .single();
 
-  const { data: task } = await supabase
-    .from("tasks")
+  const { data: project } = supabase
+    .from("projects")
     .select("*")
-    .eq("id", request.body.project_id)
+    .eq("id", request.query[1])
     .single();
 
-  response.end({ owner, task });
+  response.end({ owner, project });
 }

@@ -1,14 +1,16 @@
 import supabase from "../context/auth-context";
 import { useForm } from "react-hook-form";
-import Image from "next/image";
+import { useRouter } from "next/router";
+// import {handleAuth} from '@supabase/supabase-auth-he'
 
 function Auth() {
   const { register, handleSubmit, reset } = useForm();
+  const { push } = useRouter();
 
   async function onSubmit({ email }) {
     try {
       const { error } = await supabase.auth.signIn({ email });
-      if (error) throw error;
+      if (!error) push("/");
       alert("Check your email for the login link!");
     } catch (error) {
       alert(error.error_description || error.message);
@@ -22,10 +24,10 @@ function Auth() {
       <div className="uk-card uk-card-small uk-border-rounded uk-margin-bottom">
         <div className="uk-card-body">
           <span className="uk-text-meta uk-text-bold">
-            Sign in via magic link with your email below
+            Fill in your email, we'll send you a magic link.
           </span>
 
-          <div className="uk-margin-top">
+          <div className="uk-margin">
             <input
               {...register("email")}
               className="uk-input uk-form-small uk-border-rounded"

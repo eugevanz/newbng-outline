@@ -6,12 +6,10 @@ const supabase = createClient(
 );
 
 export default async function handler(request, response) {
-  const { data } = await supabase
-    .from(request.query[0])
+  const { data: projects } = await supabase
+    .from("projects")
     .select("*")
-    .eq("user_id", request.query[1]);
+    .eq("project_group_id", request.query);
 
-  response.status(200).json({
-    body: data
-  });
+  response.end({ projects });
 }

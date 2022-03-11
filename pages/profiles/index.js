@@ -24,10 +24,7 @@ function Profiles() {
 
   useEffect(() => {
     profile &&
-      fetch("/api/selected/profile", {
-        headers: { "Content-Type": "text/plain" },
-        body: profile.id
-      }).then((data) => {
+      fetch(`/api/selected/profile/${profile.id}`).then((data) => {
         setDocuments(data.documents);
         setLogs(data.logs);
         setMilestones(data.milestones);

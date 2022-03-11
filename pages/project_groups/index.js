@@ -20,10 +20,9 @@ function ProjectGroups() {
 
   useEffect(() => {
     project_group &&
-      fetch("/api/project_group", {
-        headers: { "Content-Type": "text/plain" },
-        body: project_group.id
-      }).then((data) => setProjects(data));
+      fetch(`/api/selected/project_group/${project_group.id}`).then((data) =>
+        setProjects(data)
+      );
   }, [project_group]);
 
   useEffect(() => !user && router.push("/"));
