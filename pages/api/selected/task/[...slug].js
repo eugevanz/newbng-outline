@@ -6,17 +6,18 @@ const supabase = createClient(
 );
 
 export default async function handler(request, response) {
-  const { data: owner } = await supabase
+  const { data: owner,error } = await supabase
     .from("profiles")
     .select("*")
     .eq("id", request.query[0])
     .single();
 
-  const { data: project } = await supabase
+  const { data: project,error:er } = await supabase
     .from("projects")
     .select("*")
     .eq("id", request.query[1])
     .single();
-
+    error && console.log(error);
+    er && console.log(er);
   response.end({ owner, project });
 }
