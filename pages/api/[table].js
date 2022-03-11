@@ -1,13 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
-  process.env.NEXT_APP_SUPABASE_URL,
-  process.env.NEXT_APP_SUPABASE_SERVICE_ROLE
+  process.env.PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
 export default async function handler(request, response) {
   if (request.method === "GET") {
-    const { data,error } = await supabase.from(request.query).select("*");
+    const { data, error } = await supabase.from(request.query).select("*");
     error && console.log(error);
     response.end(data);
   } else if (request.method === "POST") {

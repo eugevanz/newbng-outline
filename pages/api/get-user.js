@@ -1,8 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
-  process.env.NEXT_APP_SUPABASE_URL,
-  process.env.NEXT_APP_SUPABASE_SERVICE_ROLE
+  process.env.PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
 // Example of how to verify and get user data server-side.
