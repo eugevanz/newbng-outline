@@ -6,7 +6,6 @@ import ReadAllRows from "../../components/read-all-rows";
 import MyProjects from "../../components/my-projects";
 import Delete from "../../components/delete";
 import ProjectDetails from "../../components/project-details";
-import ProjectProvider from "../../context/store-project-context";
 
 function Projects() {
   const router = useRouter();
@@ -37,50 +36,48 @@ function Projects() {
   useEffect(() => !user && router.push("/"));
 
   return (
-    <ProjectProvider>
-      <div className="uk-width-expand@m">
-        <div
-          className="uk-child-width-1-2@m js-filter"
-          data-uk-grid="masonry: true"
-        >
-          <div>
-            <SearchAcrossProjects title="projects"></SearchAcrossProjects>
-          </div>
+    <div className="uk-width-expand@m">
+      <div
+        className="uk-child-width-1-2@m js-filter"
+        data-uk-grid="masonry: true"
+      >
+        <div>
+          <SearchAcrossProjects title="projects"></SearchAcrossProjects>
+        </div>
 
-          <div>
-            {projects && (
-              <ReadAllRows
-                data={projects}
-                title="All Projects"
-                setSelection={setProject}
-              ></ReadAllRows>
-            )}
-          </div>
+        <div>
+          {projects && (
+            <ReadAllRows
+              data={projects}
+              title="All Projects"
+              setSelection={setProject}
+            ></ReadAllRows>
+          )}
+        </div>
 
-          <div>{myProjects && <MyProjects data={myProjects}></MyProjects>}</div>
+        <div>{myProjects && <MyProjects data={myProjects}></MyProjects>}</div>
 
-          <div>
-            {project & owner && (
-              <ProjectDetails data={project} owner={owner}></ProjectDetails>
-            )}
-          </div>
+        <div>
+          {project & owner && (
+            <ProjectDetails data={project} owner={owner}></ProjectDetails>
+          )}
+        </div>
 
-          <div>
-            {tasks && (
-              <ReadAllRows
-                data={tasks}
-                title="Project tasks"
-                setSelection={setProject}
-              ></ReadAllRows>
-            )}
-          </div>
+        <div>
+          {tasks && (
+            <ReadAllRows
+              data={tasks}
+              title="Project tasks"
+              setSelection={setProject}
+            ></ReadAllRows>
+          )}
+        </div>
 
-          <div>
-            {project && <Delete item={project} table="projects"></Delete>}
-          </div>
+        <div>
+          {project && <Delete item={project} table="projects"></Delete>}
         </div>
       </div>
-    </ProjectProvider>
+    </div>
   );
 }
 export default Projects;

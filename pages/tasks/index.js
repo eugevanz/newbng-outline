@@ -7,7 +7,6 @@ import MyTasks from "../../components/my-tasks";
 import Delete from "../../components/delete";
 import TaskDetails from "../../components/task-details";
 import AddAttachment from "../../components/add-attachment";
-import TaskProvider from "../../context/store-task-context";
 
 function Tasks() {
   const router = useRouter();
@@ -36,49 +35,47 @@ function Tasks() {
   useEffect(() => !user && router.push("/"));
 
   return (
-    <TaskProvider>
-      <div className="uk-width-expand@m">
-        <div className="uk-child-width-1-2@m" data-uk-grid="masonry: true">
-          <div>
-            <SearchAcrossProjects title="tasks"></SearchAcrossProjects>
-          </div>
+    <div className="uk-width-expand@m">
+      <div className="uk-child-width-1-2@m" data-uk-grid="masonry: true">
+        <div>
+          <SearchAcrossProjects title="tasks"></SearchAcrossProjects>
+        </div>
 
-          <div>
-            {tasks && (
-              <ReadAllRows
-                data={tasks}
-                title="All Tasks"
-                setSelection={setTask}
-              ></ReadAllRows>
-            )}
-          </div>
+        <div>
+          {tasks && (
+            <ReadAllRows
+              data={tasks}
+              title="All Tasks"
+              setSelection={setTask}
+            ></ReadAllRows>
+          )}
+        </div>
 
-          <div>{myTasks && <MyTasks data={myTasks}></MyTasks>}</div>
+        <div>{myTasks && <MyTasks data={myTasks}></MyTasks>}</div>
 
-          <div>
-            {task & owner & project && (
-              <TaskDetails
-                data={task}
-                owner={owner}
-                projectName={project.name}
-              ></TaskDetails>
-            )}
-          </div>
+        <div>
+          {task & owner & project && (
+            <TaskDetails
+              data={task}
+              owner={owner}
+              projectName={project.name}
+            ></TaskDetails>
+          )}
+        </div>
 
-          <div>
-            <AddAttachment></AddAttachment>
-          </div>
+        <div>
+          <AddAttachment></AddAttachment>
+        </div>
 
-          <div>
-            {task ? (
-              <Delete item={task} table="tasks"></Delete>
-            ) : (
-              <div data-uk-spinner></div>
-            )}
-          </div>
+        <div>
+          {task ? (
+            <Delete item={task} table="tasks"></Delete>
+          ) : (
+            <div data-uk-spinner></div>
+          )}
         </div>
       </div>
-    </TaskProvider>
+    </div>
   );
 }
 export default Tasks;
