@@ -7,9 +7,9 @@ const supabase = createClient(
 
 export default async function handler(request, response) {
   const { data, error } = await supabase
-    .from(request.query[0])
+    .from(request.query.slug[0])
     .select("*")
-    .eq("user_id", request.query[1]);
+    .eq("user_id", request.query.slug[1]);
   error && console.log(error);
   response.end(data);
 }

@@ -17,20 +17,22 @@ function Projects() {
   const [tasks, setTasks] = useState(null);
 
   useEffect(() => {
-    fetch("/api/projects").then((data) => setProjects(data));
-    fetch(`/api/my-stuff/projects/${user.id}`).then((data) =>
-      setMyProjects(data)
-    );
+    fetch("/api/projects")
+      .then((data) => data.json())
+      .then((data) => setProjects(data));
+    fetch(`/api/my-stuff/projects/${user.id}`)
+      .then((data) => data.json())
+      .then((data) => setMyProjects(data));
   }, [user]);
 
   useEffect(() => {
     project &&
-      fetch(`/api/selected/project/${project.user_id}/${project.id}`).then(
-        (data) => {
+      fetch(`/api/selected/project/${project.user_id}/${project.id}`)
+        .then((data) => data.json())
+        .then((data) => {
           setOwner(data.owner);
           setTasks(data.tasks);
-        }
-      );
+        });
   }, [project]);
 
   useEffect(() => !user && router.push("/"));

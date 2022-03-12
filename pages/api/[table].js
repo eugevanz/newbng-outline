@@ -7,7 +7,9 @@ const supabase = createClient(
 
 export default async function handler(request, response) {
   if (request.method === "GET") {
-    const { data, error } = await supabase.from(request.query).select("*");
+    const { data, error } = await supabase
+      .from(request.query.table)
+      .select("*");
     error && console.log(error);
     response.end(data);
   } else if (request.method === "POST") {

@@ -5,15 +5,20 @@ import { Auth } from "@supabase/ui";
 
 function Nav() {
   const router = useRouter();
-  const user = supabase.auth.user();
+  const [user, setUser] = useState(null);
   const [authView, setAuthView] = useState("sign_in");
 
   useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "PASSWORD_RECOVERY") setAuthView("update_password");
-      if (event === "USER_UPDATED")
-        setTimeout(() => setAuthView("sign_in"), 1000);
-    });
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === "PASSWORD_RECOVERY") setAuthView("update_password");
+        if (event === "USER_UPDATED" || event === "SIGNED_OUT") {
+          setTimeout(() => setAuthView("sign_in"), 1000);
+          setUser(null);
+        }
+        if (event === "SIGNED_IN") setUser(session.user);
+      }
+    );
 
     return () => {
       authListener.unsubscribe();
