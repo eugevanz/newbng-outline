@@ -1,8 +1,22 @@
 import Image from "next/image";
+import { useState, useEffect } from "react";
 import supabase from "../context/auth-context";
 
 function Navbar() {
-  const user = supabase.auth.user();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === "SIGNED_OUT") setUser(null);
+        if (event === "SIGNED_IN") setUser(session.user);
+      }
+    );
+
+    return () => {
+      authListener.unsubscribe();
+    };
+  }, []);
 
   return (
     <nav
