@@ -34,7 +34,7 @@ function Nav() {
       )}
 
       {authView === "update_password" && (
-        <Auth.UpdatePassword supabaseClient={supabase} />
+        <Auth.UpdatePassword supabaseClient={supabase}></Auth.UpdatePassword>
       )}
 
       {user && (
