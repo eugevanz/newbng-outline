@@ -1,17 +1,43 @@
 import { useRouter } from "next/router";
-import Image from "next/image";
+import { useState, useEffect } from "react";
 import supabase from "../context/auth-context";
-import Auth from "./auth";
+import { Auth } from "@supabase/ui";
 
 function Nav() {
   const router = useRouter();
   const user = supabase.auth.user();
+  const [authView, setAuthView] = useState("sign_in");
+
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") setAuthView("update_password");
+      if (event === "USER_UPDATED")
+        setTimeout(() => setAuthView("sign_in"), 1000);
+    });
+
+    return () => {
+      authListener.unsubscribe();
+    };
+  }, []);
 
   return (
     <div className="uk-width-1-4@m">
-      {!user ? (
-        <Auth></Auth>
-      ) : (
+      {!user && (
+        <div className="uk-card uk-card-small uk-card-body uk-margin-large-bottom">
+          <Auth
+            supabaseClient={supabase}
+            view={authView}
+            socialLayout="vertical"
+            socialButtonSize="xlarge"
+          ></Auth>
+        </div>
+      )}
+
+      {authView === "update_password" && (
+        <Auth.UpdatePassword supabaseClient={supabase} />
+      )}
+
+      {user && (
         <div className="uk-card uk-card-small uk-card-body uk-border-rounded">
           <ul className="uk-tab-right" data-uk-tab>
             <li className="uk-active">
