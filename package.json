@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "1.30.7",
+    "@supabase/ui": "0.36.4",
     "chart.js": "3.7.1",
     "dotenv": "16.0.0",
     "isomorphic-unfetch": "3.1.0",

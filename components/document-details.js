@@ -34,7 +34,7 @@ function DocumentDetails({ data, owner, task }) {
               className="uk-border-circle"
               width="40"
               height="40"
-              src="/art-hauntington-jzY0KRJopEI-unsplash.jpg"
+              src="https://rawcdn.githack.com/eugevanz/newbng-outline/a1c909c10479fc190d7e9f885ee0d0d934b03e1a/public/art-hauntington-jzY0KRJopEI-unsplash.jpg"
             ></Image>
           </div>
           <div className="uk-width-expand">

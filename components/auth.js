@@ -1,53 +1,34 @@
 import supabase from "../context/auth-context";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
-// import {handleAuth} from '@supabase/supabase-auth-he'
+import { Auth } from "@supabase/ui";
+import { useState, useEffect } from "react";
 
-function Auth() {
-  const { register, handleSubmit, reset } = useForm();
-  const { push } = useRouter();
+function Authentication() {
+  const [authView, setAuthView] = useState("sign_in");
 
-  async function onSubmit({ email }) {
-    try {
-      const { error } = await supabase.auth.signIn({ email });
-      if (!error) push("/");
-      alert("Check your email for the login link!");
-    } catch (error) {
-      alert(error.error_description || error.message);
-    } finally {
-      reset();
-    }
-  }
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") setAuthView("update_password");
+      if (event === "USER_UPDATED")
+        setTimeout(() => setAuthView("sign_in"), 1000);
+    });
+
+    return () => {
+      authListener.unsubscribe();
+    };
+  }, []);
 
   return (
-    <form>
-      <div className="uk-card uk-card-small uk-border-rounded uk-margin-bottom">
-        <div className="uk-card-body">
-          <span className="uk-text-meta uk-text-bold">
-            Fill in your email, we'll send you a magic link.
-          </span>
-
-          <div className="uk-margin">
-            <input
-              {...register("email")}
-              className="uk-input uk-form-small uk-border-rounded"
-              type="email"
-              id="form-stacked-text"
-              placeholder="Your email"
-            ></input>
-          </div>
-        </div>
-        <div className="uk-card-footer uk-margin-large-bottom">
-          <a
-            href="#login"
-            className="uk-button uk-button-primary uk-button-small uk-border-rounded uk-width-1-1"
-            onClick={handleSubmit(onSubmit)}
-          >
-            Enter
-          </a>
-        </div>
+    <div className="uk-card uk-card-small uk-margin-large-bottom">
+      <div className="uk-card-body">
+        <Auth
+          supabaseClient={supabase}
+          providers={["google", "github"]}
+          view={authView}
+          socialLayout="vertical"
+          socialButtonSize="xlarge"
+        ></Auth>
       </div>
-    </form>
+    </div>
   );
 }
-export default Auth;
+export default Authentication;

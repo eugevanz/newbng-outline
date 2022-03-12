@@ -12,3 +12,9 @@ module.exports = {
     ignoreDuringBuilds: true
   }
 };
+
+module.exports = {
+  images: {
+    domains: ['rawcdn.githack.com'],
+  },
+}

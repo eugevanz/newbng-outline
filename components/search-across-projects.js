@@ -63,7 +63,7 @@ function SearchAcrossProjects({ title }) {
           <div className="uk-width-auto">
             <Image
               className="uk-border-circle"
-              src="/art-hauntington-jzY0KRJopEI-unsplash.jpg"
+              src="https://rawcdn.githack.com/eugevanz/newbng-outline/a1c909c10479fc190d7e9f885ee0d0d934b03e1a/public/art-hauntington-jzY0KRJopEI-unsplash.jpg"
               width="36"
               height="36"
               alt="profile-pic"
