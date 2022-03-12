@@ -50,7 +50,7 @@ function Navbar() {
                   </div>
                 </div>
               </a>
-              <div class="uk-navbar-dropdown">
+              <div className="uk-navbar-dropdown">
                 <a href="#signout" onClick={() => supabase.auth.signOut()}>
                   Sign out
                 </a>
