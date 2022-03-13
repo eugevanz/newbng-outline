@@ -18,11 +18,13 @@ function Projects() {
 
   useEffect(() => {
     fetch("/api/projects")
-      .then((data) => data.json())
-      .then((data) => setProjects(data));
+      .then((body) => body.data)
+      .then((data) => setProjects(data))
+      .catch((error) => console.log(error.message));
     fetch(`/api/my-stuff/projects/${user.id}`)
-      .then((data) => data.json())
-      .then((data) => setMyProjects(data));
+      .then((body) => body.data)
+      .then((data) => setMyProjects(data))
+      .catch((error) => console.log(error.message));
   }, [user]);
 
   useEffect(() => {

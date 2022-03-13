@@ -19,5 +19,5 @@ export default async function handler(request, response) {
     .single();
   error && console.log(error);
   er && console.log(er);
-  response.end({ owner, project });
+  response.status(200).json({ body: { owner, project } });
 }

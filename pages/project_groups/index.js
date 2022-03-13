@@ -14,14 +14,16 @@ function ProjectGroups() {
   const [projects, setProjects] = useState(null);
 
   useEffect(() => {
-    fetch("/api/project_groups").then((data) => setProject_groups(data));
+    fetch("/api/project_groups")
+      .then((body) => body.data)
+      .then((data) => setProject_groups(data));
   }, []);
 
   useEffect(() => {
     project_group &&
-      fetch(`/api/selected/project_group/${project_group.id}`).then((data) =>
-        setProjects(data)
-      );
+      fetch(`/api/selected/project_group/${project_group.id}`)
+        .then((body) => body.data)
+        .then((data) => setProjects(data));
   }, [project_group]);
 
   useEffect(() => !user && router.push("/"));

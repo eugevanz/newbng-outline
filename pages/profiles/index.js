@@ -18,18 +18,22 @@ function Profiles() {
   const [tasks, setTasks] = useState(null);
 
   useEffect(() => {
-    fetch("/api/profiles").then((data) => setProfiles(data));
+    fetch("/api/profiles")
+      .then((body) => body.data)
+      .then((data) => setProfiles(data));
   }, []);
 
   useEffect(() => {
     profile &&
-      fetch(`/api/selected/profile/${profile.id}`).then((data) => {
-        setDocuments(data.documents);
-        setLogs(data.logs);
-        setMilestones(data.milestones);
-        setProjects(data.projects);
-        setTasks(data.tasks);
-      });
+      fetch(`/api/selected/profile/${profile.id}`)
+        .then((body) => body.data)
+        .then((data) => {
+          setDocuments(data.documents);
+          setLogs(data.logs);
+          setMilestones(data.milestones);
+          setProjects(data.projects);
+          setTasks(data.tasks);
+        });
   }, [profile]);
 
   useEffect(() => !user && router.push("/"));

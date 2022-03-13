@@ -18,20 +18,22 @@ function Documents() {
 
   // Load initial data and set up listeners
   useEffect(() => {
-    fetch("/api/documents").then((data) => setDocuments(data));
-    fetch(`/api/my-stuff/documents/${user.id}`).then((data) =>
-      setMyDocuments(data)
-    );
+    fetch("/api/documents")
+      .then((body) => body.data)
+      .then((data) => setDocuments(data));
+    fetch(`/api/my-stuff/documents/${user.id}`)
+      .then((body) => body.data)
+      .then((data) => setMyDocuments(data));
   }, [user]);
 
   useEffect(() => {
     document &&
-      fetch(
-        `/api/selected/document/${document.user_id}/${document.task_id}`
-      ).then((data) => {
-        setOwner(data.owner);
-        setTask(data.task);
-      });
+      fetch(`/api/selected/document/${document.user_id}/${document.task_id}`)
+        .then((body) => body.data)
+        .then((data) => {
+          setOwner(data.owner);
+          setTask(data.task);
+        });
   }, [document]);
 
   useEffect(() => !user && router.push("/"));

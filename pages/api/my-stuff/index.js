@@ -1,3 +1,3 @@
 export default async function handler(request, response) {
-  response.end("My Stuff");
+  response.status(200).json("My Stuff");
 }

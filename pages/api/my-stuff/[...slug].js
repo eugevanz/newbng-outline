@@ -11,5 +11,5 @@ export default async function handler(request, response) {
     .select("*")
     .eq("user_id", request.query.slug[1]);
   error && console.log(error);
-  response.end(data);
+  response.status(200).json({ body: data });
 }

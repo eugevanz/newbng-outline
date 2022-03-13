@@ -17,16 +17,22 @@ function Logs() {
   const [task, setTask] = useState(null);
 
   useEffect(() => {
-    fetch("/api/logs").then((data) => setLogs(data));
-    fetch(`/api/my-stuff/logs/${user.id}`).then((data) => setMyLogs(data));
+    fetch("/api/logs")
+      .then((body) => body.data)
+      .then((data) => setLogs(data));
+    fetch(`/api/my-stuff/logs/${user.id}`)
+      .then((body) => body.data)
+      .then((data) => setMyLogs(data));
   }, [user]);
 
   useEffect(() => {
     log &&
-      fetch(`/api/selected/log/${log.user_id}/${log.task_id}`).then((data) => {
-        setOwner(data.owner);
-        setTask(data.task);
-      });
+      fetch(`/api/selected/log/${log.user_id}/${log.task_id}`)
+        .then((body) => body.data)
+        .then((data) => {
+          setOwner(data.owner);
+          setTask(data.task);
+        });
   }, [log]);
 
   useEffect(() => !user && router.push("/"));

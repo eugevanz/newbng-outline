@@ -35,5 +35,7 @@ export default async function handler(request, response) {
   er1 && console.log(er1);
   er2 && console.log(er2);
   er3 && console.log(er3);
-  response.end({ documents, logs, milestones, projects, tasks });
+  response
+    .status(200)
+    .json({ body: { documents, logs, milestones, projects, tasks } });
 }

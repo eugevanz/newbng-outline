@@ -11,5 +11,5 @@ export default async function handler(request, response) {
     .select("*")
     .eq("project_group_id", request.query);
   error && console.log(error);
-  response.end({ projects });
+  response.status(200).json({ body: { projects } });
 }

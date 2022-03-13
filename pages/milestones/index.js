@@ -17,10 +17,12 @@ function Milestones() {
   const [project, setProject] = useState(null);
 
   useEffect(() => {
-    fetch("/api/milestones").then((data) => setMilestones(data));
-    fetch(`/api/my-stuff/milestones/${user.id}`).then((data) =>
-      setMyMilestones(data)
-    );
+    fetch("/api/milestones")
+      .then((body) => body.data)
+      .then((data) => setMilestones(data));
+    fetch(`/api/my-stuff/milestones/${user.id}`)
+      .then((body) => body.data)
+      .then((data) => setMyMilestones(data));
   }, [user]);
 
   useEffect(() => {

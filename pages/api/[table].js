@@ -11,7 +11,7 @@ export default async function handler(request, response) {
       .from(request.query.table)
       .select("*");
     error && console.log(error);
-    response.end(data);
+    response.status(200).json({ body: data });
   } else if (request.method === "POST") {
     await supabase
       .from(request.query)
