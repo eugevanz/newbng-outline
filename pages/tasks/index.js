@@ -44,7 +44,7 @@ function Tasks(props) {
         </div>
 
         <div>
-          {props.tasks && (
+          {props.tasks & user && (
             <MyTasks
               data={props.tasks.filter((item) => item.user_id === user.id)}
             ></MyTasks>

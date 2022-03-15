@@ -35,7 +35,7 @@ function Documents(props) {
         </div>
 
         <div>
-          {props.documents && (
+          {props.documents & user && (
             <MyDocuments
               data={props.documents.filter((item) => item.user_id === user.id)}
             ></MyDocuments>
