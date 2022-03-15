@@ -7,33 +7,21 @@ import MyLogs from "../../components/my-logs";
 import Delete from "../../components/delete";
 import LogDetails from "../../components/log-details";
 
-function Logs() {
+export async function getStaticProps() {
+  const { data: logs } = await supabase.from("logs").select("*");
+  const { data: tasks } = await supabase.from("tasks").select("*");
+  const { data: profiles } = await supabase.from("profiles").select("*");
+
+  return {
+    props: { logs, tasks, profiles },
+    revalidate: 1 // In seconds
+  };
+}
+
+function Logs(props) {
   const router = useRouter();
   const user = supabase.auth.user();
   const [log, setLog] = useState(null);
-  const [logs, setLogs] = useState(null);
-  const [myLogs, setMyLogs] = useState(null);
-  const [owner, setOwner] = useState(null);
-  const [task, setTask] = useState(null);
-
-  useEffect(() => {
-    fetch("/api/logs")
-      .then((body) => body.data)
-      .then((data) => setLogs(data));
-    fetch(`/api/my-stuff/logs/${user.id}`)
-      .then((body) => body.data)
-      .then((data) => setMyLogs(data));
-  }, [user]);
-
-  useEffect(() => {
-    log &&
-      fetch(`/api/selected/log/${log.user_id}/${log.task_id}`)
-        .then((body) => body.data)
-        .then((data) => {
-          setOwner(data.owner);
-          setTask(data.task);
-        });
-  }, [log]);
 
   useEffect(() => !user && router.push("/"));
 
@@ -48,20 +36,30 @@ function Logs() {
         </div>
 
         <div>
-          {logs && (
+          {props.logs && (
             <ReadAllRows
-              data={logs}
+              data={props.logs}
               title="All Logs"
               setSelection={setLog}
             ></ReadAllRows>
           )}
         </div>
 
-        <div>{myLogs && <MyLogs data={myLogs}></MyLogs>}</div>
+        <div>
+          {props.logs & user && (
+            <MyLogs
+              data={props.logs.filter((item) => item.user_id === user.id)}
+            ></MyLogs>
+          )}
+        </div>
 
         <div>
-          {log & owner & task && (
-            <LogDetails data={log} owner={owner} task={task}></LogDetails>
+          {log & props.profiles & props.tasks && (
+            <LogDetails
+              data={log}
+              owner={props.profiles.find((item) => item.id === log.user_id)}
+              task={props.tasks.find((item) => item.id === log.task_id)}
+            ></LogDetails>
           )}
         </div>
 

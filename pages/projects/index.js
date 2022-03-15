@@ -7,35 +7,21 @@ import MyProjects from "../../components/my-projects";
 import Delete from "../../components/delete";
 import ProjectDetails from "../../components/project-details";
 
-function Projects() {
+export async function getStaticProps() {
+  const { data: tasks } = await supabase.from("tasks").select("*");
+  const { data: profiles } = await supabase.from("profiles").select("*");
+  const { data: projects } = await supabase.from("projects").select("*");
+
+  return {
+    props: { tasks, profiles, projects },
+    revalidate: 1 // In seconds
+  };
+}
+
+function Projects(props) {
   const router = useRouter();
   const user = supabase.auth.user();
   const [project, setProject] = useState(null);
-  const [projects, setProjects] = useState(null);
-  const [myProjects, setMyProjects] = useState(null);
-  const [owner, setOwner] = useState(null);
-  const [tasks, setTasks] = useState(null);
-
-  useEffect(() => {
-    fetch("/api/projects")
-      .then((body) => body.data)
-      .then((data) => setProjects(data))
-      .catch((error) => console.log(error.message));
-    fetch(`/api/my-stuff/projects/${user.id}`)
-      .then((body) => body.data)
-      .then((data) => setMyProjects(data))
-      .catch((error) => console.log(error.message));
-  }, [user]);
-
-  useEffect(() => {
-    project &&
-      fetch(`/api/selected/project/${project.user_id}/${project.id}`)
-        .then((data) => data.json())
-        .then((data) => {
-          setOwner(data.owner);
-          setTasks(data.tasks);
-        });
-  }, [project]);
 
   useEffect(() => !user && router.push("/"));
 
@@ -50,27 +36,38 @@ function Projects() {
         </div>
 
         <div>
-          {projects && (
+          {props.projects && (
             <ReadAllRows
-              data={projects}
+              data={props.projects}
               title="All Projects"
               setSelection={setProject}
             ></ReadAllRows>
           )}
         </div>
 
-        <div>{myProjects && <MyProjects data={myProjects}></MyProjects>}</div>
-
         <div>
-          {project & owner && (
-            <ProjectDetails data={project} owner={owner}></ProjectDetails>
+          {props.projects & user && (
+            <MyProjects
+              data={props.projects.filter((item) => item.user_id === user.id)}
+            ></MyProjects>
           )}
         </div>
 
         <div>
-          {tasks && (
+          {project & props.profiles && (
+            <ProjectDetails
+              data={project}
+              owner={props.profiles.find((item) => item.id === project.user_id)}
+            ></ProjectDetails>
+          )}
+        </div>
+
+        <div>
+          {project & props.tasks && (
             <ReadAllRows
-              data={tasks}
+              data={props.tasks.filter(
+                (item) => item.project_id === project.id
+              )}
               title="Project tasks"
               setSelection={setProject}
             ></ReadAllRows>

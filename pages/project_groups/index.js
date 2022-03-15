@@ -6,25 +6,22 @@ import ReadAllRows from "../../components/read-all-rows";
 import ProjectGroupDetails from "../../components/project-group-details";
 import Delete from "../../components/delete";
 
-function ProjectGroups() {
+export async function getStaticProps() {
+  const { data: project_groups } = await supabase
+    .from("project_groups")
+    .select("*");
+  const { data: projects } = await supabase.from("projects").select("*");
+
+  return {
+    props: { project_groups, projects },
+    revalidate: 1 // In seconds
+  };
+}
+
+function ProjectGroups(props) {
   const router = useRouter();
   const user = supabase.auth.user();
   const [project_group, setProject_group] = useState(null);
-  const [project_groups, setProject_groups] = useState(null);
-  const [projects, setProjects] = useState(null);
-
-  useEffect(() => {
-    fetch("/api/project_groups")
-      .then((body) => body.data)
-      .then((data) => setProject_groups(data));
-  }, []);
-
-  useEffect(() => {
-    project_group &&
-      fetch(`/api/selected/project_group/${project_group.id}`)
-        .then((body) => body.data)
-        .then((data) => setProjects(data));
-  }, [project_group]);
 
   useEffect(() => !user && router.push("/"));
 
@@ -39,9 +36,9 @@ function ProjectGroups() {
         </div>
 
         <div>
-          {project_groups && (
+          {props.project_groups && (
             <ReadAllRows
-              data={project_groups}
+              data={props.project_groups}
               title="All Project Groups"
               setSelection={setProject_group}
             ></ReadAllRows>
@@ -55,8 +52,13 @@ function ProjectGroups() {
         </div>
 
         <div>
-          {projects && (
-            <ReadAllRows data={projects} title="User's projects"></ReadAllRows>
+          {project_group & props.projects && (
+            <ReadAllRows
+              data={props.projects.filter(
+                (item) => item.project_group_id === project_group.id
+              )}
+              title="User's projects"
+            ></ReadAllRows>
           )}
         </div>
 

@@ -6,35 +6,22 @@ import ReadAllRows from "../../components/read-all-rows";
 import Delete from "../../components/delete";
 import ProfileDetails from "../../components/profile-details";
 
-function Profiles() {
+export async function getStaticProps() {
+  const { data: project_groups } = await supabase
+    .from("project_groups")
+    .select("*");
+  const { data: projects } = await supabase.from("projects").select("*");
+
+  return {
+    props: { project_groups, projects },
+    revalidate: 1 // In seconds
+  };
+}
+
+function Profiles(props) {
   const router = useRouter();
   const user = supabase.auth.user();
   const [profile, setProfile] = useState(null);
-  const [profiles, setProfiles] = useState(null);
-  const [documents, setDocuments] = useState(null);
-  const [logs, setLogs] = useState(null);
-  const [milestones, setMilestones] = useState(null);
-  const [projects, setProjects] = useState(null);
-  const [tasks, setTasks] = useState(null);
-
-  useEffect(() => {
-    fetch("/api/profiles")
-      .then((body) => body.data)
-      .then((data) => setProfiles(data));
-  }, []);
-
-  useEffect(() => {
-    profile &&
-      fetch(`/api/selected/profile/${profile.id}`)
-        .then((body) => body.data)
-        .then((data) => {
-          setDocuments(data.documents);
-          setLogs(data.logs);
-          setMilestones(data.milestones);
-          setProjects(data.projects);
-          setTasks(data.tasks);
-        });
-  }, [profile]);
 
   useEffect(() => !user && router.push("/"));
 
@@ -49,9 +36,9 @@ function Profiles() {
         </div>
 
         <div>
-          {profiles && (
+          {props.profiles && (
             <ReadAllRows
-              data={profiles}
+              data={props.profiles}
               title="All Profiles"
               setSelection={setProfile}
             ></ReadAllRows>
@@ -61,36 +48,53 @@ function Profiles() {
         <div>{profile && <ProfileDetails data={profile}></ProfileDetails>}</div>
 
         <div>
-          {documents && (
+          {profile & props.documents && (
             <ReadAllRows
-              data={documents}
+              data={props.documents.filter(
+                (item) => item.user_id === profile.id
+              )}
               title="User's documents"
             ></ReadAllRows>
           )}
         </div>
 
         <div>
-          {logs && <ReadAllRows data={logs} title="User's logs"></ReadAllRows>}
+          {profile & props.logs && (
+            <ReadAllRows
+              data={props.logs.filter((item) => item.user_id === profile.id)}
+              title="User's logs"
+            ></ReadAllRows>
+          )}
         </div>
 
         <div>
-          {milestones && (
+          {profile & props.milestones && (
             <ReadAllRows
-              data={milestones}
+              data={props.milestones.filter(
+                (item) => item.user_id === profile.id
+              )}
               title="User's milestones"
             ></ReadAllRows>
           )}
         </div>
 
         <div>
-          {projects && (
-            <ReadAllRows data={projects} title="User's projects"></ReadAllRows>
+          {profile & props.projects && (
+            <ReadAllRows
+              data={props.projects.filter(
+                (item) => item.user_id === profile.id
+              )}
+              title="User's projects"
+            ></ReadAllRows>
           )}
         </div>
 
         <div>
-          {tasks && (
-            <ReadAllRows data={tasks} title="User's tasks"></ReadAllRows>
+          {profile & props.tasks && (
+            <ReadAllRows
+              data={props.tasks.filter((item) => item.user_id === profile.id)}
+              title="User's tasks"
+            ></ReadAllRows>
           )}
         </div>
 

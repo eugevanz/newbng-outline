@@ -8,35 +8,23 @@ import Delete from "../../components/delete";
 import TaskDetails from "../../components/task-details";
 import AddAttachment from "../../components/add-attachment";
 
-function Tasks() {
-  const router = useRouter();
+export async function getStaticProps() {
+  const { data: tasks } = await supabase.from("tasks").select("*");
+  const { data: profiles } = await supabase.from("profiles").select("*");
+  const { data: projects } = await supabase.from("projects").select("*");
+
+  return {
+    props: { tasks, profiles, projects },
+    revalidate: 1 // In seconds
+  };
+}
+
+function Tasks(props) {
   const user = supabase.auth.user();
+  const { push } = useRouter();
   const [task, setTask] = useState(null);
-  const [tasks, setTasks] = useState(null);
-  const [myTasks, setMyTasks] = useState(null);
-  const [owner, setOwner] = useState(null);
-  const [project, setProject] = useState(null);
 
-  useEffect(() => {
-    fetch("/api/tasks")
-      .then((body) => body.data)
-      .then((data) => setTasks(data));
-    fetch(`/api/my-stuff/tasks/${user.id}`)
-      .then((body) => body.data)
-      .then((data) => setMyTasks(data));
-  }, [user]);
-
-  useEffect(() => {
-    task &&
-      fetch(`/api/selected/task/${task.user_id}/${task.project_id}`)
-        .then((body) => body.data)
-        .then((data) => {
-          setOwner(data.owner);
-          setProject(data.project);
-        });
-  }, [task]);
-
-  useEffect(() => !user && router.push("/"));
+  useEffect(() => !user && push("/"));
 
   return (
     <div className="uk-width-expand@m">
@@ -46,23 +34,32 @@ function Tasks() {
         </div>
 
         <div>
-          {tasks && (
+          {props.tasks && (
             <ReadAllRows
-              data={tasks}
+              data={props.tasks}
               title="All Tasks"
               setSelection={setTask}
             ></ReadAllRows>
           )}
         </div>
 
-        <div>{myTasks && <MyTasks data={myTasks}></MyTasks>}</div>
+        <div>
+          {props.tasks && (
+            <MyTasks
+              data={props.tasks.filter((item) => item.user_id === user.id)}
+            ></MyTasks>
+          )}
+        </div>
 
         <div>
-          {task & owner & project && (
+          {task & props.profiles & props.projects && (
             <TaskDetails
               data={task}
-              owner={owner}
-              projectName={project.name}
+              owner={props.profiles.find((item) => item.id === task.user_id)}
+              projectName={
+                props.projects.find((item) => item.id === task.project_id)
+                  .name || "No name"
+              }
             ></TaskDetails>
           )}
         </div>
@@ -71,13 +68,7 @@ function Tasks() {
           <AddAttachment></AddAttachment>
         </div>
 
-        <div>
-          {task ? (
-            <Delete item={task} table="tasks"></Delete>
-          ) : (
-            <div data-uk-spinner></div>
-          )}
-        </div>
+        <div>{task && <Delete item={task} table="tasks"></Delete>}</div>
       </div>
     </div>
   );

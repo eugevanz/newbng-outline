@@ -7,34 +7,10 @@ import MyDocuments from "../../components/my-documents";
 import DocumentDetails from "../../components/document-details";
 import Delete from "../../components/delete";
 
-function Documents() {
+function Documents(props) {
   const router = useRouter();
   const user = supabase.auth.user();
   const [document, setDocument] = useState(null);
-  const [documents, setDocuments] = useState(null);
-  const [myDocuments, setMyDocuments] = useState(null);
-  const [owner, setOwner] = useState(null);
-  const [task, setTask] = useState(null);
-
-  // Load initial data and set up listeners
-  useEffect(() => {
-    fetch("/api/documents")
-      .then((body) => body.data)
-      .then((data) => setDocuments(data));
-    fetch(`/api/my-stuff/documents/${user.id}`)
-      .then((body) => body.data)
-      .then((data) => setMyDocuments(data));
-  }, [user]);
-
-  useEffect(() => {
-    document &&
-      fetch(`/api/selected/document/${document.user_id}/${document.task_id}`)
-        .then((body) => body.data)
-        .then((data) => {
-          setOwner(data.owner);
-          setTask(data.task);
-        });
-  }, [document]);
 
   useEffect(() => !user && router.push("/"));
 
@@ -49,9 +25,9 @@ function Documents() {
         </div>
 
         <div>
-          {documents && (
+          {props.documents && (
             <ReadAllRows
-              data={documents}
+              data={props.documents}
               title="All documents"
               setSelection={setDocument}
             ></ReadAllRows>
@@ -59,15 +35,21 @@ function Documents() {
         </div>
 
         <div>
-          {myDocuments && <MyDocuments data={myDocuments}></MyDocuments>}
+          {props.documents && (
+            <MyDocuments
+              data={props.documents.filter((item) => item.user_id === user.id)}
+            ></MyDocuments>
+          )}
         </div>
 
         <div>
-          {document & owner & task && (
+          {document & props.profiles & props.tasks && (
             <DocumentDetails
               data={document}
-              owner={owner}
-              task={task}
+              owner={props.profiles.find(
+                (item) => item.id === document.user_id
+              )}
+              task={props.tasks.find((item) => item.id === document.task_id)}
             ></DocumentDetails>
           )}
         </div>

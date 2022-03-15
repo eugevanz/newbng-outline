@@ -7,33 +7,21 @@ import MyMilestones from "../../components/my-milestones";
 import MilestoneDetails from "../../components/milestone-details";
 import Delete from "../../components/delete";
 
-function Milestones() {
+export async function getStaticProps() {
+  const { data: milestones } = await supabase.from("milestones").select("*");
+  const { data: projects } = await supabase.from("projects").select("*");
+  const { data: profiles } = await supabase.from("profiles").select("*");
+
+  return {
+    props: { milestones, projects, profiles },
+    revalidate: 1 // In seconds
+  };
+}
+
+function Milestones(props) {
   const router = useRouter();
   const user = supabase.auth.user();
   const [milestone, setMilestone] = useState(null);
-  const [milestones, setMilestones] = useState(null);
-  const [myMilestones, setMyMilestones] = useState(null);
-  const [owner, setOwner] = useState(null);
-  const [project, setProject] = useState(null);
-
-  useEffect(() => {
-    fetch("/api/milestones")
-      .then((body) => body.data)
-      .then((data) => setMilestones(data));
-    fetch(`/api/my-stuff/milestones/${user.id}`)
-      .then((body) => body.data)
-      .then((data) => setMyMilestones(data));
-  }, [user]);
-
-  useEffect(() => {
-    milestone &&
-      fetch(
-        `/api/selected/milestone/${milestone.user_id}/${milestone.project_id}`
-      ).then((data) => {
-        setOwner(data.owner);
-        setProject(data.project);
-      });
-  }, [milestone]);
 
   useEffect(() => !user && router.push("/"));
 
@@ -48,9 +36,9 @@ function Milestones() {
         </div>
 
         <div>
-          {milestones && (
+          {props.milestones && (
             <ReadAllRows
-              data={milestones}
+              data={props.milestones}
               title="All Milestones"
               setSelection={setMilestone}
             ></ReadAllRows>
@@ -58,15 +46,23 @@ function Milestones() {
         </div>
 
         <div>
-          {myMilestones && <MyMilestones data={myMilestones}></MyMilestones>}
+          {props.milestones & user && (
+            <MyMilestones
+              data={props.milestones.filter((item) => item.user_id === user.id)}
+            ></MyMilestones>
+          )}
         </div>
 
         <div>
-          {milestone & owner & project && (
+          {milestone & props.profiles & props.projects && (
             <MilestoneDetails
               data={milestone}
-              owner={owner}
-              project={project}
+              owner={props.profiles.find(
+                (item) => item.id === milestone.user_id
+              )}
+              project={props.projects.find(
+                (item) => item.id === milestone.project_id
+              )}
             ></MilestoneDetails>
           )}
         </div>
