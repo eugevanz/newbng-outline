@@ -13,7 +13,7 @@ function ReadAllRows({ data, title, setSelection }) {
             <a
               className="uk-link-toggle"
               href="#list-item"
-              onClick={() => setSelection(item)}
+              onClick={() => setSelection && setSelection(item)}
               data-uk-scroll
             >
               <div className="uk-text-bold uk-link-text">
