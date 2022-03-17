@@ -30,7 +30,7 @@ function Tasks() {
         .catch((error) => console.error(error));
   }
 
-  useEffect(() => !user && push("/"));
+  // useEffect(() => !user && push("/"));
 
   useEffect(
     () =>
