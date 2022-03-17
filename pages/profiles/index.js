@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import moment from "moment";
 
 function Profiles() {
-  const { push } = useRouter();
+  // const { push } = useRouter();
   const user = supabase.auth.user();
   const [profile, setProfile] = useState(null);
   const [profiles, setProfiles] = useState(null);

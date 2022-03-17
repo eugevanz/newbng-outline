@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 
 function Projects() {
-  const { push } = useRouter();
+  // const { push } = useRouter();
   const user = supabase.auth.user();
   const [project, setProject] = useState(null);
   const [projects, setProjects] = useState(null);

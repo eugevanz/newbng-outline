@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 
 function Tasks() {
   const user = supabase.auth.user();
-  const { push } = useRouter();
+  // const { push } = useRouter();
   const [task, setTask] = useState(null);
   const [tasks, setTasks] = useState(null);
   const [my, setMy] = useState(null);
