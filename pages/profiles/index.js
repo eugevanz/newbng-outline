@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import moment from "moment";
 
 function Profiles() {
-  const router = useRouter();
+  const {push} = useRouter();
   const user = supabase.auth.user();
   const [profile, setProfile] = useState(null);
   const [profiles, setProfiles] = useState(null);
@@ -31,7 +31,7 @@ function Profiles() {
         .catch((error) => console.error(error));
   }
 
-  useEffect(() => !user && router.push("/"));
+  useEffect(() => !user && push("/"));
 
   useEffect(
     () =>

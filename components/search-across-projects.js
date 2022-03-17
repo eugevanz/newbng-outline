@@ -56,7 +56,7 @@ function SearchAcrossProjects({ title }) {
           className="uk-link-toggle uk-grid-medium uk-flex-middle"
           href="#list-item"
           data-uk-filter-control="[data-tags*='details']"
-          onClick={() => router.push(`/${title}/${item.id}`)}
+          // onClick={() => router.push(`/${title}/${item.id}`)}
           data-uk-scroll
           data-uk-grid
         >

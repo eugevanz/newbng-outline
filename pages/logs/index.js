@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 
 function Logs() {
-  const router = useRouter();
+  const {push} = useRouter();
   const user = supabase.auth.user();
   const [log, setLog] = useState(null);
   const [logs, setLogs] = useState(null);
@@ -29,7 +29,7 @@ function Logs() {
         .catch((error) => console.error(error));
   }
 
-  useEffect(() => !user && router.push("/"));
+  useEffect(() => !user && push("/"));
 
   useEffect(
     () =>

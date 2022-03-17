@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 
 function Milestones() {
-  const router = useRouter();
+  const {push} = useRouter();
   const user = supabase.auth.user();
   const [milestone, setMilestone] = useState(null);
   const [milestones, setMilestones] = useState(null);
@@ -30,7 +30,7 @@ function Milestones() {
         .catch((error) => console.error(error));
   }
 
-  useEffect(() => !user && router.push("/"));
+  useEffect(() => !user && push("/"));
 
   useEffect(
     () =>
@@ -120,7 +120,7 @@ function Milestones() {
                     <a
                       className="uk-link-toggle"
                       href="#list-item"
-                      onClick={() => router.push(`/milestones/${item.id}`)}
+                      onClick={() => setMilestone(item)}
                       data-uk-scroll
                     >
                       <div className="uk-text-bold uk-link-text">

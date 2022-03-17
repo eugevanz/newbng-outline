@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import Image from "next/image";
 
 function Documents() {
-  const router = useRouter();
+  const {push} = useRouter();
   const user = supabase.auth.user();
   const [document, setDocument] = useState(null);
   const [docs, setDocs] = useState(null);
@@ -29,7 +29,7 @@ function Documents() {
         .catch((error) => console.error(error));
   }
 
-  useEffect(() => !user && router.push("/"));
+  useEffect(() => !user && push("/"));
 
   useEffect(
     () =>

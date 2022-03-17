@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 
 function Projects() {
-  const router = useRouter();
+  const {push} = useRouter();
   const user = supabase.auth.user();
   const [project, setProject] = useState(null);
   const [projects, setProjects] = useState(null);
@@ -29,7 +29,7 @@ function Projects() {
         .catch((error) => console.error(error));
   }
 
-  useEffect(() => !user && router.push("/"));
+  useEffect(() => !user && push("/"));
 
   useEffect(
     () =>
@@ -107,7 +107,7 @@ function Projects() {
                     <a
                       className="uk-link-toggle"
                       href="#list-item"
-                      onClick={() => router.push(`/projects/${item.id}`)}
+                      onClick={() => setProject(item)}
                       data-uk-scroll
                     >
                       <div className="uk-text-bold uk-link-text">
