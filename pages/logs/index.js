@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 
 function Logs() {
-  const { push } = useRouter();
+  // const { push } = useRouter();
   const user = supabase.auth.user();
   const [log, setLog] = useState(null);
   const [logs, setLogs] = useState(null);

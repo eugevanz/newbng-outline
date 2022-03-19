@@ -128,7 +128,7 @@ function Projects() {
         </div>
 
         <div>
-          {owner.name && (
+          {owner && (
             <div
               id="details"
               className="uk-card uk-card-primary uk-card-small uk-border-rounded"

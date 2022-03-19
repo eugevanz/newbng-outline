@@ -16,7 +16,7 @@ function Tasks() {
   const [tasks, setTasks] = useState(null);
   const [my, setMy] = useState(null);
   const [owner, setOwner] = useState(null);
-  const [pName, setPName] = useState(null);
+  const [project, setProject] = useState(null);
   const { register, handleSubmit } = useForm();
   const [checked, setchecked] = useState(false);
 
@@ -70,7 +70,7 @@ function Tasks() {
         .from("projects")
         .select("name")
         .eq("id", task.project_id)
-        .then((data) => setPName(data.data.shift())),
+        .then((data) => setProject(data.data.shift())),
     [task]
   );
 
@@ -123,7 +123,7 @@ function Tasks() {
         </div>
 
         <div>
-          {owner & pName && (
+          {owner & project && (
             <div
               id="details"
               className="uk-card uk-card-primary uk-card-small uk-border-rounded"
@@ -191,7 +191,7 @@ function Tasks() {
                       className="uk-form-label uk-text-meta"
                       htmlFor="form-stacked-text"
                     >
-                      Project: {pName.name}
+                      Project: {project.name}
                     </label>
                   </div>
 
