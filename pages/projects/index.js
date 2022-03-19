@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
@@ -58,8 +58,7 @@ function Projects() {
         .from("profiles")
         .select("name")
         .eq("id", project.user_id)
-        .single()
-        .then((data) => setOwner(data)),
+        .then((data) => setOwner.name(data.data.shift())),
     [project]
   );
 
@@ -129,7 +128,7 @@ function Projects() {
         </div>
 
         <div>
-          {owner && (
+          {owner.name && (
             <div
               id="details"
               className="uk-card uk-card-primary uk-card-small uk-border-rounded"
@@ -146,7 +145,7 @@ function Projects() {
                     ></Image>
                   </div>
                   <div className="uk-width-expand">
-                    {<div className="uk-text-bold">{owner}</div>}
+                    {<div className="uk-text-bold">{owner.name}</div>}
                   </div>
                 </div>
               </div>

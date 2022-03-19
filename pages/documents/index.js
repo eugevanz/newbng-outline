@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import Image from "next/image";
 
 function Documents() {
-  const {push} = useRouter();
+  // const {push} = useRouter();
   const user = supabase.auth.user();
   const [document, setDocument] = useState(null);
   const [docs, setDocs] = useState(null);
@@ -58,8 +58,7 @@ function Documents() {
         .from("profiles")
         .select("name")
         .eq("user_id", document.user_id)
-        .single()
-        .then((data) => setOwner(data.data)),
+        .then((data) => setOwner(data.data.shift())),
     [document]
   );
 
@@ -70,8 +69,7 @@ function Documents() {
         .from("tasks")
         .select("*")
         .eq("id", document.task_id)
-        .single()
-        .then((data) => setTask(data.data)),
+        .then((data) => setTask(data.data.shift())),
     [document]
   );
 
@@ -144,7 +142,7 @@ function Documents() {
                     ></Image>
                   </div>
                   <div className="uk-width-expand">
-                    {<div className="uk-text-bold">{owner}</div>}
+                    {<div className="uk-text-bold">{owner.name}</div>}
                   </div>
                 </div>
               </div>

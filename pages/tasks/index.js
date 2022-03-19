@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
@@ -59,8 +59,7 @@ function Tasks() {
         .from("profiles")
         .select("*")
         .eq("user_id", task.user_id)
-        .single()
-        .then((data) => setOwner(data)),
+        .then((data) => setOwner(data.data.shift())),
     [task]
   );
 
@@ -71,8 +70,7 @@ function Tasks() {
         .from("projects")
         .select("name")
         .eq("id", task.project_id)
-        .single()
-        .then((data) => setPName(data)),
+        .then((data) => setPName(data.data.shift())),
     [task]
   );
 
@@ -142,7 +140,7 @@ function Tasks() {
                     ></Image>
                   </div>
                   <div className="uk-width-expand">
-                    {<div className="uk-text-bold">{owner}</div>}
+                    {<div className="uk-text-bold">{owner.name}</div>}
                   </div>
                 </div>
               </div>
@@ -193,7 +191,7 @@ function Tasks() {
                       className="uk-form-label uk-text-meta"
                       htmlFor="form-stacked-text"
                     >
-                      Project: {pName}
+                      Project: {pName.name}
                     </label>
                   </div>
 

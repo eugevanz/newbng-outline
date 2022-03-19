@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 
 function Logs() {
-  const {push} = useRouter();
+  const { push } = useRouter();
   const user = supabase.auth.user();
   const [log, setLog] = useState(null);
   const [logs, setLogs] = useState(null);
@@ -58,8 +58,7 @@ function Logs() {
         .from("profiles")
         .select("name")
         .eq("id", log.user_id)
-        .single()
-        .then((data) => setOwner(data.data)),
+        .then((data) => setOwner(data.data.shift())),
     [log]
   );
 
@@ -70,8 +69,7 @@ function Logs() {
         .from("tasks")
         .select("*")
         .eq("id", log.task_id)
-        .single()
-        .then((data) => setTask(data.data)),
+        .then((data) => setTask(data.data.shift())),
     [log]
   );
 
@@ -144,7 +142,7 @@ function Logs() {
                     ></Image>
                   </div>
                   <div className="uk-width-expand">
-                    {<div className="uk-text-bold">{owner}</div>}
+                    {<div className="uk-text-bold">{owner.name}</div>}
                   </div>
                 </div>
               </div>

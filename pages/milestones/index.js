@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import supabase from "../../context/auth-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 
 function Milestones() {
-  const {push} = useRouter();
+  // const {push} = useRouter();
   const user = supabase.auth.user();
   const [milestone, setMilestone] = useState(null);
   const [milestones, setMilestones] = useState(null);
@@ -70,8 +70,7 @@ function Milestones() {
         .from("projects")
         .select("*")
         .eq("id", milestone.project_id)
-        .single()
-        .then((data) => setProject(data.data)),
+        .then((data) => setProject(data.data.shift())),
     [milestone]
   );
 
@@ -82,7 +81,6 @@ function Milestones() {
         .from("tasks")
         .select("*")
         .eq("milestone_id", milestone.id)
-        .single()
         .then((data) => setTasks(data.data)),
     [milestone]
   );
