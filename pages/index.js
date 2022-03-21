@@ -18,10 +18,7 @@ function Dashboard() {
       </Head>
 
       <div className="uk-width-expand@m">
-        <div
-          className="uk-child-width-1-2@m"
-          data-uk-grid="masonry: true"
-        >
+        <div className="uk-child-width-1-2@m" data-uk-grid="masonry: true">
           <div>
             <ThisWeekProjectActivities></ThisWeekProjectActivities>
           </div>
@@ -38,5 +35,5 @@ function Dashboard() {
       </div>
     </>
   );
-};
+}
 export default Dashboard;

@@ -1,3 +1,4 @@
+import "../styles/globals.css";
 import Script from "next/script";
 import { Auth } from "@supabase/ui";
 import supabase from "../context/auth-context";

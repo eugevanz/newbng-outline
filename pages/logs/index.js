@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// import { useRouter } from "next/router";
+import { Auth } from "@supabase/ui";
 import supabase from "../../context/auth-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
@@ -9,8 +9,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 
 function Logs() {
-  // const { push } = useRouter();
-  const user = supabase.auth.user();
+  const { user } = Auth.useUser();
   const [log, setLog] = useState(null);
   const [logs, setLogs] = useState(null);
   const [my, setMy] = useState(null);
@@ -58,7 +57,7 @@ function Logs() {
         .from("profiles")
         .select("name")
         .eq("id", log.user_id)
-        .then((data) => setOwner(data.data.shift())),
+        .then((data) => setOwner(data.data)),
     [log]
   );
 
@@ -69,7 +68,7 @@ function Logs() {
         .from("tasks")
         .select("*")
         .eq("id", log.task_id)
-        .then((data) => setTask(data.data.shift())),
+        .then((data) => setTask(data.data)),
     [log]
   );
 

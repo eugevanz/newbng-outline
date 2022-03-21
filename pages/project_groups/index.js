@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// import { useRouter } from "next/router";
+import { Auth } from "@supabase/ui";
 import supabase from "../../context/auth-context";
 import SearchAcrossProjects from "../../components/search-across-projects";
 import ReadAllRows from "../../components/read-all-rows";
@@ -9,8 +9,7 @@ import { useForm } from "react-hook-form";
 import moment from "moment";
 
 function ProjectGroups(props) {
-  // const { push } = useRouter();
-  const user = supabase.auth.user();
+  const { user } = Auth.useUser();
   const [project_group, setProject_group] = useState(null);
   const [groups, setGroups] = useState(null);
   const [projects, setProjects] = useState(null);
