@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import supabase from "../context/auth-context";
 import { Auth } from "@supabase/ui";
@@ -26,7 +27,40 @@ function Nav() {
   }, []);
 
   return (
-    <div className="uk-width-1-4@m">
+    <div className="uk-width-1-4@m uk-margin-medium-top">
+      {user ? (
+        <div className="uk-card uk-card-small uk-card-body">
+          <Image
+            className="uk-border-circle"
+            width="70"
+            height="70"
+            src="https://rawcdn.githack.com/eugevanz/newbng-outline/a1c909c10479fc190d7e9f885ee0d0d934b03e1a/public/art-hauntington-jzY0KRJopEI-unsplash.jpg"
+            alt="hauntington"
+          ></Image>
+
+          <div className="uk-text-large uk-text-bold">
+            {user?.user_metadata?.full_name ?? "NoName"}
+          </div>
+          <div className="uk-text-meta">{user?.email}</div>
+        </div>
+      ) : (
+        <div className="uk-grid-collapse" data-uk-grid>
+          <div className="uk-width-auto">
+            <Image
+              width="70"
+              height="52"
+              src="https://rawcdn.githack.com/eugevanz/newbng-outline/a1c909c10479fc190d7e9f885ee0d0d934b03e1a/public/NEWBGNG logo.001.png"
+              alt="company-logo"
+            ></Image>
+          </div>
+          <div className="uk-width-expand">
+            <span className="uk-text-large uk-text-bold">NEWBNG</span>
+            &nbsp;
+            <div className="uk-text-meta">Project Management</div>
+          </div>
+        </div>
+      )}
+
       {!user && (
         <div className="uk-card uk-card-small uk-card-body uk-margin-large-bottom">
           <Auth
@@ -43,7 +77,7 @@ function Nav() {
       )}
 
       {user && (
-        <div className="uk-card uk-card-small uk-card-body uk-border-rounded">
+        <div className="uk-card uk-card-small uk-card-body">
           <ul className="uk-tab-right" data-uk-tab>
             <li className="uk-active">
               <a href="#dashboard" onClick={() => router.push("/")}>
@@ -67,6 +101,21 @@ function Nav() {
                   className="uk-margin-small-right"
                 ></span>
                 Projects
+              </a>
+            </li>
+
+            <li>
+              <a
+                href="#project_groups"
+                onClick={() =>
+                  user ? router.push("/project_groups") : router.push("/")
+                }
+              >
+                <span
+                  data-uk-icon="icon: database"
+                  className="uk-margin-small-right"
+                ></span>
+                Project Groups
               </a>
             </li>
 
@@ -143,6 +192,24 @@ function Nav() {
               </a>
             </li>
           </ul>
+
+          <div className="uk-grid-collapse uk-margin-large" data-uk-grid>
+            <div className="uk-width-auto">
+              <Image
+                width="35"
+                height="26"
+                src="https://rawcdn.githack.com/eugevanz/newbng-outline/a1c909c10479fc190d7e9f885ee0d0d934b03e1a/public/NEWBGNG logo.001.png"
+                alt="company-logo"
+              ></Image>
+            </div>
+            <div className="uk-width-expand">
+              <span className="uk-text-meta uk-text-bold">NEWBNG</span>
+              <span className="uk-text-meta">
+                {" "}
+                Professional Project Management
+              </span>
+            </div>
+          </div>
         </div>
       )}
     </div>

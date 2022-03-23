@@ -2,20 +2,23 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Auth } from "@supabase/ui";
 import supabase from "../../context/auth-context";
-import Delete from "../../components/delete";
-import ReadAllRows from "../../components/read-all-rows";
 import BackButton from "../../components/back-button";
-import moment from "moment";
+import ReadAllRows from "../../components/read-all-rows";
+import Delete from "../../components/delete";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
+import moment from "moment";
 
-function Projects() {
+function Profile() {
   const {
     query: { id }
   } = useRouter();
   const { user } = Auth.useUser();
-  const [project, setProject] = useState(null);
-  const [owner, setOwner] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [documents, setDocuments] = useState(null);
+  const [logs, setLogs] = useState(null);
+  const [milestones, setMilestones] = useState(null);
+  const [projects, setProjects] = useState(null);
   const [tasks, setTasks] = useState(null);
   const { register, handleSubmit, reset } = useForm();
   const [checked, setchecked] = useState(false);
@@ -23,13 +26,10 @@ function Projects() {
   function onSubmit(formData) {
     user &&
       supabase
-        .from("projects")
+        .from("profiles")
         .update(formData)
         .eq("id", id)
-        .then((data) => {
-          reset();
-          console.log(data);
-        })
+        .then((data) => console.log(data))
         .catch((error) => console.error(error));
   }
 
@@ -37,44 +37,77 @@ function Projects() {
     () =>
       id &&
       supabase
-        .from("projects")
+        .from("profiles")
         .select("*")
         .eq("id", id)
-        .then((data) => setProject(data.data.shift())),
+        .then((data) => setProfile(data.data.shift())),
     [id]
   );
 
   useEffect(
     () =>
-      project &&
+      profile &&
       supabase
-        .from("profiles")
+        .from("documents")
         .select("*")
-        .eq("id", project.user_id)
-        .then((data) => setOwner(data.data)),
-    [project]
+        .eq("user_id", profile.id)
+        .then((data) => setDocuments(data.data)),
+    [profile]
   );
 
   useEffect(
     () =>
-      project &&
+      profile &&
+      supabase
+        .from("logs")
+        .select("*")
+        .eq("user_id", profile.id)
+        .then((data) => setLogs(data.data)),
+    [profile]
+  );
+
+  useEffect(
+    () =>
+      profile &&
+      supabase
+        .from("milestones")
+        .select("*")
+        .eq("user_id", profile.id)
+        .then((data) => setMilestones(data.data)),
+    [profile]
+  );
+
+  useEffect(
+    () =>
+      profile &&
+      supabase
+        .from("projects")
+        .select("*")
+        .eq("user_id", profile.id)
+        .then((data) => setProjects(data.data)),
+    [profile]
+  );
+
+  useEffect(
+    () =>
+      profile &&
       supabase
         .from("tasks")
         .select("*")
-        .eq("project_id", project.id)
+        .eq("user_id", profile.id)
         .then((data) => setTasks(data.data)),
-    [project]
+    [profile]
   );
 
   return (
     <div className="uk-width-expand@m">
       <div className="uk-child-width-1-2@m" data-uk-grid="masonry: true">
         <div>
-          <BackButton page="projects" />
+          <BackButton page="profiles" />
         </div>
 
         <div>
-          {project && (
+          {profile && (
             <div
               id="details"
               className="uk-card uk-card-primary uk-card-small uk-border-rounded"
@@ -93,10 +126,10 @@ function Projects() {
 
                   <div className="uk-width-expand">
                     <h5 className="uk-text-bold uk-margin-remove-bottom">
-                      {project.name}
+                      {profile.name}
                     </h5>
                     <p className="uk-text-meta uk-margin-remove-top">
-                      {project.user_id}
+                      {profile.email}
                     </p>
                   </div>
                 </div>
@@ -108,66 +141,34 @@ function Projects() {
                   className="uk-input uk-form-small uk-border-rounded uk-margin"
                   type="text"
                   id="form-stacked-text"
-                  placeholder={project.name}
+                  placeholder={profile.name}
                   disabled={!checked}
                 ></input>
 
-                <textarea
-                  {...register("description")}
-                  className="uk-textarea uk-form-small uk-border-rounded"
+                <input
+                  {...register("email")}
+                  className="uk-input uk-form-small uk-border-rounded uk-margin"
+                  type="text"
                   id="form-stacked-text"
-                  rows="7"
-                  placeholder={project.description}
+                  placeholder={profile.email}
                   disabled={!checked}
-                ></textarea>
+                ></input>
 
-                <div className="uk-text-small uk-margin">
-                  <code>Created on</code>
-                  {moment(project.created_at).format("MMMM Do YYYY")}
+                <div className="uk-width-1-2">
+                  <select
+                    {...register("status")}
+                    className="uk-select uk-form-small uk-border-rounded uk-margin"
+                    disbaled={!checked}
+                  >
+                    <option value="Admin">Admin</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Basic">Basic</option>
+                  </select>
                 </div>
 
-                <div className="uk-grid-small" data-uk-grid>
-                  <div className="uk-width-1-2">
-                    <label
-                      className="uk-form-label uk-text-small uk-text-bold"
-                      htmlFor="form-stacked-text"
-                    >
-                      Start Date
-                    </label>
-                    <div className="uk-form-controls">
-                      <input
-                        {...register("start_date")}
-                        className="uk-input uk-form-small"
-                        id="form-stacked-text"
-                        type="text"
-                        placeholder={moment(project.start_date).format(
-                          "MMMM Do YYYY"
-                        )}
-                        disabled={!checked}
-                      ></input>
-                    </div>
-                  </div>
-
-                  <div className="uk-width-1-2">
-                    <label
-                      className="uk-form-label uk-text-small uk-text-bold"
-                      htmlFor="form-stacked-text"
-                    >
-                      End Date
-                    </label>
-                    <div className="uk-form-controls">
-                      <input
-                        {...register("end_date")}
-                        className="uk-input uk-form-small"
-                        id="form-stacked-text"
-                        type="text"
-                        placeholder={moment(project.end_date).format(
-                          "MMMM Do YYYY"
-                        )}
-                        disabled={!checked}
-                      ></input>
-                    </div>
-                  </div>
+                <div className="uk-text-small uk-margin">
+                  <code>Updated on</code>
+                  {moment(profile.updated_at).format("MMMM Do YYYY")}
                 </div>
               </div>
 
@@ -202,20 +203,60 @@ function Projects() {
         </div>
 
         <div>
-          {tasks && (
+          {documents && (
             <ReadAllRows
-              data={tasks}
-              title={`'${project.name}' tasks`}
-              table="tasks"
+              data={documents}
+              title="User's documents"
+              table="documents"
             ></ReadAllRows>
           )}
         </div>
 
         <div>
-          {project && <Delete item={project} table="projects"></Delete>}
+          {logs && (
+            <ReadAllRows
+              data={logs}
+              title="User's logs"
+              table="logs"
+            ></ReadAllRows>
+          )}
+        </div>
+
+        <div>
+          {milestones && (
+            <ReadAllRows
+              data={milestones}
+              title="User's milestones"
+              table="milestones"
+            ></ReadAllRows>
+          )}
+        </div>
+
+        <div>
+          {projects && (
+            <ReadAllRows
+              data={projects}
+              title="User's projects"
+              table="projects"
+            ></ReadAllRows>
+          )}
+        </div>
+
+        <div>
+          {tasks && (
+            <ReadAllRows
+              data={tasks}
+              title="User's tasks"
+              table="projects"
+            ></ReadAllRows>
+          )}
+        </div>
+
+        <div>
+          {profile && <Delete item={profile} table="profiles"></Delete>}
         </div>
       </div>
     </div>
   );
 }
-export default Projects;
+export default Profile;

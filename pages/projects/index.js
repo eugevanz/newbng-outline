@@ -68,7 +68,6 @@ function Projects() {
                       className="uk-link-toggle"
                       href="#list-item"
                       onClick={() => push(`/projects/${item.id}`)}
-                      data-uk-scroll
                     >
                       <div className="uk-text-bold uk-link-text">
                         {item.name}

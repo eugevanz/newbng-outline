@@ -118,7 +118,6 @@ function Milestones() {
                       className="uk-link-toggle"
                       href="#list-item"
                       onClick={() => setMilestone(item)}
-                      data-uk-scroll
                     >
                       <div className="uk-text-bold uk-link-text">
                         {item.name}

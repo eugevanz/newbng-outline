@@ -12,10 +12,12 @@ function MyApp({ Component, pageProps }) {
       <Script src="https://cdn.jsdelivr.net/npm/uikit@3.11.1/dist/js/uikit-icons.min.js"></Script>
 
       <Auth.UserContextProvider supabaseClient={supabase}>
-        <Navbar></Navbar>
-        <div className="uk-padding-small" data-uk-grid>
+        <div className="uk-padding-small" data-uk-grid="parallax:96">
           <Nav></Nav>
-          <Component {...pageProps} />
+          <div className="uk-width-expand">
+            <Navbar></Navbar>
+            <Component {...pageProps} />
+          </div>
         </div>
       </Auth.UserContextProvider>
     </>

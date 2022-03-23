@@ -17,7 +17,6 @@ function ReadAllRows({ data, title, table }) {
               className="uk-link-toggle"
               href="#list-item"
               onClick={() => push(`/${table}/${item.id}`)}
-              data-uk-scroll
             >
               <div className="uk-text-bold uk-link-text">{item.name}</div>
               <div className="uk-text-meta">
